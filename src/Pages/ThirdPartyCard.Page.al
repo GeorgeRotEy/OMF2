@@ -1,0 +1,183 @@
+page 50080 "Third Party Card"
+{
+    Caption = 'Third Party Card', Comment = 'ESP="Ficha tercero"';
+    InsertAllowed = false;
+    RefreshOnActivate = true;
+    SourceTable = "Third Party";
+    ApplicationArea = All;
+
+    layout
+    {
+        area(content)
+        {
+            group(General)
+            {
+                field("No."; Rec."No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("VAT Registration No."; Rec."VAT Registration No.")
+                {
+                    ApplicationArea = All;
+                    ShowMandatory = true;
+                }
+                field(Name; Rec.Name)
+                {
+                    ApplicationArea = All;
+                }
+                field("Name 2"; Rec."Name 2")
+                {
+                    ApplicationArea = All;
+                }
+                field(Address; Rec.Address)
+                {
+                    ApplicationArea = All;
+                }
+                field("Address 2"; Rec."Address 2")
+                {
+                    ApplicationArea = All;
+                }
+                field(City; Rec.City)
+                {
+                    ApplicationArea = All;
+                }
+                field(Contact; Rec.Contact)
+                {
+                    ApplicationArea = All;
+                }
+                field("Phone No."; Rec."Phone No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Country/Region Code"; Rec."Country/Region Code")
+                {
+                    ApplicationArea = All;
+                    ShowMandatory = true;
+                }
+                field("Post Code"; Rec."Post Code")
+                {
+                    ApplicationArea = All;
+                }
+                field(County; Rec.County)
+                {
+                    ApplicationArea = All;
+                }
+                field("E-Mail"; Rec."E-Mail")
+                {
+                    ApplicationArea = All;
+                }
+                field("Home Page"; Rec."Home Page")
+                {
+                    ApplicationArea = All;
+                }
+                field("Creation Date/Time"; Rec."Creation Date/Time")
+                {
+                    ApplicationArea = All;
+                }
+
+                group(Templates)
+                {
+                    Caption = 'Templates', Comment = 'ESP="Plantillas"';
+                    field("Customer Template Code"; Rec."Customer Template Code")
+                    {
+                        ApplicationArea = All;
+                    }
+                    field("Vendor Template Code"; Rec."Vendor Template Code")
+                    {
+                        ApplicationArea = All;
+                    }
+                }
+            }
+
+            part(ThirdPartyCompanySubform; "Third Party Company Subform")
+            {
+                ApplicationArea = All;
+                UpdatePropagation = Both;
+            }
+        }
+    }
+
+    actions
+    {
+        area(navigation)
+        {
+            group("Third Party")
+            {
+                Caption = 'Third Party', Comment = 'ESP="Tercero"';
+
+                action("Crear Tercero")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Create Third Party', Comment = 'ESP="Crear tercero"';
+                    Image = CreateDocument;
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    PromotedIsBig = true;
+                    RunObject = Page "Alta Terceros ";
+                }
+
+                action(Dimensions)
+                {
+                    ApplicationArea = Suite;
+                    Caption = 'Dimensions', Comment = 'ESP="Dimensiones"';
+                    Image = Dimensions;
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    RunObject = Page "Default Dimensions";
+                    RunPageLink = "Table ID" = CONST(50040),
+                                  "No." = FIELD("No.");
+                    ShortCutKey = 'Shift+Ctrl+D';
+                    ToolTip = 'View or edits dimensions, such as area, project, or department, that you can assign to sales and purchase documents to distribute costs and analyze transaction history.', Comment = 'ESP="Ver o editar dimensiones, como área, proyecto o departamento, que se pueden asignar a documentos de ventas y compras para distribuir costes y analizar el historial de transacciones."';
+                }
+
+                action("Bank Accounts")
+                {
+                    ApplicationArea = Basic, Suite;
+                    Caption = 'Bank Accounts', Comment = 'ESP="Cuentas bancarias"';
+                    Image = BankAccount;
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    RunObject = Page "Third Party Bank Acc. List";
+                    RunPageLink = "Third Party No." = FIELD("No.");
+                    ToolTip = 'View or set up the vendor''s bank accounts. You can set up any number of bank accounts for each vendor.', Comment = 'ESP="Ver o configurar las cuentas bancarias del proveedor. Puede configurar cualquier número de cuentas bancarias para cada proveedor."';
+                }
+            }
+
+            group(History)
+            {
+                Caption = 'History', Comment = 'ESP="Historial"';
+                Image = History;
+
+                action("Ledger E&ntries")
+                {
+                    ApplicationArea = Basic, Suite;
+                    Caption = 'Ledger Entries', Comment = 'ESP="Movimientos"';
+                    Image = CustomerLedger;
+                    Promoted = true;
+                    PromotedCategory = Category5;
+                    ShortCutKey = 'Ctrl+F7';
+                    ToolTip = 'View the history of transactions that have been posted for the selected record.', Comment = 'ESP="Ver el historial de movimientos que se han contabilizado para el registro seleccionado."';
+
+                    trigger OnAction()
+                    var
+                        ThirdPartyLedgEntries: Page "Third Party Ledger Entries";
+                    begin
+                        ThirdPartyLedgEntries.SetFilters(0, Rec."No.", false);
+                        ThirdPartyLedgEntries.RunModal();
+                        Clear(ThirdPartyLedgEntries);
+                    end;
+                }
+            }
+        }
+    }
+
+    trigger OnAfterGetRecord()
+    begin
+        CurrPage.ThirdPartyCompanySubform.PAGE.SetThirdPartyNo(Rec."No.");
+        CurrPage.ThirdPartyCompanySubform.PAGE.Activate(true);
+    end;
+
+    trigger OnInsertRecord(BelowxRec: Boolean): Boolean
+    begin
+    end;
+}

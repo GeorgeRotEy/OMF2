@@ -1,0 +1,17 @@
+pageextension 50072 "Purchase Quote Archive Ext" extends "Purchase Quote Archive"
+{
+    layout
+    {
+        addafter("Prices Including VAT")
+        {
+            field("Control IRPF"; Rec."Control IRPF")
+            {
+                ApplicationArea = All;
+            }
+            field("Grupo registro IRPF"; Rec."Grupo registro IRPF")
+            {
+                ApplicationArea = All;
+            }
+        }
+    }
+}
