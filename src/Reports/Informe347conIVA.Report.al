@@ -433,14 +433,17 @@ report 50038 "Informe - 347 con IVA"
                     field(Anio; vAnio)
                     {
                         Caption = 'Año';
+                        ApplicationArea = All;
                     }
                     field(vImporteCust; vImporteMinCust)
                     {
                         Caption = 'Clientes Importe mínimo';
+                        ApplicationArea = All;
                     }
                     field(vImporteVend; vImporteMinVend)
                     {
                         Caption = 'Proveedores Importe mínimo';
+                        ApplicationArea = All;
                     }
                 }
             }

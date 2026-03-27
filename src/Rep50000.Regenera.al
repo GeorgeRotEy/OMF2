@@ -36,6 +36,7 @@ report 50015 "Regenera"
         fModifyAnalysisView(pCompanyName);
         fModifyGenJnlTemplate(pCompanyName);
         fModifyGLSetup(pCompanyName);
+        fModifyDepreciationBook(pCompanyName);
     end;
 
     local procedure fModifyVATRegistrationLog(pCompanyName: Text[30])
@@ -132,6 +133,28 @@ report 50015 "Regenera"
 
             rlGLSetup.Modify();
         end;
+    end;
+
+    local procedure fModifyDepreciationBook(pCompanyName: Text[30])
+    var
+        rlDepBook: Record "Depreciation Book";
+    begin
+        vWindow.Update(2, rlDepBook.TableCaption);
+        rlDepBook.ChangeCompany(pCompanyName);
+
+        if rlDepBook.FindSet() then
+            repeat
+                rlDepBook."G/L Integration - Acq. Cost" := true;
+                rlDepBook."G/L Integration - Depreciation" := true;
+                rlDepBook."G/L Integration - Write-Down" := true;
+                rlDepBook."G/L Integration - Appreciation" := true;
+                rlDepBook."G/L Integration - Custom 1" := true;
+                rlDepBook."G/L Integration - Custom 2" := true;
+                rlDepBook."G/L Integration - Disposal" := true;
+                rlDepBook."G/L Integration - Maintenance" := true;
+
+                rlDepBook.Modify();
+            until rlDepBook.Next() = 0;
     end;
 
     var

@@ -2,7 +2,7 @@ page 50077 "Income Tax Detail"
 {
     // // Mod. S2G 19/10/2016 (CSM) : GF-010 Retenciones. IRPF.
 
-    Caption = 'Income Tax Detail', Comment = 'ESP="Detalle impuesto sobre la renta"';
+    Caption = 'Income Tax Detail', Comment = 'ESP="IRPF Desglose"';
     DelayedInsert = true;
     DeleteAllowed = false;
     InsertAllowed = false;

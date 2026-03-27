@@ -3,10 +3,9 @@ page 50056 "EDUCAMOS Input Data"
     // Mod. S2G (RBM-R) IN-001: Interfaz Educamos
 
     PageType = List;
-    Caption = 'EDUCAMOS Input Data', Comment = 'ESP="EDUCAMOS datos entrada"';
+    Caption = 'EDUCAMOS Input Data', Comment = 'ESP="EDUCAMOS Datos entrada"';
     SourceTable = "EDUCAMOS Input Data";
     ApplicationArea = All;
-    UsageCategory = Lists;
 
     layout
     {
@@ -36,12 +35,4 @@ page 50056 "EDUCAMOS Input Data"
             }
         }
     }
-
-    actions
-    {
-    }
-
-    var
-        CR: Text[1];
-        vContent: Text;
 }

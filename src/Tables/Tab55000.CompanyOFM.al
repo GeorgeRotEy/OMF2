@@ -21,7 +21,6 @@ table 55000 "Company OFM"
         {
             Caption = 'Entidad ID', Comment = 'ESP="ID entidad"';
         }
-        //GR-add-30-01-2026
         field(5; "Evaluation Company"; Boolean)
         {
             Caption = 'Evaluation Company', Comment = 'ESP="Empresa de evaluación"';
