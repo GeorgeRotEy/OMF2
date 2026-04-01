@@ -1,7 +1,6 @@
+
 page 50050 "EDUCAMOS Remesa"
 {
-    // Mod. S2G (RBM-R) IN-001: Interfaz Educamos
-
     Editable = false;
     Caption = 'EDUCAMOS Remittance', Comment = 'ESP="EDUCAMOS Remesa"';
     PageType = List;
@@ -15,64 +14,76 @@ page 50050 "EDUCAMOS Remesa"
         {
             repeater(Group)
             {
-                field(id_remesa; Rec.id_remesa)
+                field("ID Remesa BC"; Rec."ID Remesa BC")
                 {
                 }
-                field(id_unique_remesa; Rec.id_unique_remesa)
+                field(remesaId; Rec.remesaId)
                 {
                 }
-                field(id_colegio; Rec.id_colegio)
+                field(descripcion; Rec.descripcion)
                 {
                 }
-                field(primeraSincroContab; Rec.primeraSincroContab)
+                field(reducido; Rec.reducido)
                 {
                 }
-                field(id_ordenante; Rec.id_ordenante)
+                field(periodoFacturacionId; Rec.periodoFacturacionId)
                 {
                 }
-                field(id_unique_ordenante; Rec.id_unique_ordenante)
+                field(nombrePeriodo; Rec.nombrePeriodo)
                 {
                 }
-                field(nombre_ordenante; Rec.nombre_ordenante)
+                field(pagadorComun; Rec.pagadorComun)
                 {
                 }
-                field(reducido_ordenante; Rec.reducido_ordenante)
+                field(fechaCreacion; Rec.fechaCreacion)
                 {
                 }
-                field(cif_ordenante; Rec.cif_ordenante)
+                field(fechaEmision; Rec.fechaEmision)
                 {
                 }
-                field(id_presentador; Rec.id_presentador)
+                field(importe; Rec.importe)
                 {
                 }
-                field(id_unique_presentador; Rec.id_unique_presentador)
+                field(ordenanteCuentaBancariaId; Rec.ordenanteCuentaBancariaId)
                 {
                 }
-                field(nombre_presentador; Rec.nombre_presentador)
+                field(ordenante; Rec.ordenante)
                 {
                 }
-                field(nif_presentador; Rec.nif_presentador)
+                field(presentador; Rec.presentador)
                 {
                 }
-                field(cuenta_presentador; Rec.cuenta_presentador)
+                field(datosBancarios; Rec.datosBancarios)
                 {
                 }
-                field(cuenta_presentador_IBAN; Rec.cuenta_presentador_IBAN)
+                field(fechaCargo; Rec.fechaCargo)
                 {
                 }
-                field(fecha_creacion; Rec.fecha_creacion)
+                field(cuadernoBancario; Rec.cuadernoBancario)
                 {
                 }
-                field(fecha_emision; Rec.fecha_emision)
+                field(esquemaSEPA; Rec.esquemaSEPA)
                 {
                 }
-                field(fecha_cargo; Rec.fecha_cargo)
+                field(textoReciboRecargo; Rec.textoReciboRecargo)
                 {
                 }
-                field(accion; Rec.accion)
+                field(importeRecargo; Rec.importeRecargo)
                 {
                 }
-                field(calendario; Rec.calendario)
+                field(numeroRecibosBanco; Rec.numeroRecibosBanco)
+                {
+                }
+                field(importeTotalBanco; Rec.importeTotalBanco)
+                {
+                }
+                field(numeroRecibosVentanilla; Rec.numeroRecibosVentanilla)
+                {
+                }
+                field(importeTotalVentanilla; Rec.importeTotalVentanilla)
+                {
+                }
+                field(esRemitida; Rec.esRemitida)
                 {
                 }
                 field("Importation DateTime"; Rec."Importation DateTime")
@@ -84,20 +95,4 @@ page 50050 "EDUCAMOS Remesa"
             }
         }
     }
-
-    //TODO-MIG: no existe la página 50201 en producción
-    // actions
-    // {
-    //     area(navigation)
-    //     {
-    //         action("Remesas Recibo")
-    //         {
-    //             Image = Splitlines;
-    //             RunObject = Page 50201;
-    //             RunPageLink = Field2 = FIELD(id_unique_remesa);
-    //             RunPageView = SORTING(Field2, Field4)
-    //                           ORDER(Ascending);
-    //         }
-    //     }
-    // }
 }

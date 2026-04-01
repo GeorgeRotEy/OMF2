@@ -1,10 +1,9 @@
-page 50051 "EDUCAMOS RemesaRecibo"
+page 50051 "EDUCAMOS RecibosRemesa"
 {
-    // Mod. S2G (RBM-R) IN-001: Interfaz Educamos
-    Caption = 'EDUCAMOS Remittance Receipt', Comment = 'ESP="EDUCAMOS RemesaRecibo"';
+    Caption = 'EDUCAMOS RemittanceReceipt', Comment = 'ESP="EDUCAMOS RecibosRemesa"';
     Editable = false;
     PageType = List;
-    SourceTable = "EDUCAMOS RemesaRecibo";
+    SourceTable = "EDUCAMOS RecibosRemesa";
     ApplicationArea = All;
     UsageCategory = Lists;
 
@@ -14,66 +13,110 @@ page 50051 "EDUCAMOS RemesaRecibo"
         {
             repeater(Group)
             {
-                field(id_remesa; Rec.id_remesa)
+                field("ID Remesa BC"; Rec."ID Remesa BC")
                 {
                 }
-                field(id_unique_remesa; Rec.id_unique_remesa)
+                field(remesaid; Rec.remesaid)
                 {
                 }
-                field(id_recibo; Rec.id_recibo)
+                field("ID Recibo BC"; Rec."ID Recibo BC")
                 {
                 }
-                field(id_unique_recibo; Rec.id_unique_recibo)
+                field(reciboId; Rec.reciboId)
                 {
                 }
-                field(numero_recibo; Rec.numero_recibo)
+                field(medioPago; Rec.medioPago)
                 {
                 }
-                field(estado_recibo; Rec.estado_recibo)
+                field(pagadorMedioPagoId; Rec.pagadorMedioPagoId)
                 {
                 }
-                field(tipo_recibo; Rec.tipo_recibo)
+                field(prefijo; Rec.prefijo)
                 {
                 }
-                field(id_pagador; Rec.id_pagador)
+                field(numero; Rec.numero)
                 {
                 }
-                field(id_unique_pagador; Rec.id_unique_pagador)
+                field(sufijoAnulacion; Rec.sufijoAnulacion)
                 {
                 }
-                field(nombre_pagador; Rec.nombre_pagador)
+                // Grupo conceptos
+                field(reciboConceptoId; Rec.reciboConceptoId)
                 {
                 }
-                field(apellidos_pagador; Rec.apellidos_pagador)
+                field(importeConcepto; Rec.importeConcepto)
                 {
                 }
-                field(nif_pagador; Rec.nif_pagador)
+                field(importePagado; Rec.importePagado)
                 {
                 }
-                field(direccion_pagador; Rec.direccion_pagador)
+                field(fechaPago; Rec.fechaPago)
                 {
                 }
-                field(localidad_pagador; Rec.localidad_pagador)
+                field(conceptoId; Rec.conceptoId)
                 {
                 }
-                field(cp_pagador; Rec.cp_pagador)
+                field(texto; Rec.texto)
                 {
                 }
-                field(provincia_pagador; Rec.provincia_pagador)
+                field(personaId; Rec.personaId)
                 {
                 }
-                field(cuenta_pagador; Rec.cuenta_pagador)
+                field(estado; Rec.estado)
                 {
                 }
-                field(cuenta_pagador_IBAN; Rec.cuenta_pagador_IBAN)
+                // Grupo descuentos
+                field(descuentoId; Rec.descuentoId)
                 {
                 }
-                field(fecha_cambio_estado; Rec.fecha_cambio_estado)
+                field(nombreDescuento; Rec.nombreDescuento)
                 {
                 }
-                field(estado_actual; Rec.estado_actual)
+                field(importe; Rec.importe)
                 {
                 }
+                field(porcentaje; Rec.porcentaje)
+                {
+                }
+                // Grupo movimientos
+                field(nombreResponsable; Rec.nombreResponsable)
+                {
+                }
+                field(apellido1Responsable; Rec.apellido1Responsable)
+                {
+                }
+                field(apellido2Responsable; Rec.apellido2Responsable)
+                {
+                }
+                field(fechaMovimiento; Rec.fechaMovimiento)
+                {
+                }
+                field(fechaValor; Rec.fechaValor)
+                {
+                }
+                field(estadoRecibo; Rec.estadoRecibo)
+                {
+                }
+                field(motivoDevolucion; Rec.motivoDevolucion)
+                {
+                }
+                field(comentario; Rec.comentario)
+                {
+                }
+                field(domiciliado; Rec.domiciliado)
+                {
+                }
+                // Grupo pagos dentro de movimientos
+                field(pago_importePago; Rec.pago_importePago)
+                {
+                }
+                field(pago_reciboConceptoId; Rec.pago_reciboConceptoId)
+                {
+                }
+                field(pago_importePagado; Rec.pago_importePagado)
+                {
+                }
+                //Independiente
                 field("Importation DateTime"; Rec."Importation DateTime")
                 {
                 }
@@ -83,28 +126,4 @@ page 50051 "EDUCAMOS RemesaRecibo"
             }
         }
     }
-
-    //TODO-MIG: No existen las páginas 50202 ni 50203 en producción
-    // actions
-    // {
-    //     area(navigation)
-    //     {
-    //         action("Recibo Alumno")
-    //         {
-    //             Image = Splitlines;
-    //             RunObject = Page 50202;
-    //             RunPageLink = Field2 = FIELD(id_unique_recibo);
-    //             RunPageView = SORTING(Field2, Field4)
-    //                           ORDER(Ascending);
-    //         }
-    //         action("Alumno Concepto")
-    //         {
-    //             Image = Splitlines;
-    //             RunObject = Page 50203;
-    //             RunPageLink = Field2 = FIELD(id_unique_recibo);
-    //             RunPageView = SORTING(Field2, Field4, Field6)
-    //                           ORDER(Ascending);
-    //         }
-    //     }
-    // }
 }

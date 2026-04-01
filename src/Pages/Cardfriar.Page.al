@@ -11,6 +11,8 @@ page 50008 "Card friar"
         {
             group(General)
             {
+                Caption = 'General', Comment = 'ESP="General"';
+
                 field("No. Serie Friar"; Rec."No. Serie Friar")
                 {
                 }
@@ -34,6 +36,8 @@ page 50008 "Card friar"
                 }
                 group(Contacto)
                 {
+                    Caption = 'Contact', Comment = 'ESP="Contacto"';
+
                     field(Movil; Rec.Movil)
                     {
                     }
@@ -43,9 +47,11 @@ page 50008 "Card friar"
                 }
                 group(Fraternidad)
                 {
+                    Caption = 'Fraternity', Comment = 'ESP="Fraternidad"';
+
                     field("Ultimo Destino"; UltimoDestino)
                     {
-                        Caption = 'Ultimo Destino';
+                        Caption = 'Last Destination', Comment = 'ESP="Último destino"';
                         Editable = true;
                     }
                     field("Población"; PoblacionDestinoHermano)
@@ -54,51 +60,58 @@ page 50008 "Card friar"
                     }
                     field("Extra Domum"; Extradomum)
                     {
-                        Caption = 'Extra Domum';
+                        Caption = 'Extra Domum', Comment = 'ESP="Extra Domum"';
                         Editable = false;
                     }
                 }
                 group("Cargo/Oficio")
                 {
+                    Caption = 'Role/Office', Comment = 'ESP="Cargo/Oficio"';
+
                     field("Guardián Check"; Rec."Guardián Check")
                     {
-                        Caption = 'Guardián';
+                        Caption = 'Guardian', Comment = 'ESP="Guardián"';
                     }
                     field("Vicario Local Check"; Rec."Vicario Local Check")
                     {
-                        Caption = 'Vicario Local';
+                        Caption = 'Local Vicar', Comment = 'ESP="Vicario Local"';
                     }
                     field("Ecónomo Check"; Rec."Ecónomo Check")
                     {
-                        Caption = 'Ecónomo';
+                        Caption = 'Bursar', Comment = 'ESP="Ecónomo"';
                     }
                     field("Capellán Check"; Rec."Capellán Check")
                     {
-                        Caption = 'Capellán';
+                        Caption = 'Chaplain', Comment = 'ESP="Capellán"';
                     }
                     field("Párroco Check"; Rec."Párroco Check")
                     {
-                        Caption = 'Párroco';
+                        Caption = 'Parish Priest', Comment = 'ESP="Párroco"';
                     }
                     field("Vicario Parroquial Check"; Rec."Vicario Parroquial Check")
                     {
-                        Caption = 'Vicario Parroquial';
+                        Caption = 'Parochial Vicar', Comment = 'ESP="Vicario Parroquial"';
                     }
                 }
                 group("Publicaciones:")
                 {
+                    Caption = 'Publications', Comment = 'ESP="Publicaciones"';
+
                     field("Publicaciones check"; Rec."Publicaciones check")
                     {
-                        Caption = 'Publicaciones :';
+                        Caption = 'Publications', Comment = 'ESP="Publicaciones"';
                         Editable = false;
                     }
                 }
             }
             group("Información Personal")
             {
-                Caption = 'Información Personal';
+                Caption = 'Personal Information', Comment = 'ESP="Información personal"';
+
                 group(Nacimiento)
                 {
+                    Caption = 'Birth', Comment = 'ESP="Nacimiento"';
+
                     field(Fecha_Nac; Rec.Fecha_Nac)
                     {
                     }
@@ -117,6 +130,8 @@ page 50008 "Card friar"
                 }
                 group("Defunción")
                 {
+                    Caption = 'Death', Comment = 'ESP="Defunción"';
+
                     field(Defunc_Fecha; Rec.Defunc_Fecha)
                     {
                     }
@@ -136,9 +151,12 @@ page 50008 "Card friar"
             }
             group("Registros sacramentales")
             {
-                Caption = 'Registros Sacramentales';
+                Caption = 'Sacramental Records', Comment = 'ESP="Registros sacramentales"';
+
                 group(Bautismo)
                 {
+                    Caption = 'Baptism', Comment = 'ESP="Bautismo"';
+
                     field(Fecha_Bau; Rec.Fecha_Bau)
                     {
                     }
@@ -154,6 +172,8 @@ page 50008 "Card friar"
                 }
                 group("Confirmación")
                 {
+                    Caption = 'Confirmation', Comment = 'ESP="Confirmación"';
+
                     field(Fecha_Conf; Rec.Fecha_Conf)
                     {
                     }
@@ -170,8 +190,12 @@ page 50008 "Card friar"
             }
             group("Evolución de la Orden")
             {
+                Caption = 'Order Progress', Comment = 'ESP="Evolución de la Orden"';
+
                 group(Fecha)
                 {
+                    Caption = 'Dates', Comment = 'ESP="Fechas"';
+
                     field(Fecha_Sem_Menor; Rec.Fecha_Sem_Menor)
                     {
                     }
@@ -184,10 +208,11 @@ page 50008 "Card friar"
                 }
                 group("<Profesión>")
                 {
-                    Caption = 'Profesión';
+                    Caption = 'Profession', Comment = 'ESP="Profesión"';
+
                     field(Fecha_PT; Rec.Fecha_PT)
                     {
-                        Caption = 'Profesión Temporal';
+                        Caption = 'Temporary Profession', Comment = 'ESP="Profesión temporal"';
                     }
                     field(Fecha_PS; Rec.Fecha_PS)
                     {
@@ -195,17 +220,21 @@ page 50008 "Card friar"
                 }
                 group(Diaconado)
                 {
+                    Caption = 'Diaconate', Comment = 'ESP="Diaconado"';
+
                     field(Fecha_Diac_Tran; Rec.Fecha_Diac_Tran)
                     {
-                        Caption = 'Diaconado Transitorio';
+                        Caption = 'Transitional Diaconate', Comment = 'ESP="Diaconado transitorio"';
                     }
                     field(Fecha_Diac_Perm; Rec.Fecha_Diac_Perm)
                     {
-                        Caption = 'Diaconado Permanente';
+                        Caption = 'Permanent Diaconate', Comment = 'ESP="Diaconado permanente"';
                     }
                 }
                 group("Ordenación")
                 {
+                    Caption = 'Ordination', Comment = 'ESP="Ordenación"';
+
                     field(Fecha_Sacer; Rec.Fecha_Sacer)
                     {
                     }
@@ -217,28 +246,32 @@ page 50008 "Card friar"
             part(Estudios; "Estudios Sublist")
             {
                 ApplicationArea = Basic, Suite;
-                Caption = 'Estudios';
+                Caption = 'Studies', Comment = 'ESP="Estudios"';
                 SubPageLink = "Nº Serie Friar" = FIELD("No. Serie Friar"),
                               "Data Friar Type" = CONST(Estudios);
             }
             part(Publicaciones; "Publicaciones Sublist")
             {
-                Caption = 'Publicaciones';
+                Caption = 'Publications', Comment = 'ESP="Publicaciones"';
                 SubPageLink = "Nº Serie Friar" = FIELD("No. Serie Friar"),
                               "Data Friar Type" = CONST(Publicaciones);
             }
             part("Oficios/Cargos"; "Oficios Sublist")
             {
                 ApplicationArea = Basic, Suite;
-                Caption = 'Oficios/Cargos';
+                Caption = 'Offices/Roles', Comment = 'ESP="Oficios/Cargos"';
                 SubPageLink = "Nº Serie Friar" = FIELD("No. Serie Friar"),
                               "Data Friar Type" = CONST(Oficios);
                 UpdatePropagation = Both;
             }
             group("Información Laboral General")
             {
+                Caption = 'General Employment Information', Comment = 'ESP="Información laboral general"';
+
                 group("Información Laboral")
                 {
+                    Caption = 'Employment Information', Comment = 'ESP="Información laboral"';
+
                     field("DNI/NIF"; Rec."VAT Registration No.")
                     {
                     }
@@ -252,12 +285,16 @@ page 50008 "Card friar"
                 }
                 group("Activo:")
                 {
+                    Caption = 'Active', Comment = 'ESP="Activo"';
+
                     field(Activo; Rec.Activo)
                     {
                     }
                 }
                 group("Regimen General")
                 {
+                    Caption = 'General Regime', Comment = 'ESP="Régimen general"';
+
                     field("Régimen General"; Rec."Régimen General")
                     {
                         Editable = false;
@@ -273,6 +310,8 @@ page 50008 "Card friar"
                 }
                 group("Régimen Autonomo")
                 {
+                    Caption = 'Self-Employed Regime', Comment = 'ESP="Régimen autónomo"';
+
                     field("Régimen Autónomo"; Rec."Régimen Autónomo")
                     {
                         Editable = false;
@@ -292,6 +331,8 @@ page 50008 "Card friar"
                 }
                 group("Pensionista:")
                 {
+                    Caption = 'Pensioner', Comment = 'ESP="Pensionista"';
+
                     field(Pensionista; Rec.Pensionista)
                     {
                         Editable = false;
@@ -308,12 +349,16 @@ page 50008 "Card friar"
                 }
                 group("Vida Laboral:")
                 {
+                    Caption = 'Employment History', Comment = 'ESP="Vida laboral"';
+
                     field("Vida Laboral"; Rec."Vida Laboral")
                     {
                     }
                 }
                 group("Seguro Medico")
                 {
+                    Caption = 'Health Insurance', Comment = 'ESP="Seguro médico"';
+
                     field("Seguro Médico"; Rec."Seguro Médico")
                     {
                         Editable = false;
@@ -332,13 +377,13 @@ page 50008 "Card friar"
             }
             part("<Régimen>"; "Regimen Sublist")
             {
-                Caption = 'Régimen';
+                Caption = 'Regime', Comment = 'ESP="Régimen"';
                 SubPageLink = "Nº Serie Friar" = FIELD("No. Serie Friar");
                 UpdatePropagation = Both;
             }
             part(Observaciones; "Observaciones Sublist")
             {
-                Caption = 'Observaciones';
+                Caption = 'Observations', Comment = 'ESP="Observaciones"';
                 SubPageLink = "Nº Serie Friar" = FIELD("No. Serie Friar"),
                               "Data Friar Type" = CONST(Observaciones);
             }
@@ -348,14 +393,14 @@ page 50008 "Card friar"
             part("Imagen Fraile"; "imagen fraile")
             {
                 ApplicationArea = Basic, Suite;
-                Caption = 'Imagen Fraile', Comment = 'ESP="Imagen del fraile"';
+                Caption = 'Friar Image', Comment = 'ESP="Imagen del fraile"';
                 SubPageLink = "No. Serie Friar" = FIELD("No. Serie Friar");
                 Visible = NOT IsOfficeAddin;
             }
             part("Adjuntar DNI"; "DNI Doc")
             {
                 ApplicationArea = Basic, Suite;
-                Caption = 'Adjuntar DNI', Comment = 'ESP="Adjuntar documento DNI"';
+                Caption = 'Attach ID Document', Comment = 'ESP="Adjuntar documento DNI"';
                 ShowFilter = false;
                 SubPageLink = "No. Serie Friar" = FIELD("No. Serie Friar");
                 Visible = true;
@@ -363,7 +408,7 @@ page 50008 "Card friar"
             part("Necrol.Difuncion"; "Necrol.Defuncion Doc")
             {
                 ApplicationArea = Basic, Suite;
-                Caption = 'Necrol.Doc', Comment = 'ESP="Documento necrológico"';
+                Caption = 'Necrology Document', Comment = 'ESP="Documento necrológico"';
                 SubPageLink = "No. Serie Friar" = FIELD("No. Serie Friar");
                 Visible = NOT IsOfficeAddin;
             }
@@ -374,7 +419,7 @@ page 50008 "Card friar"
             part("Adjuntar Vida Laboral"; "Vida Laboral Doc")
             {
                 ShowFilter = false;
-                Caption = 'Adjuntar Vida Laboral', Comment = 'ESP="Adjuntar informe de vida laboral"';
+                Caption = 'Attach Employment History', Comment = 'ESP="Adjuntar informe de vida laboral"';
                 SubPageLink = "No. Serie Friar" = FIELD("No. Serie Friar");
             }
             systempart(Recordlinks; Links)
@@ -383,7 +428,7 @@ page 50008 "Card friar"
             part("Publicaciones Doc"; "Publicaciones Doc")
             {
                 ApplicationArea = Basic, Suite;
-                Caption = 'Publicaciones Doc', Comment = 'ESP="Documentos de publicaciones"';
+                Caption = 'Publications Documents', Comment = 'ESP="Documentos de publicaciones"';
                 ShowFilter = true;
                 SubPageLink = "No. Serie Friar" = FIELD("No. Serie Friar");
                 Visible = NOT IsOfficeAddin;
@@ -401,15 +446,13 @@ page 50008 "Card friar"
             action("Destino Hermano")
             {
                 Image = Indent;
-                Promoted = true;
-                Caption = 'Destino Hermano', Comment = 'ESP="Abrir destino del hermano"';
+                Caption = 'Friar Destination', Comment = 'ESP="Abrir destino del hermano"';
 
                 trigger OnAction()
                 var
                     PageDestinoHermanos: Page "Destino Hermano";
                     RecordDestinosHermanos: Record "Friar Ledger Entry";
                 begin
-
                     RecordDestinosHermanos.RESET();
                     RecordDestinosHermanos.SETRANGE("No. Serie Friar", Rec."No. Serie Friar");
                     PageDestinoHermanos.SETTABLEVIEW(RecordDestinosHermanos);
@@ -464,6 +507,17 @@ page 50008 "Card friar"
                     IncomingDocumentAttachment.NewAttachmentFromDocument(Rec."Entry No. Document", 50001, 0, Rec."No. Serie Friar");
                     Rec.MODIFY();
                 end;
+            }
+        }
+        area(Promoted)
+        {
+            group(Process)
+            {
+                Caption = 'Process', Comment = 'ESP="Procesar"';
+
+                actionref(FriarDestination_Promoted; "Destino Hermano")
+                {
+                }
             }
         }
     }

@@ -28,11 +28,19 @@ pageextension 50032 "Customer List Ext" extends "Customer List"
             {
                 Caption = 'Third Party', Comment = 'ESP="Tercero"';
                 Image = Customer;
-                Promoted = true;
-                PromotedCategory = New;
-                PromotedIsBig = true;
                 RunObject = Page "Third Party List";
                 ApplicationArea = All;
+            }
+        }
+        addlast(Promoted)
+        {
+            group(New)
+            {
+                Caption = 'New', Comment = 'ESP="Nuevo"';
+
+                actionref(ThirdParty_Promoted; "<Page Third Party>")
+                {
+                }
             }
         }
     }

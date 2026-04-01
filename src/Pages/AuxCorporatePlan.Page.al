@@ -72,14 +72,22 @@ page 50043 "Aux. Corporate Plan"
             {
                 Image = "Action";
                 Caption = 'Select Account', Comment = 'ESP="Seleccionar cuenta"';
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
 
                 trigger OnAction()
                 begin
                     MarkRegister;
                 end;
+            }
+        }
+        area(Promoted)
+        {
+            group(Process)
+            {
+                Caption = 'Process', Comment = 'ESP="Procesar"';
+
+                actionref(SelectAccount_Promoted; "Seleccionar cuenta")
+                {
+                }
             }
         }
     }

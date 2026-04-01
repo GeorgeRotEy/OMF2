@@ -9,7 +9,7 @@ pageextension 50066 "Purchase Invoice Ext" extends "Purchase Invoice"
         {
             group(Retenciones)
             {
-                Caption = 'Retenciones';
+                Caption = 'Withholdings', Comment = 'ESP="Retenciones"';
                 field("Grupo registro IRPF"; Rec."Grupo registro IRPF")
                 {
                     ApplicationArea = All;
@@ -50,10 +50,8 @@ pageextension 50066 "Purchase Invoice Ext" extends "Purchase Invoice"
         {
             action("Desbloquear operación")
             {
+                Caption = 'Unlock Operation', Comment = 'ESP="Desbloquear operación"';
                 Image = Approve;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
                 ApplicationArea = All;
 
                 trigger OnAction()
@@ -82,6 +80,17 @@ pageextension 50066 "Purchase Invoice Ext" extends "Purchase Invoice"
                     rBudgetControlSetup.fUnblockPosting(3, vDimkey);
                     //Mod. S2G (RBM-R) GF-007: Control Presupuestario. Fin
                 end;
+            }
+        }
+        addlast(Promoted)
+        {
+            group(Process)
+            {
+                Caption = 'Process', Comment = 'ESP="Procesar"';
+
+                actionref(UnlockOperation_Promoted; "Desbloquear operación")
+                {
+                }
             }
         }
     }

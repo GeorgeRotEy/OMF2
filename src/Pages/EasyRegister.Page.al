@@ -18,6 +18,7 @@ page 50006 "Easy Register"
             group(General)
             {
                 Caption = 'General', Comment = 'ESP="General"';
+
                 field(vCompanyName; vCompanyName)
                 {
                     Caption = 'Company Name', Comment = 'ESP="Nombre empresa"';
@@ -29,6 +30,7 @@ page 50006 "Easy Register"
             group(Options)
             {
                 Caption = 'Options', Comment = 'ESP="Opciones"';
+
                 field(vCashRegType; vCashRegType)
                 {
                     Caption = 'Select Option', Comment = 'ESP="Seleccionar opción"';
@@ -36,7 +38,6 @@ page 50006 "Easy Register"
 
                     trigger OnValidate()
                     begin
-
                         vCashRcptOpType := 0;
                         vPmtOpType := 0;
                         fInitValues;
@@ -57,6 +58,7 @@ page 50006 "Easy Register"
             {
                 Caption = 'Cash Receipts', Comment = 'ESP="Recibos de caja"';
                 Visible = vCashRegType = vCashRegType::"Receipts";
+
                 field(CashRcptOperationType; vCashRcptOpType)
                 {
                     Caption = 'Tipo operación';
@@ -76,6 +78,7 @@ page 50006 "Easy Register"
             {
                 Caption = 'Bank Receipts', Comment = 'ESP="Recibos bancarios"';
                 Visible = (vCashRegType = vCashRegType::"Receipts") AND (vCashRcptOpType = vCashRcptOpType::"Ingreso");
+
                 field(PostingDate4; vPostingDate)
                 {
                     Caption = 'Payment Date', Comment = 'ESP="Fecha pago"';
@@ -130,6 +133,7 @@ page 50006 "Easy Register"
             {
                 Caption = 'Payments', Comment = 'ESP="Pagos"';
                 Visible = vCashRegType = vCashRegType::Payments;
+
                 field(PmtOperationType; vPmtOpType)
                 {
                     Caption = 'Operation Type', Comment = 'ESP="Tipo operación"';
@@ -152,6 +156,7 @@ page 50006 "Easy Register"
             {
                 Caption = 'Customer Receipts', Comment = 'ESP="Recibos de cliente"';
                 Visible = (vCashRegType = vCashRegType::"Payments") AND ((vPmtOpType = vPmtOpType::"Con justificante (tique o factura)") OR (vPmtOpType = vPmtOpType::Abono));
+
                 field(PostingDate3; vPostingDate)
                 {
                 }
@@ -226,6 +231,7 @@ page 50006 "Easy Register"
             {
                 Caption = 'Bank Receipts', Comment = 'ESP="Recibos bancarios"';
                 Visible = (vCashRegType = vCashRegType::"Payments") AND (vPmtOpType = vPmtOpType::"Sin justificante (tique o factura)");
+
                 field(PostingDate5; vPostingDate)
                 {
                 }
@@ -279,6 +285,7 @@ page 50006 "Easy Register"
             {
                 Caption = 'Transfer', Comment = 'ESP="Transferencia"';
                 Visible = vCashRegType = vCashRegType::Transfers;
+
                 field(PostingDate6; vPostingDate)
                 {
                     Caption = 'Payment Date', Comment = 'ESP="Fecha pago"';
@@ -353,6 +360,7 @@ page 50006 "Easy Register"
             {
                 Caption = 'Transfer', Comment = 'ESP="Transferencia"';
                 Visible = vCashRegType = vCashRegType::Payroll;
+
                 field(PostingDate7; vPostingDate)
                 {
                 }
@@ -421,12 +429,15 @@ page 50006 "Easy Register"
         }
         area(factboxes)
         {
+
+
             part(Picture; Picture)
             {
                 ApplicationArea = Basic, Suite;
                 Editable = false;
                 ShowFilter = false;
             }
+
         }
     }
 
@@ -438,9 +449,6 @@ page 50006 "Easy Register"
             {
                 Caption = 'Post', Comment = 'ESP="Registrar"';
                 Image = Post;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
 
                 trigger OnAction()
                 begin
@@ -452,6 +460,17 @@ page 50006 "Easy Register"
                     END ELSE
                         fPostOperation;
                 end;
+            }
+        }
+        area(Promoted)
+        {
+            group(Process)
+            {
+                Caption = 'Process', Comment = 'ESP="Procesar"';
+
+                actionref(Post_Promoted; "&Post")
+                {
+                }
             }
         }
     }
