@@ -494,15 +494,31 @@ codeunit 50016 "EY Subscribers"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch. Post Invoice Events", OnAfterPrepareGenJnlLine, '', false, false)]
     local procedure es_c816_PurchPostInvoiceEvents_OnAfterPrepareGenJnlLine(var GenJnlLine: Record "Gen. Journal Line"; PurchHeader: Record "Purchase Header"; InvoicePostingBuffer: Record "Invoice Posting Buffer")
     begin
+        //- Mod. S2G 11/05/2017 (SGP) : GF-010
         if InvoicePostingBuffer."Retention Entry No." <> 0 then
             GenJnlLine."No. mov. retención" := InvoicePostingBuffer."Retention Entry No.";
+        //- Mod. S2G 11/05/2017 (SGP) : GF-010
+        // TER001 - Maestro de terceros.begin
+        IF GenJnlLine."Account Type" = GenJnlLine."Account Type"::"G/L Account" THEN BEGIN
+            GenJnlLine."Source Type" := GenJnlLine."Source Type"::" ";
+            GenJnlLine."Source No." := '';
+        END;
+        // TER001 - Maestro de terceros.end
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales Post Invoice Events", OnAfterPrepareGenJnlLine, '', false, false)]
     local procedure es_c817_SalesPostInvoiceEvents_OnAfterPrepareGenJnlLine(var GenJnlLine: Record "Gen. Journal Line"; SalesHeader: Record "Sales Header"; InvoicePostingBuffer: Record "Invoice Posting Buffer")
     begin
+        //- Mod. S2G 11/05/2017 (SGP) : GF-010
         if InvoicePostingBuffer."Retention Entry No." <> 0 then
             GenJnlLine."No. mov. retención" := InvoicePostingBuffer."Retention Entry No.";
+        //- Mod. S2G 11/05/2017 (SGP) : GF-010
+        // TER001 - Maestro de terceros.begin
+        IF GenJnlLine."Account Type" = GenJnlLine."Account Type"::"G/L Account" THEN BEGIN
+            GenJnlLine."Source Type" := GenJnlLine."Source Type"::" ";
+            GenJnlLine."Source No." := '';
+        END;
+        // TER001 - Maestro de terceros.end
     end;
 
 
