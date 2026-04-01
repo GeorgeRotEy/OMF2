@@ -43,10 +43,8 @@ pageextension 50045 "General Journal Ext" extends "General Journal"
         {
             action("Desbloquear operación")
             {
+                Caption = 'Unlock Operation', Comment = 'ESP="Desbloquear operación"';
                 Image = Approve;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
                 ApplicationArea = All;
 
                 trigger OnAction()
@@ -59,6 +57,17 @@ pageextension 50045 "General Journal Ext" extends "General Journal"
                     rBudgetControlSetup.fUnblockPosting(1, vDimkey);
                     //Mod. S2G (RBM-R) GF-007: Control Presupuestario. Fin
                 end;
+            }
+        }
+        addlast(Promoted)
+        {
+            group(Process)
+            {
+                Caption = 'Process', Comment = 'ESP="Procesar"';
+
+                actionref(UnlockOperation_Promoted; "Desbloquear operación")
+                {
+                }
             }
         }
     }

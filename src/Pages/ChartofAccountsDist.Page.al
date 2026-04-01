@@ -17,6 +17,7 @@ page 50018 "Chart of Accounts (Dist.)"
             {
                 IndentationColumn = NameIndent;
                 IndentationControls = Name;
+
                 field("No."; Rec."No.")
                 {
                     ApplicationArea = Basic, Suite;
@@ -70,14 +71,12 @@ page 50018 "Chart of Accounts (Dist.)"
             {
                 Caption = 'Account', Comment = 'ESP="Cuenta"';
                 Image = ChartOfAccounts;
+
                 action(AccountGeneralLedgerEntries)
                 {
                     ApplicationArea = Basic, Suite;
                     Caption = 'Ledger E&ntries', Comment = 'ESP="Movimientos de contabilidad"';
                     Image = GLRegisters;
-                    Promoted = false;
-                    //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                    //PromotedCategory = Process;
                     RunObject = Page "Distribution Entry";
                     RunPageLink = "Distrib. account no." = FIELD("No.");
                     RunPageView = SORTING("Distrib. account no.", "Global Dimension 1 Code", "Global Dimension 2 Code");
@@ -88,6 +87,7 @@ page 50018 "Chart of Accounts (Dist.)"
                 {
                     Caption = 'Dimensions', Comment = 'ESP="Dimensiones"';
                     Image = Dimensions;
+
                     action("Dimensions-Single")
                     {
                         ApplicationArea = Suite;
@@ -104,6 +104,7 @@ page 50018 "Chart of Accounts (Dist.)"
             group("Underlying Entries")
             {
                 Caption = 'Underlying Entries', Comment = 'ESP="Movimientos subyacentes"';
+
                 action(NetChange)
                 {
                     ApplicationArea = Basic, Suite;

@@ -782,7 +782,7 @@ codeunit 50008 "Gestión IRPF"
     begin
     end;
 
-    procedure CalcularIRPFJnlLine(p_GenJournalLine: Record "Gen. Journal Line")
+    procedure CalcularIRPFJnlLine(var p_GenJournalLine: Record "Gen. Journal Line")
     var
         RecGrupoIRPF: Record "Grupo registro retención";
         RecMovIRPF: Record "Movs. retenciones";
@@ -851,6 +851,8 @@ codeunit 50008 "Gestión IRPF"
 
             //IF (RecMovIRPF.Importe <> 0) THEN BEGIN
             RecMovIRPF.INSERT();
+            p_GenJournalLine."No. mov. retención" := RecMovIRPF."Nº mov.";
+            p_GenJournalLine.Modify();
             //END;
             //UNTIL (locGenJnlLine.NEXT() = 0);
         END;
@@ -869,6 +871,25 @@ codeunit 50008 "Gestión IRPF"
                 locMovsretenciones."No. mov. contabilidad" := p_GLEntryNo;
                 locMovsretenciones.MODIFY();
             UNTIL locMovsretenciones.NEXT() = 0;
+    end;
+
+    procedure UpdateRetentionEntryFromGLEntry(RetentionEntryNo: Integer; GLEntryNo: Integer; DimensionSetID: Integer)
+    var
+        MovRetencion: Record "Movs. retenciones";
+    begin
+        if (RetentionEntryNo = 0) or (GLEntryNo = 0) then
+            exit;
+
+        if not MovRetencion.GET(RetentionEntryNo) then
+            exit;
+
+        if MovRetencion."No. mov. contabilidad" = 0 then begin
+            MovRetencion."No. mov. contabilidad" := GLEntryNo;
+            MovRetencion."Dimension Set ID" := DimensionSetID;
+            MovRetencion.MODIFY();
+        end;
+
+        UpdateMovIRPFDesdeMismoMovConta(MovRetencion, GLEntryNo);
     end;
 
 

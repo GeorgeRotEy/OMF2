@@ -74,10 +74,8 @@ page 50021 "Distribution Entry"
                 ApplicationArea = Suite;
                 Caption = 'Dimensions', Comment = 'ESP="Dimensiones"';
                 Image = Dimensions;
-                Promoted = true;
-                PromotedCategory = Process;
                 ShortCutKey = 'Shift+Ctrl+D';
-                ToolTip = 'View or edits dimensions, such as area, project, or department, that you can assign to sales and purchase documents to distribute costs and analyze transaction history.', Comment = 'ESP="Ver o editar dimensiones, como área, proyecto o departamento, que se pueden asignar a documentos de ventas y compras para distribuir costes y analizar el historial de transacciones."';
+                ToolTip = 'View or edit dimensions, such as area, project, or department, that can be assigned to sales and purchase documents to distribute costs and analyze transaction history.', Comment = 'ESP="Ver o editar dimensiones, como área, proyecto o departamento, que se pueden asignar a documentos de ventas y compras para distribuir costes y analizar el historial de transacciones."';
 
                 trigger OnAction()
                 begin
@@ -88,12 +86,8 @@ page 50021 "Distribution Entry"
             action("Asociated G/L Entry")
             {
                 ApplicationArea = Suite;
-                Caption = 'Asociated G/L Entry', Comment = 'ESP="Asiento de G/L asociado"';
+                Caption = 'Associated G/L Entry', Comment = 'ESP="Asiento de G/L asociado"';
                 Image = GeneralLedger;
-                //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                //PromotedCategory = Process;
-                //The property 'PromotedIsBig' can only be set if the property 'Promoted' is set to 'true'
-                //PromotedIsBig = true;
                 RunObject = Page "General Ledger Entries";
                 RunPageLink = "Entry No." = FIELD("G/L Entry No.");
             }
@@ -103,13 +97,20 @@ page 50021 "Distribution Entry"
             action("Traer movimientos de contabilidad")
             {
                 Ellipsis = true;
-                Caption = 'Traer movimientos de contabilidad', Comment = 'ESP="Copiar asientos de G/L a distribución"';
+                Caption = 'Bring G/L Entries', Comment = 'ESP="Copiar asientos de G/L a distribución"';
                 Image = ImportChartOfAccounts;
-                //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                //PromotedCategory = Process;
-                //The property 'PromotedIsBig' can only be set if the property 'Promoted' is set to 'true'
-                //PromotedIsBig = true;
                 RunObject = Report "Copy GL Entry to Distribution";
+            }
+        }
+        area(Promoted)
+        {
+            group(Process)
+            {
+                Caption = 'Process', Comment = 'ESP="Procesar"';
+
+                actionref(Dimensions_Promoted; Dimensions)
+                {
+                }
             }
         }
     }

@@ -49,12 +49,11 @@ page 50022 "Chart of schedule List"
             {
                 Caption = 'Functions', Comment = 'ESP="Funciones"';
                 Image = "Action";
+
                 action(IndentCostType)
                 {
                     Caption = 'Indent Distribution Accounts', Comment = 'ESP="Sangrar cuentas de distribución"';
                     Image = IndentChartOfAccounts;
-                    Promoted = true;
-                    PromotedCategory = Process;
 
                     trigger OnAction()
                     var
@@ -62,6 +61,17 @@ page 50022 "Chart of schedule List"
                     begin
                         cDistributionMng.fConfirmIndentCostTypes;
                     end;
+                }
+            }
+        }
+        area(Promoted)
+        {
+            group(Process)
+            {
+                Caption = 'Process', Comment = 'ESP="Procesar"';
+
+                actionref(IndentCostType_Promoted; IndentCostType)
+                {
                 }
             }
         }

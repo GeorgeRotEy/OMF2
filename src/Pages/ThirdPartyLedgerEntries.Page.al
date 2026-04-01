@@ -1,8 +1,6 @@
 page 50086 "Third Party Ledger Entries"
 {
-    // // Mod. S2G 18/12/2017 (JGS) : TER001 ã Terceros.
-
-    Caption = 'Third Party Ledger Entries', Comment = 'ESP="Movimientos tercero"';
+    Caption = 'Third Party Ledger Entries', Comment = 'ESP="Movimientos tercero"';
     DataCaptionFields = "Third Party No.";
     DeleteAllowed = false;
     InsertAllowed = false;
@@ -10,7 +8,7 @@ page 50086 "Third Party Ledger Entries"
     SourceTable = "Cust. Ledger Entry";
     SourceTableTemporary = true;
     SourceTableView = SORTING("Entry No.")
-           ORDER(Descending);
+                     ORDER(Descending);
     ApplicationArea = All;
     UsageCategory = Lists;
 
@@ -22,6 +20,7 @@ page 50086 "Third Party Ledger Entries"
             {
                 field("Source Company Name"; Rec."Source Company Name")
                 {
+                    ApplicationArea = All;
                     Editable = false;
                 }
                 field("Posting Date"; Rec."Posting Date")
@@ -80,25 +79,21 @@ page 50086 "Third Party Ledger Entries"
                 }
                 field("Global Dimension 1 Code"; Rec."Global Dimension 1 Code")
                 {
+                    ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the dimension value code linked to the entry.', Comment = 'ESP="Especifica el código de valor de dimensión vinculado al movimiento."';
                     Visible = false;
                 }
                 field("Global Dimension 2 Code"; Rec."Global Dimension 2 Code")
                 {
+                    ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the dimension value code linked to the entry.', Comment = 'ESP="Especifica el código de valor de dimensión vinculado al movimiento."';
                     Visible = false;
                 }
-                //Intercompany
-                // field("IC Partner Code"; Rec."IC Partner Code")
-                // {
-                //     Editable = false;
-                //   ToolTip = 'Specifies the code of the intercompany partner that the transaction was with if the entry was posted from an intercompany transaction.';
-                //     Visible = false;
-                // }
-                field("Salesperson Code"; Rec."Salesperson Code")
+                field("Salesperson Code"; Rec."Salesperson Code")
                 {
+                    ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the code for the salesperson whom the entry is linked to.', Comment = 'ESP="Especifica el código del vendedor al que está vinculado el movimiento."';
                     Visible = false;
@@ -117,6 +112,7 @@ page 50086 "Third Party Ledger Entries"
                 }
                 field("Original Amt. (LCY)"; Rec."Original Amt. (LCY)")
                 {
+                    ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the amount that the entry originally consisted of, in LCY.', Comment = 'ESP="Especifica el importe del que constaba originalmente el movimiento, en divisa local."';
                     Visible = false;
@@ -129,6 +125,7 @@ page 50086 "Third Party Ledger Entries"
                 }
                 field("Amount (LCY)"; Rec."Amount (LCY)")
                 {
+                    ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the amount of the entry in LCY.', Comment = 'ESP="Especifica el importe del movimiento en divisa local."';
                     Visible = false;
@@ -147,12 +144,14 @@ page 50086 "Third Party Ledger Entries"
                 }
                 field("Bal. Account Type"; Rec."Bal. Account Type")
                 {
+                    ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the type of balancing account used on the entry.', Comment = 'ESP="Especifica el tipo de cuenta de contrapartida utilizado en el movimiento."';
                     Visible = false;
                 }
                 field("Bal. Account No."; Rec."Bal. Account No.")
                 {
+                    ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the balancing account number used on the entry.', Comment = 'ESP="Especifica el número de cuenta de contrapartida utilizado en el movimiento."';
                     Visible = false;
@@ -212,34 +211,40 @@ page 50086 "Third Party Ledger Entries"
                 }
                 field("User ID"; Rec."User ID")
                 {
+                    ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the ID of the user associated with the entry.', Comment = 'ESP="Especifica el ID del usuario asociado al movimiento."';
                     Visible = false;
                 }
                 field("Source Code"; Rec."Source Code")
                 {
+                    ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the source code that is linked to the entry.', Comment = 'ESP="Especifica el código de origen vinculado al movimiento."';
                     Visible = false;
                 }
                 field("Reason Code"; Rec."Reason Code")
                 {
+                    ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the reason code on the entry.', Comment = 'ESP="Especifica el código de motivo del movimiento."';
                     Visible = false;
                 }
                 field(Reversed; Rec.Reversed)
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies if the entry has been part of a reverse transaction.', Comment = 'ESP="Especifica si el movimiento ha formado parte de una transacción revertida."';
                     Visible = false;
                 }
                 field("Reversed by Entry No."; Rec."Reversed by Entry No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the number of the correcting entry that replaced the original entry in the reverse transaction.', Comment = 'ESP="Especifica el número del movimiento corrector que sustituyó al movimiento original en la transacción de reversión."';
                     Visible = false;
                 }
                 field("Reversed Entry No."; Rec."Reversed Entry No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the number of the original entry that was undone by the reverse transaction.', Comment = 'ESP="Especifica el número del movimiento original que fue deshecho por la transacción de reversión."';
                     Visible = false;
                 }
@@ -256,6 +261,7 @@ page 50086 "Third Party Ledger Entries"
                 }
                 field("Direct Debit Mandate ID"; Rec."Direct Debit Mandate ID")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the direct-debit mandate that the customer has signed to allow direct debit collection of payments.', Comment = 'ESP="Especifica el mandato de adeudo directo que el cliente ha firmado para permitir el cobro de pagos por domiciliación bancaria."';
                     Visible = false;
                 }
@@ -276,12 +282,28 @@ page 50086 "Third Party Ledger Entries"
 
     actions
     {
+        area(Promoted)
+        {
+            group(ProcessPromoted)
+            {
+                Caption = 'Process', Comment = 'ESP="Proceso"';
+
+                actionref(NavigatePromoted; "&Navigate")
+                {
+                }
+                actionref(ShowPostedDocumentPromoted; "Show Posted Document")
+                {
+                }
+            }
+        }
+
         area(navigation)
         {
-            group("Ent&ry")
+            group(EntryNav)
             {
                 Caption = 'Entry', Comment = 'ESP="Movimiento"';
                 Image = Entry;
+
                 action("Reminder/Fin. Charge Entries")
                 {
                     Caption = 'Reminder/Fin. Charge Entries', Comment = 'ESP="Recordatorios/Movs. de recargo financiero"';
@@ -293,6 +315,7 @@ page 50086 "Third Party Ledger Entries"
                     Scope = Repeater;
                     ToolTip = 'View the reminders and finance charge entries that you have entered for the customer.', Comment = 'ESP="Ver los recordatorios y movimientos de intereses que ha introducido para el cliente."';
                 }
+
                 action("Applied E&ntries")
                 {
                     ApplicationArea = Basic, Suite;
@@ -304,6 +327,7 @@ page 50086 "Third Party Ledger Entries"
                     Scope = Repeater;
                     ToolTip = 'View the ledger entries that have been applied to this record.', Comment = 'ESP="Ver los movimientos que se han aplicado a este registro."';
                 }
+
                 action(Dimensions)
                 {
                     AccessByPermission = TableData Dimension = R;
@@ -319,6 +343,7 @@ page 50086 "Third Party Ledger Entries"
                         Rec.ShowDimensions;
                     end;
                 }
+
                 action("Detailed &Ledger Entries")
                 {
                     ApplicationArea = Basic, Suite;
@@ -327,7 +352,7 @@ page 50086 "Third Party Ledger Entries"
                     Image = View;
                     RunObject = Page "Detailed Cust. Ledg. Entries";
                     RunPageLink = "Cust. Ledger Entry No." = FIELD("Entry No."),
-                 "Customer No." = FIELD("Customer No.");
+                                  "Customer No." = FIELD("Customer No.");
                     RunPageView = SORTING("Cust. Ledger Entry No.", "Posting Date");
                     Scope = Repeater;
                     ShortCutKey = 'Ctrl+F7';
@@ -335,12 +360,14 @@ page 50086 "Third Party Ledger Entries"
                 }
             }
         }
+
         area(processing)
         {
-            group("F&unctions")
+            group(FunctionsNav)
             {
                 Caption = 'Functions', Comment = 'ESP="Funciones"';
                 Image = "Action";
+
                 action("Apply Entries")
                 {
                     ApplicationArea = Basic, Suite;
@@ -358,12 +385,13 @@ page 50086 "Third Party Ledger Entries"
                     begin
                         if not CustomerActionsEnabled then
                             Error(CustomerOnlyActionErrLbl);
-                        CustLedgEntry.COPY(Rec);
+                        CustLedgEntry.Copy(Rec);
                         CustEntryApplyPostEntries.ApplyCustEntryFormEntry(CustLedgEntry);
                         Rec := CustLedgEntry;
-                        CurrPage.UPDATE;
+                        CurrPage.Update;
                     end;
                 }
+
                 action(UnapplyEntries)
                 {
                     ApplicationArea = Basic, Suite;
@@ -383,6 +411,7 @@ page 50086 "Third Party Ledger Entries"
                         CustEntryApplyPostedEntries.UnApplyCustLedgEntry(Rec."Entry No.");
                     end;
                 }
+
                 action(ReverseTransaction)
                 {
                     ApplicationArea = Basic, Suite;
@@ -399,19 +428,21 @@ page 50086 "Third Party Ledger Entries"
                     begin
                         if not CustomerActionsEnabled then
                             Error(CustomerOnlyActionErrLbl);
-                        CLEAR(ReversalEntry);
-                        IF Rec.Reversed THEN
-                            ReversalEntry.AlreadyReversedEntry(Rec.TABLECAPTION, Rec."Entry No.");
-                        IF Rec."Journal Batch Name" = '' THEN
+                        Clear(ReversalEntry);
+                        if Rec.Reversed then
+                            ReversalEntry.AlreadyReversedEntry(Rec.TableCaption, Rec."Entry No.");
+                        if Rec."Journal Batch Name" = '' then
                             ReversalEntry.TestFieldError;
-                        Rec.TESTFIELD("Transaction No.");
+                        Rec.TestField("Transaction No.");
                         ReversalEntry.ReverseTransaction(Rec."Transaction No.");
                     end;
                 }
+
                 group(IncomingDocument)
                 {
                     Caption = 'Incoming Document', Comment = 'ESP="Documento entrante"';
                     Image = Documents;
+
                     action(IncomingDocCard)
                     {
                         ApplicationArea = Basic, Suite;
@@ -427,12 +458,13 @@ page 50086 "Third Party Ledger Entries"
                             IncomingDocument.ShowCard(Rec."Document No.", Rec."Posting Date");
                         end;
                     }
+
                     action(SelectIncomingDoc)
                     {
                         AccessByPermission = TableData "Incoming Document" = R;
                         ApplicationArea = Basic, Suite;
                         Caption = 'Select Incoming Document', Comment = 'ESP="Seleccionar documento entrante"';
-                        Enabled = NOT HasIncomingDocument;
+                        Enabled = not HasIncomingDocument;
                         Image = SelectLineToApply;
                         ToolTip = 'Select an incoming document record and file attachment that you want to link to the entry or document.', Comment = 'ESP="Seleccionar un registro de documento entrante y un archivo adjunto que desee vincular al movimiento o documento."';
 
@@ -440,15 +472,16 @@ page 50086 "Third Party Ledger Entries"
                         var
                             IncomingDocument: Record "Incoming Document";
                         begin
-                            IncomingDocument.SelectIncomingDocumentForPostedDocument(Rec."Document No.", Rec."Posting Date", Rec.RECORDID);
+                            IncomingDocument.SelectIncomingDocumentForPostedDocument(Rec."Document No.", Rec."Posting Date", Rec.RecordId);
                         end;
                     }
+
                     action(IncomingDocAttachFile)
                     {
                         ApplicationArea = Basic, Suite;
                         Caption = 'Create Incoming Document from File', Comment = 'ESP="Crear documento entrante desde archivo"';
                         Ellipsis = true;
-                        Enabled = NOT HasIncomingDocument;
+                        Enabled = not HasIncomingDocument;
                         Image = Attach;
                         ToolTip = 'Create an incoming document record by selecting a file to attach, and then link the incoming document record to the entry or document.', Comment = 'ESP="Crear un registro de documento entrante seleccionando un archivo para adjuntar y, después, vincular el registro del documento entrante al movimiento o documento."';
 
@@ -461,31 +494,28 @@ page 50086 "Third Party Ledger Entries"
                     }
                 }
             }
+
             action("&Navigate")
             {
                 ApplicationArea = Basic, Suite;
                 Caption = 'Navigate', Comment = 'ESP="Navegar"';
                 Image = Navigate;
-                Promoted = true;
-                PromotedCategory = Process;
                 Scope = Repeater;
                 ToolTip = 'Find all entries and documents that exist for the document number and posting date on the selected entry or document.', Comment = 'ESP="Buscar todos los movimientos y documentos que existan para el número de documento y la fecha de contabilización del movimiento o documento seleccionado."';
 
                 trigger OnAction()
                 begin
                     Navigate.SetDoc(Rec."Posting Date", Rec."Document No.");
-                    Navigate.RUN();
+                    Navigate.Run();
                 end;
             }
+
             action("Show Posted Document")
             {
                 ApplicationArea = Basic, Suite;
                 Enabled = CustomerActionsEnabled;
                 Caption = 'Show Posted Document', Comment = 'ESP="Mostrar documento registrado"';
                 Image = Document;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
                 ShortCutKey = 'Return';
                 ToolTip = 'Show details for the posted payment, invoice, or credit memo.', Comment = 'ESP="Mostrar detalles del pago, factura o abono contabilizado."';
 
@@ -493,7 +523,7 @@ page 50086 "Third Party Ledger Entries"
                 begin
                     if not CustomerActionsEnabled then
                         Error(CustomerOnlyActionErrLbl);
-                    Rec.ShowDoc
+                    Rec.ShowDoc;
                 end;
             }
         }
@@ -547,56 +577,57 @@ page 50086 "Third Party Ledger Entries"
         NextEntryNo: Integer;
     begin
         NextEntryNo := 0;
-        Company.SETRANGE("Evaluation Company", FALSE);
-        IF Company.FINDFIRST() THEN
-            REPEAT
-                IF UPPERCASE(COPYSTR(Company.Name, 1, 2)) <> 'ZZ' THEN BEGIN
-                    IF ThirdPartyType IN [0, 1] THEN BEGIN
-                        bThirdPartyEnabled := FALSE;
-                        CustLedgEntry.RESET();
-                        CustLedgEntry.CHANGECOMPANY(Company.Name);
-                        IF ThirdPartyNo <> '' THEN BEGIN
+        Company.SetRange("Evaluation Company", false);
+        if Company.FindFirst() then
+            repeat
+                if UpperCase(CopyStr(Company.Name, 1, 2)) <> 'ZZ' then begin
+                    if ThirdPartyType in [0, 1] then begin
+                        bThirdPartyEnabled := false;
+                        CustLedgEntry.Reset();
+                        CustLedgEntry.ChangeCompany(Company.Name);
+                        if ThirdPartyNo <> '' then begin
                             ThirdParty.CheckThirdPartyEnabled(Company.Name, 0, ThirdPartyNo, bThirdPartyEnabled, vCustNo);
-                            IF bThirdPartyEnabled THEN BEGIN
-                                CustLedgEntry.SETCURRENTKEY("Customer No.", Open);
-                                CustLedgEntry.SETRANGE("Customer No.", vCustNo);
-                            END;
-                        END;
-                        IF ((ThirdPartyNo <> '') AND bThirdPartyEnabled) OR (ThirdPartyNo = '') THEN BEGIN
-                            IF NOT bThirdPartyEnabled THEN
-                                CustLedgEntry.SETCURRENTKEY(Open);
-                            IF OnlyOpen THEN
-                                CustLedgEntry.SETRANGE(Open, TRUE);
-                            IF CustLedgEntry.FINDFIRST() THEN
-                                REPEAT
+                            if bThirdPartyEnabled then begin
+                                CustLedgEntry.SetCurrentKey("Customer No.", Open);
+                                CustLedgEntry.SetRange("Customer No.", vCustNo);
+                            end;
+                        end;
+                        if ((ThirdPartyNo <> '') and bThirdPartyEnabled) or (ThirdPartyNo = '') then begin
+                            if not bThirdPartyEnabled then
+                                CustLedgEntry.SetCurrentKey(Open);
+                            if OnlyOpen then
+                                CustLedgEntry.SetRange(Open, true);
+                            if CustLedgEntry.FindFirst() then
+                                repeat
                                     NextEntryNo := NextEntryNo + 1;
-                                    Rec.INIT();
+                                    Rec.Init();
                                     Rec := CustLedgEntry;
                                     Rec."Entry No." := NextEntryNo;
-                                    Rec.INSERT();
-                                UNTIL CustLedgEntry.NEXT() = 0;
-                        END;
-                    END;
-                    IF ThirdPartyType IN [0, 2] THEN BEGIN
-                        bThirdPartyEnabled := FALSE;
-                        VendLedgEntry.RESET();
-                        VendLedgEntry.CHANGECOMPANY(Company.Name);
-                        IF ThirdPartyNo <> '' THEN BEGIN
+                                    Rec.Insert();
+                                until CustLedgEntry.Next() = 0;
+                        end;
+                    end;
+
+                    if ThirdPartyType in [0, 2] then begin
+                        bThirdPartyEnabled := false;
+                        VendLedgEntry.Reset();
+                        VendLedgEntry.ChangeCompany(Company.Name);
+                        if ThirdPartyNo <> '' then begin
                             ThirdParty.CheckThirdPartyEnabled(Company.Name, 1, ThirdPartyNo, bThirdPartyEnabled, vVendNo);
-                            IF bThirdPartyEnabled THEN BEGIN
-                                VendLedgEntry.SETCURRENTKEY("Vendor No.", Open);
-                                VendLedgEntry.SETRANGE("Vendor No.", vVendNo);
-                            END;
-                        END;
-                        IF ((ThirdPartyNo <> '') AND bThirdPartyEnabled) OR (ThirdPartyNo = '') THEN BEGIN
-                            IF NOT bThirdPartyEnabled THEN
-                                VendLedgEntry.SETCURRENTKEY(Open);
-                            IF OnlyOpen THEN
-                                VendLedgEntry.SETRANGE(Open, TRUE);
-                            IF VendLedgEntry.FindSet() THEN
-                                REPEAT
+                            if bThirdPartyEnabled then begin
+                                VendLedgEntry.SetCurrentKey("Vendor No.", Open);
+                                VendLedgEntry.SetRange("Vendor No.", vVendNo);
+                            end;
+                        end;
+                        if ((ThirdPartyNo <> '') and bThirdPartyEnabled) or (ThirdPartyNo = '') then begin
+                            if not bThirdPartyEnabled then
+                                VendLedgEntry.SetCurrentKey(Open);
+                            if OnlyOpen then
+                                VendLedgEntry.SetRange(Open, true);
+                            if VendLedgEntry.FindSet() then
+                                repeat
                                     NextEntryNo := NextEntryNo + 1;
-                                    Rec.INIT();
+                                    Rec.Init();
                                     Rec."Entry No." := NextEntryNo;
                                     Rec."Third Party No." := VendLedgEntry."Third Party No.";
                                     Rec."Customer No." := '';
@@ -648,15 +679,12 @@ page 50086 "Third Party Ledger Entries"
                                     Rec."Document Status" := VendLedgEntry."Document Status";
                                     Rec."Remaining Amount (LCY) stats." := VendLedgEntry."Remaining Amount (LCY) stats.";
                                     Rec."Amount (LCY) stats." := VendLedgEntry."Amount (LCY) stats.";
-
-                                    Rec.INSERT();
-                                UNTIL VendLedgEntry.NEXT() = 0;
-                        END;
-                    END;
-                    //ThirdParty.CheckThirdPartyEnabled(Name,0,vThirdPartyNo,bCustEnabled,vCustNo);
-                    //ThirdParty.CheckThirdPartyEnabled(Name,1,vThirdPartyNo,bVendEnabled,vVendNo);
-                END;
-            UNTIL Company.NEXT() = 0;
+                                    Rec.Insert();
+                                until VendLedgEntry.Next() = 0;
+                        end;
+                    end;
+                end;
+            until Company.Next() = 0;
     end;
 
     procedure CalcGlobalCustBalance(pThirdPartyNo: Code[20]; LCY: Boolean): Decimal
@@ -666,25 +694,25 @@ page 50086 "Third Party Ledger Entries"
         TotalAmount: Decimal;
     begin
         TotalAmount := 0;
-        IF pThirdPartyNo = '' THEN
-            EXIT(0);
-        Company.SETRANGE("Evaluation Company", FALSE);
-        IF Company.FINDFIRST() THEN
-            REPEAT
-                IF UPPERCASE(COPYSTR(Company.Name, 1, 2)) <> 'ZZ' THEN BEGIN
-                    DtldCustLedgEntry.RESET();
-                    DtldCustLedgEntry.CHANGECOMPANY(Company.Name);
-                    DtldCustLedgEntry.SETCURRENTKEY("Third Party No.", "Currency Code", "Initial Entry Global Dim. 1", "Initial Entry Global Dim. 2", "Initial Entry Due Date", "Posting Date", "Excluded from calculation");
-                    DtldCustLedgEntry.SETRANGE("Third Party No.", pThirdPartyNo);
-                    DtldCustLedgEntry.SETRANGE("Excluded from calculation", FALSE);
-                    DtldCustLedgEntry.CALCSUMS(Amount, "Amount (LCY)");
-                    IF LCY THEN
+        if pThirdPartyNo = '' then
+            exit(0);
+        Company.SetRange("Evaluation Company", false);
+        if Company.FindFirst() then
+            repeat
+                if UpperCase(CopyStr(Company.Name, 1, 2)) <> 'ZZ' then begin
+                    DtldCustLedgEntry.Reset();
+                    DtldCustLedgEntry.ChangeCompany(Company.Name);
+                    DtldCustLedgEntry.SetCurrentKey("Third Party No.", "Currency Code", "Initial Entry Global Dim. 1", "Initial Entry Global Dim. 2", "Initial Entry Due Date", "Posting Date", "Excluded from calculation");
+                    DtldCustLedgEntry.SetRange("Third Party No.", pThirdPartyNo);
+                    DtldCustLedgEntry.SetRange("Excluded from calculation", false);
+                    DtldCustLedgEntry.CalcSums(Amount, "Amount (LCY)");
+                    if LCY then
                         TotalAmount := TotalAmount + DtldCustLedgEntry."Amount (LCY)"
-                    ELSE
+                    else
                         TotalAmount := TotalAmount + DtldCustLedgEntry.Amount;
-                END;
-            UNTIL Company.NEXT() = 0;
-        EXIT(TotalAmount);
+                end;
+            until Company.Next() = 0;
+        exit(TotalAmount);
     end;
 
     procedure CalcGlobalVendBalance(pThirdPartyNo: Code[20]; LCY: Boolean): Decimal
@@ -694,25 +722,25 @@ page 50086 "Third Party Ledger Entries"
         TotalAmount: Decimal;
     begin
         TotalAmount := 0;
-        IF pThirdPartyNo = '' THEN
-            EXIT(0);
-        Company.SETRANGE("Evaluation Company", FALSE);
-        IF Company.FINDFIRST() THEN
-            REPEAT
-                IF UPPERCASE(COPYSTR(Company.Name, 1, 2)) <> 'ZZ' THEN BEGIN
-                    DtldVendLedgEntry.RESET();
-                    DtldVendLedgEntry.CHANGECOMPANY(Company.Name);
-                    DtldVendLedgEntry.SETCURRENTKEY("Third Party No.", "Currency Code", "Initial Entry Global Dim. 1", "Initial Entry Global Dim. 2", "Initial Entry Due Date", "Posting Date", "Excluded from calculation");
-                    DtldVendLedgEntry.SETRANGE("Third Party No.", pThirdPartyNo);
-                    DtldVendLedgEntry.SETRANGE("Excluded from calculation", FALSE);
-                    DtldVendLedgEntry.CALCSUMS(Amount, "Amount (LCY)");
-                    IF LCY THEN
+        if pThirdPartyNo = '' then
+            exit(0);
+        Company.SetRange("Evaluation Company", false);
+        if Company.FindFirst() then
+            repeat
+                if UpperCase(CopyStr(Company.Name, 1, 2)) <> 'ZZ' then begin
+                    DtldVendLedgEntry.Reset();
+                    DtldVendLedgEntry.ChangeCompany(Company.Name);
+                    DtldVendLedgEntry.SetCurrentKey("Third Party No.", "Currency Code", "Initial Entry Global Dim. 1", "Initial Entry Global Dim. 2", "Initial Entry Due Date", "Posting Date", "Excluded from calculation");
+                    DtldVendLedgEntry.SetRange("Third Party No.", pThirdPartyNo);
+                    DtldVendLedgEntry.SetRange("Excluded from calculation", false);
+                    DtldVendLedgEntry.CalcSums(Amount, "Amount (LCY)");
+                    if LCY then
                         TotalAmount := TotalAmount + DtldVendLedgEntry."Amount (LCY)"
-                    ELSE
+                    else
                         TotalAmount := TotalAmount + DtldVendLedgEntry.Amount;
-                END;
-            UNTIL Company.NEXT() = 0;
-        EXIT(TotalAmount);
+                end;
+            until Company.Next() = 0;
+        exit(TotalAmount);
     end;
 
     procedure CalcGlobalGLBalance(pThirdPartyNo: Code[20]): Decimal
@@ -722,20 +750,20 @@ page 50086 "Third Party Ledger Entries"
         TotalAmount: Decimal;
     begin
         TotalAmount := 0;
-        IF pThirdPartyNo = '' THEN
-            EXIT(0);
-        Company.SETRANGE("Evaluation Company", FALSE);
-        IF Company.FINDFIRST() THEN
-            REPEAT
-                IF UPPERCASE(COPYSTR(Company.Name, 1, 2)) <> 'ZZ' THEN BEGIN
-                    GLEntry.RESET();
-                    GLEntry.CHANGECOMPANY(Company.Name);
-                    GLEntry.SETCURRENTKEY("Third Party No.");
-                    GLEntry.SETRANGE("Third Party No.", pThirdPartyNo);
-                    GLEntry.CALCSUMS(Amount);
+        if pThirdPartyNo = '' then
+            exit(0);
+        Company.SetRange("Evaluation Company", false);
+        if Company.FindFirst() then
+            repeat
+                if UpperCase(CopyStr(Company.Name, 1, 2)) <> 'ZZ' then begin
+                    GLEntry.Reset();
+                    GLEntry.ChangeCompany(Company.Name);
+                    GLEntry.SetCurrentKey("Third Party No.");
+                    GLEntry.SetRange("Third Party No.", pThirdPartyNo);
+                    GLEntry.CalcSums(Amount);
                     TotalAmount := TotalAmount + GLEntry.Amount;
-                END;
-            UNTIL Company.NEXT() = 0;
-        EXIT(TotalAmount);
+                end;
+            until Company.Next() = 0;
+        exit(TotalAmount);
     end;
 }
