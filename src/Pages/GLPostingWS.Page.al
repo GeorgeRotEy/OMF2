@@ -18,6 +18,15 @@ page 50048 "GL Posting WS"
         {
             repeater(General)
             {
+                field("Entry No."; Rec."Entry No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Transaction No."; Rec."Transaction No.")
+                {
+                    ApplicationArea = All;
+                }
+
                 field("Posting Date"; Rec."Posting Date")
                 {
                     ApplicationArea = All;
@@ -39,6 +48,10 @@ page 50048 "GL Posting WS"
                     ApplicationArea = All;
                 }
                 field("Credit Amount"; Rec."Credit Amount")
+                {
+                    ApplicationArea = All;
+                }
+                field(Reversed; Rec.Reversed)
                 {
                     ApplicationArea = All;
                 }

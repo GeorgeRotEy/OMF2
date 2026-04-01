@@ -578,6 +578,108 @@ codeunit 50002 "WS Functions"
         CopyStream(vOutStr, pInStr);
     end;
 
+    procedure fRevertirMovsContable(pGLEntryNo: Integer): Text
+    var
+        rlGLEntry: Record "G/L Entry";
+        jlResponse: JsonObject;
+        vlResponseText: Text;
+        vlTransactionNo: Integer;
+        vbVendorEntryFound: Boolean;
+        vbVendorUnapplied: Boolean;
+
+    begin
+        Clear(rlGLEntry);
+        if rlGLEntry.Get(pGLEntryNo) then
+            vlTransactionNo := rlGLEntry."Transaction No.";
+
+        if lfTryRevertirMovimientoContable(pGLEntryNo, vbVendorEntryFound, vbVendorUnapplied) then begin
+            jlResponse.Add('success', true);
+            jlResponse.Add('glEntryNo', pGLEntryNo);
+            jlResponse.Add('transactionNo', vlTransactionNo);
+            jlResponse.Add('vendorEntryFound', vbVendorEntryFound);
+            jlResponse.Add('vendorUnapplied', vbVendorUnapplied);
+            jlResponse.Add('messsge', lfGetReversionMessage(vbVendorEntryFound, vbVendorUnapplied));
+        end else begin
+            jlResponse.Add('success', false);
+            jlResponse.Add('glEntryNo', pGLEntryNo);
+            jlResponse.Add('transactionNo', vlTransactionNo);
+            jlResponse.Add('vendorEntryFound', false);
+            jlResponse.Add('vendorUnapplied', false);
+            jlResponse.Add('messsge', lfGetReversionMessage(vbVendorEntryFound, vbVendorUnapplied));
+
+        end;
+
+        jlResponse.WriteTo(vlResponseText);
+        exit(vlResponseText);
+
+    end;
+
+    [TryFunction]
+    local procedure lfTryRevertirMovimientoContable(pGlEntryNo: Integer; var pVendorEntryFound: Boolean; var pVendorUnapplied: Boolean)
+    var
+        rlGlEntry: Record "G/L Entry";
+    begin
+        rlGlEntry.Get(pGlEntryNo);
+        rlGlEntry.TestField("Transaction No.");
+
+        lfDesliquidarProveedor(rlGlEntry."Transaction No.", pVendorEntryFound, pVendorUnapplied);
+        lfRevertirTransaccion(rlGlEntry."Transaction No.");
+
+    end;
+
+    local procedure lfDesliquidarProveedor(pTransactionNo: Integer; var PvendorEntryFound: Boolean; var pVendorUnapplied: Boolean)
+    var
+        rlVendLedgEntry: Record "Vendor Ledger Entry";
+        rlDtldVendLedgEntry: Record "Detailed Vendor Ledg. Entry";
+        rlApplyUnapplyParameters: Record "Apply Unapply Parameters";
+        clVendEntryApplyPostedEntries: Codeunit "VendEntry-Apply Posted Entries";
+        vlApplicationEntryNo: Integer;
+        vbRetry: Boolean;
+    begin
+        REPEAT
+            vbRetry := FALSE;
+            vlApplicationEntryNo := 0;
+
+            rlVendLedgEntry.RESET();
+            rlVendLedgEntry.SETRANGE("Transaction No.", pTransactionNo);
+            IF rlVendLedgEntry.FINDSET() THEN
+                REPEAT
+                    pVendorEntryFound := TRUE;
+                    vlApplicationEntryNo := clVendEntryApplyPostedEntries.FindLastApplEntry(rlVendLedgEntry."Entry No.");
+                    IF vlApplicationEntryNo <> 0 THEN BEGIN
+                        rlDtldVendLedgEntry.GET(vlApplicationEntryNo);
+                        CLEAR(rlApplyUnapplyParameters);
+                        rlApplyUnapplyParameters."Document No." := rlDtldVendLedgEntry."Document No.";
+                        rlApplyUnapplyParameters."Posting Date" := rlDtldVendLedgEntry."Posting Date";
+                        clVendEntryApplyPostedEntries.PostUnApplyVendor(rlDtldVendLedgEntry, rlApplyUnapplyParameters);
+                        pVendorUnapplied := TRUE;
+                        vbRetry := TRUE;
+                    END;
+                UNTIL (rlVendLedgEntry.NEXT() = 0) OR vbRetry;
+        UNTIL NOT vbRetry;
+    end;
+
+    local procedure lfRevertirTransaccion(pTransactionNo: Integer)
+    var
+        rlReversalEntry: Record "Reversal Entry";
+    begin
+        CLEAR(rlReversalEntry);
+        rlReversalEntry.SetHideWarningDialogs();
+        rlReversalEntry.ReverseTransaction(pTransactionNo);
+    end;
+
+    local procedure lfGetReversionMessage(pVendorEntryFound: Boolean; pVendorUnapplied: Boolean): Text
+    begin
+        IF pVendorUnapplied THEN
+            EXIT(TextWSReversionWithVendorUnapplyLbl);
+
+        IF pVendorEntryFound THEN
+            EXIT(TextWSReversionWithVendorLbl);
+
+        EXIT(TextWSReversionLbl);
+    end;
+
+
     var
         rGenJnlTemplate: Record "Gen. Journal Template";
         cTempBlob: Codeunit "Temp Blob";
@@ -589,4 +691,7 @@ codeunit 50002 "WS Functions"
         vEndDate: Date;
         ctTemplateNotFound: Label 'Debe configurar un libro diario de tipo "Registro simple" antes de continuar.';
         Text000Lbl1: Label 'El "Registro Simple" se ha llevado a cabo correctamente';
+        TextWSReversionLbl: Label 'La transaccion se ha revertido correctamente.';
+        TextWSReversionWithVendorLbl: Label 'La transaccion se ha revertido correctamente. Se han detectado movimientos de proveedor sin necesidad de desliquidar.';
+        TextWSReversionWithVendorUnapplyLbl: Label 'Se ha desliquidado el movimiento de proveedor y se ha revertido la transaccion correctamente.';
 }

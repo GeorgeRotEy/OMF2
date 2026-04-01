@@ -42,6 +42,7 @@ page 50027 "Cost journal Distribution"
                     group("Account Name")
                     {
                         Caption = 'Account Name', Comment = 'ESP="Nombre de cuenta"';
+
                         field(AccName; AccName)
                         {
                             ApplicationArea = Basic, Suite;
@@ -53,6 +54,7 @@ page 50027 "Cost journal Distribution"
                     group("Bal. Account Name")
                     {
                         Caption = 'Bal. Account Name', Comment = 'ESP="Nombre cuenta contrapartida"';
+
                         field(BalAccName; BalAccName)
                         {
                             ApplicationArea = Basic, Suite;
@@ -64,6 +66,7 @@ page 50027 "Cost journal Distribution"
                     group(BalanceGroup)
                     {
                         Caption = 'Balance', Comment = 'ESP="Saldo"';
+
                         field(Balance; Balance)
                         {
                             AutoFormatType = 1;
@@ -76,6 +79,7 @@ page 50027 "Cost journal Distribution"
                     group("Total Balance")
                     {
                         Caption = 'Total Balance', Comment = 'ESP="Saldo total"';
+
                         field(TotalBalance; TotalBalance)
                         {
                             AutoFormatType = 1;
@@ -119,7 +123,6 @@ page 50027 "Cost journal Distribution"
             {
                 Caption = 'Post', Comment = 'ESP="Registrar"';
                 Image = Post;
-                Promoted = true;
 
                 trigger OnAction()
                 begin
@@ -132,16 +135,28 @@ page 50027 "Cost journal Distribution"
                 ApplicationArea = Suite;
                 Caption = 'Dimensions', Comment = 'ESP="Dimensiones"';
                 Image = Dimensions;
-                Promoted = true;
-                PromotedCategory = Process;
                 ShortCutKey = 'Shift+Ctrl+D';
-                ToolTip = 'View or edits dimensions, such as area, project, or department, that you can assign to sales and purchase documents to distribute costs and analyze transaction history.', Comment = 'ESP="Ver o editar dimensiones, como área, proyecto o departamento, que se pueden asignar a documentos de ventas y compras para distribuir costes y analizar el historial de transacciones."';
+                ToolTip = 'View or edit dimensions, such as area, project, or department, that can be assigned to sales and purchase documents to distribute costs and analyze transaction history.', Comment = 'ESP="Ver o editar dimensiones, como área, proyecto o departamento, que se pueden asignar a documentos de ventas y compras para distribuir costes y analizar el historial de transacciones."';
 
                 trigger OnAction()
                 begin
                     Rec.ShowDimensions;
                     CurrPage.SAVERECORD;
                 end;
+            }
+        }
+        area(Promoted)
+        {
+            group(Process)
+            {
+                Caption = 'Process', Comment = 'ESP="Procesar"';
+
+                actionref(Post_Promoted; Post)
+                {
+                }
+                actionref(Dimensions_Promoted; Dimensions)
+                {
+                }
             }
         }
     }

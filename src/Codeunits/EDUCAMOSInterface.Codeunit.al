@@ -1,14 +1,16 @@
 codeunit 50007 "EDUCAMOS Interface"
 {
+    //TODO descomentar funciones
+
     // Mod. S2G (RBM-R) IN-001: Interfaz Educamos
     //
     //
     // ESTRUCTURA:
     //   IngresoCuenta [Bloque1] --> No vendrá en el ws
     //   Remesa [Bloque2] --> Realmente no necesario, no se procesa. Se usará como enlace para el resto
-    //   RemesaRecibo [Bloque3] --> Info que pasará a Cabecera factura. Enlazado con Remesa por id_unique_remesa
-    //   ReciboAlumno [Bloque4] --> No necesario; más info que se guarda porque la envían por ws. Enlazado con RemesaRecibo por id_unique_recibo
-    //   AlumnoConcepto [Bloque5] --> Info que pasará a Líneas de factura. Enlazado con RemesaRecibo por id_unique_recibo
+    //   RecibosRemesa [Bloque3] --> Info que pasará a Cabecera factura. Enlazado con Remesa por remesaid
+    //   ReciboAlumno [Bloque4] --> No necesario; más info que se guarda porque la envían por ws. Enlazado con RecibosRemesa por id_unique_recibo
+    //   AlumnoConcepto [Bloque5] --> Info que pasará a Líneas de factura. Enlazado con RecibosRemesa por id_unique_recibo
     //   ConceptoDescuento [Bloque6] --> No vendrá en el ws
     //
     // (CR005) S2G (RBM-R) 29-11-18: Modificaciones Interfaz Educamos
@@ -115,16 +117,16 @@ codeunit 50007 "EDUCAMOS Interface"
 
         i := 1;
         rlRemesa.RESET;
-        rlRemesa.SETCURRENTKEY(Processed, cif_ordenante);
+        rlRemesa.SETCURRENTKEY(Processed, ordenante);
         rlRemesa.SETRANGE(Processed, FALSE);
-        rlRemesa.SETRANGE(cif_ordenante, rlCompanyInfo."VAT Registration No.");
-        rlRemesa.SETRANGE(accion, 1);
+        rlRemesa.SETRANGE(ordenante, rlCompanyInfo.Name);
+        // rlRemesa.SETRANGE(accion, 1);
         IF rlRemesa.FINDSET THEN BEGIN
             REPEAT
                 Window.UPDATE(1, ROUND(i / rlRemesa.COUNT * 10000, 1));
-                fProcessRemesaRecibo(rlRemesa.id_unique_remesa);
+                fProcessRecibosRemesa(rlRemesa.remesaid);
 
-                rlRemesaAux.GET(rlRemesa.id_unique_remesa);
+                rlRemesaAux.GET(rlRemesa.remesaid);
                 rlRemesaAux.Processed := TRUE;
                 rlRemesaAux.MODIFY;
                 i += 1;
@@ -133,56 +135,56 @@ codeunit 50007 "EDUCAMOS Interface"
             fSetLog(2, STRSUBSTNO(Warning001, pSchoolID, rlCompanyInfo."VAT Registration No."), '', 1);
     end;
 
-    local procedure fProcessRemesaRecibo(pIDUniqueRemesa: Text)
+    local procedure fProcessRecibosRemesa(pIDUniqueRemesa: Text)
     var
-        rlRemesaRecibo: Record "EDUCAMOS RemesaRecibo";
-        rlRemesaReciboAux: Record "EDUCAMOS RemesaRecibo";
+        rlRecibosRemesa: Record "EDUCAMOS RecibosRemesa";
+        rlRecibosRemesaAux: Record "EDUCAMOS RecibosRemesa";
         clInvoiceNo: Code[20];
         i: Integer;
         bIsCrMemo: Boolean;
     begin
-        i := 1;
+        // i := 1;
 
-        rlRemesaRecibo.RESET;
-        rlRemesaRecibo.SETCURRENTKEY(Processed, id_unique_remesa);
-        rlRemesaRecibo.SETRANGE(Processed, FALSE);
-        rlRemesaRecibo.SETRANGE(id_unique_remesa, pIDUniqueRemesa);
-        IF rlRemesaRecibo.FINDSET THEN BEGIN
-            REPEAT
-                bIsCrMemo := FALSE;
-                Window.UPDATE(2, ROUND(i / rlRemesaRecibo.COUNT * 10000, 1));
-                clInvoiceNo := fCreateSalesHeader(rlRemesaRecibo, bIsCrMemo);
-                IF clInvoiceNo <> '' THEN BEGIN
+        // rlRecibosRemesa.RESET;
+        // rlRecibosRemesa.SETCURRENTKEY(Processed, remesaid);
+        // rlRecibosRemesa.SETRANGE(Processed, FALSE);
+        // rlRecibosRemesa.SETRANGE(remesaid, pIDUniqueRemesa);
+        // IF rlRecibosRemesa.FINDSET THEN BEGIN
+        //     REPEAT
+        //         bIsCrMemo := FALSE;
+        //         Window.UPDATE(2, ROUND(i / rlRecibosRemesa.COUNT * 10000, 1));
+        //         clInvoiceNo := fCreateSalesHeader(rlRecibosRemesa, bIsCrMemo);
+        //         IF clInvoiceNo <> '' THEN BEGIN
 
-                    //(2.1) S2G (RBM-R) 13-04-20: Abono de recibos anulados. Inicio
-                    IF bIsCrMemo THEN
-                        fSetLog(1, STRSUBSTNO("Text003-1", clInvoiceNo), '', 1)
-                    ELSE
-                        //(2.1) S2G (RBM-R) 13-04-20: Abono de recibos anulados. Inicio
+        //             //(2.1) S2G (RBM-R) 13-04-20: Abono de recibos anulados. Inicio
+        //             IF bIsCrMemo THEN
+        //                 fSetLog(1, STRSUBSTNO("Text003-1", clInvoiceNo), '', 1)
+        //             ELSE
+        //                 //(2.1) S2G (RBM-R) 13-04-20: Abono de recibos anulados. Inicio
 
-                        fSetLog(1, STRSUBSTNO(Text003, clInvoiceNo), '', 1);
-                    fProcessAlumnoConcepto(rlRemesaRecibo.id_unique_recibo, clInvoiceNo, bIsCrMemo);
-                END ELSE BEGIN
+        //                 fSetLog(1, STRSUBSTNO(Text003, clInvoiceNo), '', 1);
+        //             fProcessAlumnoConcepto(rlRecibosRemesa.id_unique_recibo, clInvoiceNo, bIsCrMemo);
+        //         END ELSE BEGIN
 
-                    //(2.1) S2G (RBM-R) 13-04-20: Abono de recibos anulados. Inicio
-                    IF bIsCrMemo THEN
-                        fSetLog(3, STRSUBSTNO("Error001-1", rlRemesaRecibo.id_recibo) + GeneralErrorText, 'Remesa: ' + pIDUniqueRemesa, 2)
-                    ELSE
-                        //(2.1) S2G (RBM-R) 13-04-20: Abono de recibos anulados. Fin
+        //             //(2.1) S2G (RBM-R) 13-04-20: Abono de recibos anulados. Inicio
+        //             IF bIsCrMemo THEN
+        //                 fSetLog(3, STRSUBSTNO("Error001-1", rlRecibosRemesa.id_recibo) + GeneralErrorText, 'Remesa: ' + pIDUniqueRemesa, 2)
+        //             ELSE
+        //                 //(2.1) S2G (RBM-R) 13-04-20: Abono de recibos anulados. Fin
 
-                        fSetLog(3, STRSUBSTNO(Error001, rlRemesaRecibo.id_recibo) + GeneralErrorText, 'Remesa: ' + pIDUniqueRemesa, 2);
-                END;
+        //                 fSetLog(3, STRSUBSTNO(Error001, rlRecibosRemesa.id_recibo) + GeneralErrorText, 'Remesa: ' + pIDUniqueRemesa, 2);
+        //         END;
 
-                rlRemesaReciboAux.GET(rlRemesaRecibo.id_unique_remesa, rlRemesaRecibo.id_unique_recibo);
-                rlRemesaReciboAux.Processed := TRUE;
-                rlRemesaReciboAux.MODIFY;
-                i += 1;
-            UNTIL rlRemesaRecibo.NEXT = 0;
-        END ELSE
-            fSetLog(2, STRSUBSTNO(Warning004, pIDUniqueRemesa), '', 1);
+        //         rlRecibosRemesaAux.GET(rlRecibosRemesa.remesaid, rlRecibosRemesa.id_unique_recibo);
+        //         rlRecibosRemesaAux.Processed := TRUE;
+        //         rlRecibosRemesaAux.MODIFY;
+        //         i += 1;
+        //     UNTIL rlRecibosRemesa.NEXT = 0;
+        // END ELSE
+        //     fSetLog(2, STRSUBSTNO(Warning004, pIDUniqueRemesa), '', 1);
     end;
 
-    local procedure fCreateSalesHeader(pRemesaRecibo: Record "EDUCAMOS RemesaRecibo"; var pIsCrMemo: Boolean) InvNo: Code[20]
+    local procedure fCreateSalesHeader(pRecibosRemesa: Record "EDUCAMOS RecibosRemesa"; var pIsCrMemo: Boolean) InvNo: Code[20]
     var
         rlEDUCAMOSSetup: Record "EDUCAMOS Setup";
         rlSalesHeader: Record "Sales Header";
@@ -193,88 +195,88 @@ codeunit 50007 "EDUCAMOS Interface"
         blNewInvoice: Boolean;
         rlSalesInvHdr: Record "Sales Invoice Header";
     begin
-        InvNo := '';
-        rlSalesHeader.RESET;
-        rlSalesHeader.SETCURRENTKEY("EDUCAMOS id_unique_recibo");
-        rlSalesHeader.SETRANGE("EDUCAMOS id_unique_recibo", pRemesaRecibo.id_unique_recibo);
-        IF rlSalesHeader.FINDFIRST THEN BEGIN
-            GeneralErrorText := STRSUBSTNO(Error002, rlSalesHeader."No.");
-            EXIT('');
-        END;
+        // InvNo := '';
+        // rlSalesHeader.RESET;
+        // rlSalesHeader.SETCURRENTKEY("EDUCAMOS id_unique_recibo");
+        // rlSalesHeader.SETRANGE("EDUCAMOS id_unique_recibo", pRecibosRemesa.id_unique_recibo);
+        // IF rlSalesHeader.FINDFIRST THEN BEGIN
+        //     GeneralErrorText := STRSUBSTNO(Error002, rlSalesHeader."No.");
+        //     EXIT('');
+        // END;
 
-        rlSalesHeader.INIT;
+        // rlSalesHeader.INIT;
 
-        //(2.1) S2G (RBM-R) 13-04-20: Abono de recibos anulados. Inicio
-        IF pRemesaRecibo.estado_recibo = 5 THEN BEGIN
-            pIsCrMemo := TRUE;
-            rlSalesHeader."Document Type" := rlSalesHeader."Document Type"::"Credit Memo";
-        END ELSE
-            //(2.1) S2G (RBM-R) 13-04-20: Abono de recibos anulados. Fin
+        // //(2.1) S2G (RBM-R) 13-04-20: Abono de recibos anulados. Inicio
+        // IF pRecibosRemesa.estado_recibo = 5 THEN BEGIN
+        //     pIsCrMemo := TRUE;
+        //     rlSalesHeader."Document Type" := rlSalesHeader."Document Type"::"Credit Memo";
+        // END ELSE
+        //     //(2.1) S2G (RBM-R) 13-04-20: Abono de recibos anulados. Fin
 
-            rlSalesHeader."Document Type" := rlSalesHeader."Document Type"::Invoice;
-        rlSalesHeader."No." := '';
-        IF NOT rlSalesHeader.INSERT(TRUE) THEN BEGIN
-            GeneralErrorText := Error003;
-            EXIT('');
-        END;
+        //     rlSalesHeader."Document Type" := rlSalesHeader."Document Type"::Invoice;
+        // rlSalesHeader."No." := '';
+        // IF NOT rlSalesHeader.INSERT(TRUE) THEN BEGIN
+        //     GeneralErrorText := Error003;
+        //     EXIT('');
+        // END;
 
-        InvNo := rlSalesHeader."No.";
-        clCustNo := fFindCustomer(pRemesaRecibo);
-        IF clCustNo = '' THEN BEGIN
-            GeneralErrorText := STRSUBSTNO(Error004, pRemesaRecibo.id_pagador);
-            EXIT('');
-        END;
+        // InvNo := rlSalesHeader."No.";
+        // clCustNo := fFindCustomer(pRecibosRemesa);
+        // IF clCustNo = '' THEN BEGIN
+        //     GeneralErrorText := STRSUBSTNO(Error004, pRecibosRemesa.id_pagador);
+        //     EXIT('');
+        // END;
 
-        rlSalesHeader.SetHideValidationDialog(TRUE);
+        // rlSalesHeader.SetHideValidationDialog(TRUE);
 
-        rlSalesHeader.VALIDATE("Sell-to Customer No.", clCustNo);
-        rlSalesHeader.VALIDATE("Posting Date", TODAY);
-        rlSalesHeader."External Document No." := COPYSTR(pRemesaRecibo.numero_recibo, 1, 35);
-        rlSalesHeader."EDUCAMOS id_unique_recibo" := pRemesaRecibo.id_unique_recibo;
+        // rlSalesHeader.VALIDATE("Sell-to Customer No.", clCustNo);
+        // rlSalesHeader.VALIDATE("Posting Date", TODAY);
+        // rlSalesHeader."External Document No." := COPYSTR(pRecibosRemesa.numero_recibo, 1, 35);
+        // rlSalesHeader."EDUCAMOS id_unique_recibo" := pRecibosRemesa.id_unique_recibo;
 
-        //(2.1) S2G (RBM-R) 13-04-20: Abono de recibos anulados. Inicio
-        /*  //No lo querrán así finalmente...correo del 27/04/20
-        IF pIsCrMemo THEN BEGIN
-          IF rlEDUCAMOSSetup."Credit Memo Payment Method" <> '' THEN
-            rlSalesHeader.VALIDATE("Payment Method Code", rlEDUCAMOSSetup."Credit Memo Payment Method");
-        END ELSE BEGIN
-        */
-        //(2.1) S2G (RBM-R) 13-04-20: Abono de recibos anulados. Fin
+        // //(2.1) S2G (RBM-R) 13-04-20: Abono de recibos anulados. Inicio
+        // /*  //No lo querrán así finalmente...correo del 27/04/20
+        // IF pIsCrMemo THEN BEGIN
+        //   IF rlEDUCAMOSSetup."Credit Memo Payment Method" <> '' THEN
+        //     rlSalesHeader.VALIDATE("Payment Method Code", rlEDUCAMOSSetup."Credit Memo Payment Method");
+        // END ELSE BEGIN
+        // */
+        // //(2.1) S2G (RBM-R) 13-04-20: Abono de recibos anulados. Fin
 
-        rlEDUCAMOSSetup.GET;
-        CASE pRemesaRecibo.tipo_recibo OF
-            0:
-                BEGIN
-                    IF rlEDUCAMOSSetup."Ventanilla Payment Method" <> '' THEN
-                        rlSalesHeader.VALIDATE("Payment Method Code", rlEDUCAMOSSetup."Ventanilla Payment Method");   //ventanilla
-                END;
-            1:
-                BEGIN
-                    IF rlEDUCAMOSSetup."Bank Payment Method" <> '' THEN
-                        rlSalesHeader.VALIDATE("Payment Method Code", rlEDUCAMOSSetup."Bank Payment Method");   //banco
-                END;
-        END;
+        // rlEDUCAMOSSetup.GET;
+        // CASE pRecibosRemesa.tipo_recibo OF
+        //     0:
+        //         BEGIN
+        //             IF rlEDUCAMOSSetup."Ventanilla Payment Method" <> '' THEN
+        //                 rlSalesHeader.VALIDATE("Payment Method Code", rlEDUCAMOSSetup."Ventanilla Payment Method");   //ventanilla
+        //         END;
+        //     1:
+        //         BEGIN
+        //             IF rlEDUCAMOSSetup."Bank Payment Method" <> '' THEN
+        //                 rlSalesHeader.VALIDATE("Payment Method Code", rlEDUCAMOSSetup."Bank Payment Method");   //banco
+        //         END;
+        // END;
 
-        //(2.1) S2G (RBM-R) 13-04-20: Abono de recibos anulados. Inicio
-        IF pIsCrMemo THEN BEGIN
-            clInvNo := fFindSalesHeader(clCustNo, pRemesaRecibo.numero_recibo);
-            IF clCustNo <> '' THEN BEGIN
-                //No lo querrán así finalmente...correo del 27/04/20
-                /*
-                rlSalesHeader."Applies-to Doc. Type" := rlSalesHeader."Applies-to Doc. Type"::Invoice;
-                rlSalesHeader.VALIDATE("Applies-to Doc. No.", clInvNo);
-                */
-                rlSalesHeader."Corrected Invoice No." := clInvNo; //no hace falta validar porque si entró aquí es que existe
-            END;
-        END;
-        //(2.1) S2G (RBM-R) 13-04-20: Abono de recibos anulados. Fin
+        // //(2.1) S2G (RBM-R) 13-04-20: Abono de recibos anulados. Inicio
+        // IF pIsCrMemo THEN BEGIN
+        //     clInvNo := fFindSalesHeader(clCustNo, pRecibosRemesa.numero_recibo);
+        //     IF clCustNo <> '' THEN BEGIN
+        //         //No lo querrán así finalmente...correo del 27/04/20
+        //         /*
+        //         rlSalesHeader."Applies-to Doc. Type" := rlSalesHeader."Applies-to Doc. Type"::Invoice;
+        //         rlSalesHeader.VALIDATE("Applies-to Doc. No.", clInvNo);
+        //         */
+        //         rlSalesHeader."Corrected Invoice No." := clInvNo; //no hace falta validar porque si entró aquí es que existe
+        //     END;
+        // END;
+        // //(2.1) S2G (RBM-R) 13-04-20: Abono de recibos anulados. Fin
 
-        IF NOT rlSalesHeader.MODIFY(TRUE) THEN BEGIN
-            GeneralErrorText := Error003;
-            EXIT('');
-        END;
+        // IF NOT rlSalesHeader.MODIFY(TRUE) THEN BEGIN
+        //     GeneralErrorText := Error003;
+        //     EXIT('');
+        // END;
 
-        EXIT(InvNo);
+        // EXIT(InvNo);
     end;
 
     local procedure fProcessAlumnoConcepto(pIDUniqueRecibo: Text; pInvoiceNo: Code[20]; pIsCrMemo: Boolean)
@@ -420,89 +422,89 @@ codeunit 50007 "EDUCAMOS Interface"
             GLAccNo := rlMap."G/L Account No.";
     end;
 
-    local procedure fFindCustomer(rlRemesaRecibo: Record "EDUCAMOS RemesaRecibo") NAVCustomer: Code[20]
+    local procedure fFindCustomer(rlRecibosRemesa: Record "EDUCAMOS RecibosRemesa") NAVCustomer: Code[20]
     var
         rlCust: Record Customer;
         rlThirdParty: Record "Third Party";
         NewThirdParty: Record "Third Party";
     begin
-        NAVCustomer := '';
+        // NAVCustomer := '';
 
-        rlCust.RESET;
-        rlCust.SETCURRENTKEY("EDUCAMOS id_unique_pagador");
-        rlCust.SETRANGE("EDUCAMOS id_unique_pagador", rlRemesaRecibo.id_unique_pagador);
-        IF rlCust.FINDFIRST THEN
-            NAVCustomer := rlCust."No."
-        ELSE BEGIN
-            rlCust.RESET;
-            rlCust.SETCURRENTKEY("VAT Registration No.");
-            rlCust.SETRANGE("VAT Registration No.", rlRemesaRecibo.nif_pagador);
-            IF rlCust.FINDFIRST THEN
-                NAVCustomer := rlCust."No."
-            ELSE BEGIN
-                rlThirdParty.RESET;
-                rlThirdParty.SETCURRENTKEY("EDUCAMOS id_unique_pagador");
-                rlThirdParty.SETRANGE("EDUCAMOS id_unique_pagador", rlRemesaRecibo.id_unique_pagador);
-                IF rlThirdParty.FINDFIRST THEN
-                    NAVCustomer := fCreateCustomer(rlRemesaRecibo, rlThirdParty)
-                ELSE BEGIN
-                    rlThirdParty.RESET;
-                    rlThirdParty.SETCURRENTKEY("VAT Registration No.");
-                    rlThirdParty.SETRANGE("VAT Registration No.", rlRemesaRecibo.nif_pagador);
-                    IF rlThirdParty.FINDFIRST THEN
-                        NAVCustomer := fCreateCustomer(rlRemesaRecibo, rlThirdParty)
-                    ELSE BEGIN
-                        fCreateThirdParty(rlRemesaRecibo, NewThirdParty);
-                        NAVCustomer := fCreateCustomer(rlRemesaRecibo, NewThirdParty);
-                    END;
-                END;
-            END;
-        END;
+        // rlCust.RESET;
+        // rlCust.SETCURRENTKEY("EDUCAMOS id_unique_pagador");
+        // rlCust.SETRANGE("EDUCAMOS id_unique_pagador", rlRecibosRemesa.id_unique_pagador);
+        // IF rlCust.FINDFIRST THEN
+        //     NAVCustomer := rlCust."No."
+        // ELSE BEGIN
+        //     rlCust.RESET;
+        //     rlCust.SETCURRENTKEY("VAT Registration No.");
+        //     rlCust.SETRANGE("VAT Registration No.", rlRecibosRemesa.nif_pagador);
+        //     IF rlCust.FINDFIRST THEN
+        //         NAVCustomer := rlCust."No."
+        //     ELSE BEGIN
+        //         rlThirdParty.RESET;
+        //         rlThirdParty.SETCURRENTKEY("EDUCAMOS id_unique_pagador");
+        //         rlThirdParty.SETRANGE("EDUCAMOS id_unique_pagador", rlRecibosRemesa.id_unique_pagador);
+        //         IF rlThirdParty.FINDFIRST THEN
+        //             NAVCustomer := fCreateCustomer(rlRecibosRemesa, rlThirdParty)
+        //         ELSE BEGIN
+        //             rlThirdParty.RESET;
+        //             rlThirdParty.SETCURRENTKEY("VAT Registration No.");
+        //             rlThirdParty.SETRANGE("VAT Registration No.", rlRecibosRemesa.nif_pagador);
+        //             IF rlThirdParty.FINDFIRST THEN
+        //                 NAVCustomer := fCreateCustomer(rlRecibosRemesa, rlThirdParty)
+        //             ELSE BEGIN
+        //                 fCreateThirdParty(rlRecibosRemesa, NewThirdParty);
+        //                 NAVCustomer := fCreateCustomer(rlRecibosRemesa, NewThirdParty);
+        //             END;
+        //         END;
+        //     END;
+        // END;
     end;
 
-    local procedure fCreateThirdParty(pRemesaRecibo: Record "EDUCAMOS RemesaRecibo"; var pThirdParty: Record "Third Party")
+    local procedure fCreateThirdParty(pRecibosRemesa: Record "EDUCAMOS RecibosRemesa"; var pThirdParty: Record "Third Party")
     var
         rlSetup: Record "EDUCAMOS Setup";
     begin
-        rlSetup.GET;
+        // rlSetup.GET;
 
-        pThirdParty."No." := '';
-        pThirdParty.VALIDATE(Name, COPYSTR(pRemesaRecibo.nombre_pagador + ' ' + pRemesaRecibo.apellidos_pagador, 1, 50));
-        pThirdParty."Name 2" := COPYSTR(pRemesaRecibo.nombre_pagador + ' ' + pRemesaRecibo.apellidos_pagador, 51, 50);
-        pThirdParty.Address := COPYSTR(pRemesaRecibo.direccion_pagador, 1, 50);
-        pThirdParty."Address 2" := COPYSTR(pRemesaRecibo.direccion_pagador, 51, 50);
-        pThirdParty.VALIDATE(City, COPYSTR(pRemesaRecibo.localidad_pagador, 1, 30));
-        pThirdParty.County := COPYSTR(pRemesaRecibo.provincia_pagador, 1, 30);
-        // S2G (JPB) Saltar la validación de CIF/NIF al crear tercero. INICIO
-        pThirdParty."VAT Registration No." := pRemesaRecibo.nif_pagador;
-        // S2G (JPB) Saltar la validación de CIF/NIF al crear tercero. FIN
-        pThirdParty."Post Code" := pRemesaRecibo.cp_pagador;
-        pThirdParty."Customer Template Code" := rlSetup."Thirdparty Template Code";
-        pThirdParty."EDUCAMOS id_unique_pagador" := pRemesaRecibo.id_unique_pagador;
-        IF pThirdParty.INSERT(TRUE) THEN
-            fSetLog(1, STRSUBSTNO(Text001, pThirdParty."No.", pRemesaRecibo.id_unique_pagador), COMPANYNAME, 1);
+        // pThirdParty."No." := '';
+        // pThirdParty.VALIDATE(Name, COPYSTR(pRecibosRemesa.nombre_pagador + ' ' + pRecibosRemesa.apellidos_pagador, 1, 50));
+        // pThirdParty."Name 2" := COPYSTR(pRecibosRemesa.nombre_pagador + ' ' + pRecibosRemesa.apellidos_pagador, 51, 50);
+        // pThirdParty.Address := COPYSTR(pRecibosRemesa.direccion_pagador, 1, 50);
+        // pThirdParty."Address 2" := COPYSTR(pRecibosRemesa.direccion_pagador, 51, 50);
+        // pThirdParty.VALIDATE(City, COPYSTR(pRecibosRemesa.localidad_pagador, 1, 30));
+        // pThirdParty.County := COPYSTR(pRecibosRemesa.provincia_pagador, 1, 30);
+        // // S2G (JPB) Saltar la validación de CIF/NIF al crear tercero. INICIO
+        // pThirdParty."VAT Registration No." := pRecibosRemesa.nif_pagador;
+        // // S2G (JPB) Saltar la validación de CIF/NIF al crear tercero. FIN
+        // pThirdParty."Post Code" := pRecibosRemesa.cp_pagador;
+        // pThirdParty."Customer Template Code" := rlSetup."Thirdparty Template Code";
+        // pThirdParty."EDUCAMOS id_unique_pagador" := pRecibosRemesa.id_unique_pagador;
+        // IF pThirdParty.INSERT(TRUE) THEN
+        //     fSetLog(1, STRSUBSTNO(Text001, pThirdParty."No.", pRecibosRemesa.id_unique_pagador), COMPANYNAME, 1);
     end;
 
-    local procedure fCreateCustomer(rlRemesaRecibo: Record "EDUCAMOS RemesaRecibo"; pThirdParty: Record "Third Party") NAVCustomer: Code[20]
+    local procedure fCreateCustomer(rlRecibosRemesa: Record "EDUCAMOS RecibosRemesa"; pThirdParty: Record "Third Party") NAVCustomer: Code[20]
     var
         cuFunctionsS2G: Codeunit "Functions S2G";
         rlCust: Record Customer;
     begin
-        //Crear el cliente partiendo del nº de tercero existente y asignándole el peducamos
-        CLEAR(cuFunctionsS2G);
-        NAVCustomer := '';
+        // //Crear el cliente partiendo del nº de tercero existente y asignándole el peducamos
+        // CLEAR(cuFunctionsS2G);
+        // NAVCustomer := '';
 
-        cuFunctionsS2G.fFromEducamosInterface;
-        cuFunctionsS2G.EnableCustVendBasedOnThirdParty(pThirdParty, 0, NAVCustomer, COMPANYNAME);
+        // cuFunctionsS2G.fFromEducamosInterface;
+        // cuFunctionsS2G.EnableCustVendBasedOnThirdParty(pThirdParty, 0, NAVCustomer, COMPANYNAME);
 
-        rlCust.GET(NAVCustomer);
-        rlCust."EDUCAMOS id_unique_pagador" := rlRemesaRecibo.id_unique_pagador;
-        rlCust.MODIFY;
+        // rlCust.GET(NAVCustomer);
+        // rlCust."EDUCAMOS id_unique_pagador" := rlRecibosRemesa.id_unique_pagador;
+        // rlCust.MODIFY;
 
-        IF rlRemesaRecibo.nif_pagador <> '' THEN
-            fSetLog(1, STRSUBSTNO(Text002, NAVCustomer, rlRemesaRecibo.id_unique_pagador), COMPANYNAME, 1)
-        ELSE
-            fSetLog(2, STRSUBSTNO(Text002, NAVCustomer, rlRemesaRecibo.id_unique_pagador) + Text004, COMPANYNAME, 1);
+        // IF rlRecibosRemesa.nif_pagador <> '' THEN
+        //     fSetLog(1, STRSUBSTNO(Text002, NAVCustomer, rlRecibosRemesa.id_unique_pagador), COMPANYNAME, 1)
+        // ELSE
+        //     fSetLog(2, STRSUBSTNO(Text002, NAVCustomer, rlRecibosRemesa.id_unique_pagador) + Text004, COMPANYNAME, 1);
     end;
 
     local procedure fCreateLineDiscount(pAlumnoConcepto: Record "EDUCAMOS AlumnoConcepto"; pSalesLine: Record "Sales Line"; var pRealUnitPrice: Decimal)

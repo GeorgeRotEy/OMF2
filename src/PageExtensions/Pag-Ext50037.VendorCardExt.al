@@ -12,7 +12,7 @@ pageextension 50037 "Vendor Card Ext" extends "Vendor Card"
         {
             group(Retenciones)
             {
-                Caption = 'Retenciones';
+                Caption = 'Withholdings', Comment = 'ESP="Retenciones"';
                 field("Control IRPF"; Rec."Control IRPF")
                 {
                     ApplicationArea = All;
@@ -36,8 +36,6 @@ pageextension 50037 "Vendor Card Ext" extends "Vendor Card"
             {
                 Caption = 'Third Party', Comment = 'ESP="Tercero"';
                 Image = Customer;
-                Promoted = true;
-                PromotedCategory = New;
                 RunObject = Page "Third Party List";
                 ApplicationArea = All;
 
@@ -54,6 +52,17 @@ pageextension 50037 "Vendor Card Ext" extends "Vendor Card"
                     lpThirdpartieslist.RUNMODAL();
                     // Mod. S2G 27/12/2017 (JGS) : TER001 ã Terceros.
                 end;
+            }
+        }
+        addlast(Promoted)
+        {
+            group(New)
+            {
+                Caption = 'New', Comment = 'ESP="Nuevo"';
+
+                actionref(ThirdParty_Promoted; "<Page Third Party>")
+                {
+                }
             }
         }
     }

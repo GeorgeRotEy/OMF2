@@ -14,6 +14,8 @@ page 50028 "Distribution Registers"
         {
             repeater(Group)
             {
+                Caption = 'Distribution Registers', Comment = 'ESP="Registros distribución"';
+
                 field("No."; Rec."No.")
                 {
                 }
@@ -47,13 +49,11 @@ page 50028 "Distribution Registers"
             {
                 Caption = 'Entry', Comment = 'ESP="Entrada"';
                 Image = Entry;
+
                 action("&Distribution Entries")
                 {
                     Caption = 'Distribution Entries', Comment = 'ESP="Entradas de distribución"';
                     Image = CostEntries;
-                    Promoted = true;
-                    PromotedCategory = Process;
-                    PromotedIsBig = true;
                     RunPageOnRec = true;
                     ShortCutKey = 'Ctrl+F7';
 
@@ -76,12 +76,11 @@ page 50028 "Distribution Registers"
             {
                 Caption = 'Functions', Comment = 'ESP="Funciones"';
                 Image = "Action";
+
                 action("&Delete Distribution Entries")
                 {
                     Caption = 'Delete Distribution Entries', Comment = 'ESP="Eliminar entradas de distribución"';
                     Image = Delete;
-                    Promoted = true;
-                    PromotedCategory = Process;
                     RunPageOnRec = true;
 
                     trigger OnAction()
@@ -97,6 +96,21 @@ page 50028 "Distribution Registers"
                             RptDeleteEntry.RUNMODAL;
                         END;
                     end;
+                }
+            }
+        }
+        area(Promoted)
+        {
+            group(Process)
+            {
+                Caption = 'Process', Comment = 'ESP="Procesar"';
+
+                actionref(DistributionEntries_Promoted; "&Distribution Entries")
+                {
+                }
+
+                actionref(DeleteDistributionEntries_Promoted; "&Delete Distribution Entries")
+                {
                 }
             }
         }

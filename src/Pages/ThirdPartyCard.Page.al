@@ -12,6 +12,8 @@ page 50080 "Third Party Card"
         {
             group(General)
             {
+                Caption = 'General', Comment = 'ESP="General"';
+
                 field("No."; Rec."No.")
                 {
                     ApplicationArea = All;
@@ -78,6 +80,7 @@ page 50080 "Third Party Card"
                 group(Templates)
                 {
                     Caption = 'Templates', Comment = 'ESP="Plantillas"';
+
                     field("Customer Template Code"; Rec."Customer Template Code")
                     {
                         ApplicationArea = All;
@@ -99,9 +102,36 @@ page 50080 "Third Party Card"
 
     actions
     {
+        area(Promoted)
+        {
+            group(ProcessPromoted)
+            {
+                Caption = 'Process', Comment = 'ESP="Proceso"';
+
+                actionref(CreateThirdPartyPromoted; "Crear Tercero")
+                {
+                }
+                actionref(DimensionsPromoted; Dimensions)
+                {
+                }
+                actionref(BankAccountsPromoted; "Bank Accounts")
+                {
+                }
+            }
+
+            group(HistoryPromoted)
+            {
+                Caption = 'History', Comment = 'ESP="Historial"';
+
+                actionref(LedgerEntriesPromoted; "Ledger E&ntries")
+                {
+                }
+            }
+        }
+
         area(navigation)
         {
-            group("Third Party")
+            group(ThirdPartyNav)
             {
                 Caption = 'Third Party', Comment = 'ESP="Tercero"';
 
@@ -110,9 +140,6 @@ page 50080 "Third Party Card"
                     ApplicationArea = All;
                     Caption = 'Create Third Party', Comment = 'ESP="Crear tercero"';
                     Image = CreateDocument;
-                    Promoted = true;
-                    PromotedCategory = Process;
-                    PromotedIsBig = true;
                     RunObject = Page "Alta Terceros ";
                 }
 
@@ -121,8 +148,6 @@ page 50080 "Third Party Card"
                     ApplicationArea = Suite;
                     Caption = 'Dimensions', Comment = 'ESP="Dimensiones"';
                     Image = Dimensions;
-                    Promoted = true;
-                    PromotedCategory = Process;
                     RunObject = Page "Default Dimensions";
                     RunPageLink = "Table ID" = CONST(50040),
                                   "No." = FIELD("No.");
@@ -135,15 +160,13 @@ page 50080 "Third Party Card"
                     ApplicationArea = Basic, Suite;
                     Caption = 'Bank Accounts', Comment = 'ESP="Cuentas bancarias"';
                     Image = BankAccount;
-                    Promoted = true;
-                    PromotedCategory = Process;
                     RunObject = Page "Third Party Bank Acc. List";
                     RunPageLink = "Third Party No." = FIELD("No.");
                     ToolTip = 'View or set up the vendor''s bank accounts. You can set up any number of bank accounts for each vendor.', Comment = 'ESP="Ver o configurar las cuentas bancarias del proveedor. Puede configurar cualquier número de cuentas bancarias para cada proveedor."';
                 }
             }
 
-            group(History)
+            group(HistoryNav)
             {
                 Caption = 'History', Comment = 'ESP="Historial"';
                 Image = History;
@@ -153,8 +176,6 @@ page 50080 "Third Party Card"
                     ApplicationArea = Basic, Suite;
                     Caption = 'Ledger Entries', Comment = 'ESP="Movimientos"';
                     Image = CustomerLedger;
-                    Promoted = true;
-                    PromotedCategory = Category5;
                     ShortCutKey = 'Ctrl+F7';
                     ToolTip = 'View the history of transactions that have been posted for the selected record.', Comment = 'ESP="Ver el historial de movimientos que se han contabilizado para el registro seleccionado."';
 

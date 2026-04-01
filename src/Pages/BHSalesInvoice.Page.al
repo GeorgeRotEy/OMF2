@@ -4,7 +4,6 @@ page 50044 "BH.Sales Invoice"
 
     Caption = 'Sales Invoice', Comment = 'ESP="Factura de venta"';
     PageType = Document;
-    PromotedActionCategories = 'New,Process,Report,Approve,Posting,Prepare,Invoice,Release,Request Approval,View';
     RefreshOnActivate = true;
     SourceTable = "Sales Header";
     SourceTableView = WHERE("Document Type" = FILTER(Invoice));
@@ -188,8 +187,6 @@ page 50044 "BH.Sales Invoice"
                 {
                     Caption = 'Statistics', Comment = 'ESP="Estadísticas"';
                     Image = Statistics;
-                    Promoted = true;
-                    PromotedCategory = Category7;
                     ShortCutKey = 'F7';
                     ToolTip = 'View statistical information, such as the value of posted entries, for the record.', Comment = 'ESP="Ver información estadística, como el valor de los movimientos contabilizados, del registro."';
 
@@ -210,8 +207,6 @@ page 50044 "BH.Sales Invoice"
                 {
                     Caption = 'Co&mments', Comment = 'ESP="Co&mentarios"';
                     Image = ViewComments;
-                    Promoted = true;
-                    PromotedCategory = Category7;
                     RunObject = Page "Sales Comment Sheet";
                     RunPageLink = "Document Type" = FIELD("Document Type"),
                                   "No." = FIELD("No."),
@@ -224,10 +219,6 @@ page 50044 "BH.Sales Invoice"
                     ApplicationArea = Suite;
                     Caption = 'Approvals', Comment = 'ESP="Aprobaciones"';
                     Image = Approvals;
-                    Promoted = true;
-                    PromotedCategory = Category9;
-                    PromotedIsBig = true;
-                    PromotedOnly = true;
                     ToolTip = 'View a list of the records that are waiting to be approved. For example, you can see who requested the record to be approved, when it was sent, and when it is due to be approved.', Comment = 'ESP="Ver una lista de los registros que están pendientes de aprobación. Por ejemplo, puede ver quién solicitó la aprobación del registro, cuándo se envió y cuándo debe aprobarse."';
 
                     trigger OnAction()
@@ -244,10 +235,6 @@ page 50044 "BH.Sales Invoice"
                     Caption = 'Customer', Comment = 'ESP="Cliente"';
                     Enabled = CustomerSelected;
                     Image = Customer;
-                    Promoted = true;
-                    PromotedCategory = Category7;
-                    PromotedIsBig = true;
-                    PromotedOnly = true;
                     RunObject = Page "Customer Card";
                     RunPageLink = "No." = FIELD("Sell-to Customer No.");
                     ShortCutKey = 'Shift+F7';
@@ -260,10 +247,6 @@ page 50044 "BH.Sales Invoice"
                     Caption = 'Dimensions', Comment = 'ESP="Dimensiones"';
                     Enabled = Rec."No." <> '';
                     Image = Dimensions;
-                    Promoted = true;
-                    PromotedCategory = Category7;
-                    PromotedIsBig = true;
-                    PromotedOnly = true;
                     ShortCutKey = 'Shift+Ctrl+D';
                     ToolTip = 'View or edits dimensions, such as area, project, or department, that you can assign to sales and purchase documents to distribute costs and analyze transaction history.', Comment = 'ESP="Ver o editar dimensiones, como área, proyecto o departamento, que puede asignar a documentos de venta y compra para distribuir costes y analizar el historial de movimientos."';
 
@@ -284,9 +267,6 @@ page 50044 "BH.Sales Invoice"
                 {
                     Caption = 'Approve', Comment = 'ESP="Aprobar"';
                     Image = Approve;
-                    Promoted = true;
-                    PromotedCategory = Category4;
-                    PromotedIsBig = true;
                     ToolTip = 'Approve the requested changes.', Comment = 'ESP="Aprobar los cambios solicitados."';
                     Visible = OpenApprovalEntriesExistForCurrUser;
 
@@ -299,9 +279,6 @@ page 50044 "BH.Sales Invoice"
                 {
                     Caption = 'Reject', Comment = 'ESP="Rechazar"';
                     Image = Reject;
-                    Promoted = true;
-                    PromotedCategory = Category4;
-                    PromotedIsBig = true;
                     ToolTip = 'Reject the approval request.', Comment = 'ESP="Rechazar la solicitud de aprobación."';
                     Visible = OpenApprovalEntriesExistForCurrUser;
 
@@ -314,8 +291,6 @@ page 50044 "BH.Sales Invoice"
                 {
                     Caption = 'Delegate', Comment = 'ESP="Delegar"';
                     Image = Delegate;
-                    Promoted = true;
-                    PromotedCategory = Category4;
                     ToolTip = 'Delegate the approval to a substitute approver.', Comment = 'ESP="Delegar la aprobación a un aprobador sustituto."';
                     Visible = OpenApprovalEntriesExistForCurrUser;
 
@@ -328,8 +303,6 @@ page 50044 "BH.Sales Invoice"
                 {
                     Caption = 'Comments', Comment = 'ESP="Comentarios"';
                     Image = ViewComments;
-                    Promoted = true;
-                    PromotedCategory = Category4;
                     ToolTip = 'View or add comments.', Comment = 'ESP="Ver o agregar comentarios."';
                     Visible = OpenApprovalEntriesExistForCurrUser;
 
@@ -342,10 +315,8 @@ page 50044 "BH.Sales Invoice"
                 }
                 action("Desbloquear operación")
                 {
+                    Caption = 'Unlock Operation', Comment = 'ESP="Desbloquear operación"';
                     Image = Approve;
-                    Promoted = true;
-                    PromotedCategory = Process;
-                    PromotedIsBig = true;
 
                     trigger OnAction()
                     begin
@@ -383,9 +354,6 @@ page 50044 "BH.Sales Invoice"
                 {
                     Caption = 'Re&lease', Comment = 'ESP="Li&berar"';
                     Image = ReleaseDoc;
-                    Promoted = true;
-                    PromotedCategory = Category8;
-                    PromotedIsBig = true;
                     ShortCutKey = 'Ctrl+F9';
 
                     trigger OnAction()
@@ -401,10 +369,6 @@ page 50044 "BH.Sales Invoice"
                     Caption = 'Re&open', Comment = 'ESP="Re&abrir"';
                     Enabled = Rec.Status <> Rec.Status::Open;
                     Image = ReOpen;
-                    Promoted = true;
-                    PromotedCategory = Category8;
-                    PromotedIsBig = true;
-                    PromotedOnly = true;
                     ToolTip = 'Reopen the document to change it after it has been approved. Approved documents have the Released status and must be opened before they can be changed.', Comment = 'ESP="Reabrir el documento para modificarlo después de que haya sido aprobado. Los documentos aprobados tienen el estado Lanzado y deben abrirse antes de poder modificarse."';
 
                     trigger OnAction()
@@ -424,11 +388,6 @@ page 50044 "BH.Sales Invoice"
                     ApplicationArea = Basic, Suite;
                     Caption = 'Create Purchase Invoice', Comment = 'ESP="Crear factura de compra"';
                     Image = NewPurchaseInvoice;
-                    Promoted = false;
-                    //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                    //PromotedCategory = Category7;
-                    //The property 'PromotedIsBig' can only be set if the property 'Promoted' is set to 'true'
-                    //PromotedIsBig = true;
                     ToolTip = 'Create a new purchase invoice so you can buy items from a vendor.', Comment = 'ESP="Crear una nueva factura de compra para poder adquirir artículos de un proveedor."';
 
                     trigger OnAction()
@@ -446,10 +405,6 @@ page 50044 "BH.Sales Invoice"
                     Caption = 'Get Recurring Sales Lines', Comment = 'ESP="Obtener líneas de venta periódicas"';
                     Ellipsis = true;
                     Image = CustomerCode;
-                    //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                    //PromotedCategory = Category7;
-                    //The property 'PromotedIsBig' can only be set if the property 'Promoted' is set to 'true'
-                    //PromotedIsBig = true;
                     ToolTip = 'Insert sales document lines that you have set up for the customer as recurring. Recurring sales lines could be for a monthly replenishment order or a fixed freight expense.', Comment = 'ESP="Insertar líneas de documento de venta que haya configurado como recurrentes para el cliente. Las líneas de venta recurrentes pueden ser, por ejemplo, para un pedido de reposición mensual o un gasto fijo de transporte."';
 
                     trigger OnAction()
@@ -465,8 +420,6 @@ page 50044 "BH.Sales Invoice"
                     ApplicationArea = Basic, Suite;
                     Caption = 'Calculate &Invoice Discount', Comment = 'ESP="Calcular descuento de &factura"';
                     Image = CalculateInvoiceDiscount;
-                    Promoted = true;
-                    PromotedCategory = Category6;
                     ToolTip = 'Calculate the invoice discount for the entire sales document when all sales invoice lines are entered.', Comment = 'ESP="Calcular el descuento de factura para todo el documento de venta cuando se hayan introducido todas las líneas de la factura de venta."';
 
                     trigger OnAction()
@@ -496,8 +449,6 @@ page 50044 "BH.Sales Invoice"
                     Caption = 'Move Negative Lines', Comment = 'ESP="Mover líneas negativas"';
                     Ellipsis = true;
                     Image = MoveNegativeLines;
-                    Promoted = true;
-                    PromotedCategory = Category6;
 
                     trigger OnAction()
                     begin
@@ -582,9 +533,6 @@ page 50044 "BH.Sales Invoice"
                     Caption = 'Send A&pproval Request', Comment = 'ESP="Enviar solicitud de a&probación"';
                     Enabled = NOT OpenApprovalEntriesExist;
                     Image = SendApprovalRequest;
-                    Promoted = true;
-                    PromotedCategory = Category9;
-                    PromotedOnly = true;
                     ToolTip = 'Send an approval request.', Comment = 'ESP="Enviar una solicitud de aprobación."';
 
                     trigger OnAction()
@@ -599,9 +547,6 @@ page 50044 "BH.Sales Invoice"
                     Caption = 'Cancel Approval Re&quest', Comment = 'ESP="Cancelar solicitud de a&probación"';
                     Enabled = CanCancelApprovalForRecord;
                     Image = CancelApprovalRequest;
-                    Promoted = true;
-                    PromotedCategory = Category9;
-                    PromotedOnly = true;
                     ToolTip = 'Cancel the approval request.', Comment = 'ESP="Cancelar la solicitud de aprobación."';
 
                     trigger OnAction()
@@ -619,10 +564,6 @@ page 50044 "BH.Sales Invoice"
                     ApplicationArea = Basic, Suite;
                     Caption = 'P&ost', Comment = 'ESP="R&egistrar"';
                     Image = PostOrder;
-                    Promoted = true;
-                    PromotedCategory = Category5;
-                    PromotedIsBig = true;
-                    PromotedOnly = true;
                     ShortCutKey = 'F9';
                     ToolTip = 'Finalize the document or journal by posting the amounts and quantities to the related accounts in your company books.', Comment = 'ESP="Finalizar el documento o diario contabilizando los importes y las cantidades en las cuentas relacionadas de la empresa."';
 
@@ -636,8 +577,6 @@ page 50044 "BH.Sales Invoice"
                     Caption = 'Post and New', Comment = 'ESP="Registrar y nuevo"';
                     Ellipsis = true;
                     Image = PostOrder;
-                    Promoted = true;
-                    PromotedCategory = Category5;
                     ShortCutKey = 'Shift+F9';
 
                     trigger OnAction()
@@ -651,9 +590,6 @@ page 50044 "BH.Sales Invoice"
                     Caption = 'Post and &Send', Comment = 'ESP="Registrar y &enviar"';
                     Ellipsis = true;
                     Image = PostSendTo;
-                    Promoted = true;
-                    PromotedCategory = Category5;
-                    PromotedOnly = true;
                     ToolTip = 'Finalize and prepare to send the document according to the customer''s sending profile, such as attached to an email. The Send document to window opens first so you can confirm or select a sending profile.', Comment = 'ESP="Finalizar y preparar el envío del documento según el perfil de envío del cliente, por ejemplo como adjunto en un correo electrónico. Primero se abre la ventana Enviar documento para que pueda confirmar o seleccionar un perfil de envío."';
 
                     trigger OnAction()
@@ -666,8 +602,6 @@ page 50044 "BH.Sales Invoice"
                     ApplicationArea = Basic, Suite;
                     Caption = 'Preview Posting', Comment = 'ESP="Previsualizar registro"';
                     Image = ViewPostedOrder;
-                    //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                    //PromotedCategory = Category5;
                     ToolTip = 'View the sales invoice lines before you perform the actual posting.', Comment = 'ESP="Ver las líneas de la factura de venta antes de realizar la contabilización real."';
 
                     trigger OnAction()
@@ -681,8 +615,6 @@ page 50044 "BH.Sales Invoice"
                     Caption = 'Print Draft Invoice', Comment = 'ESP="Imprimir borrador de factura"';
                     Ellipsis = true;
                     Image = ViewPostedOrder;
-                    //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                    //PromotedCategory = Category5;
                     ToolTip = 'View or print the sales invoice as a draft before you perform the actual posting.', Comment = 'ESP="Ver o imprimir la factura de venta como borrador antes de realizar la contabilización real."';
 
                     trigger OnAction()
@@ -697,8 +629,6 @@ page 50044 "BH.Sales Invoice"
                     Caption = 'Test Report', Comment = 'ESP="Informe de prueba"';
                     Ellipsis = true;
                     Image = TestReport;
-                    Promoted = true;
-                    PromotedCategory = Category5;
 
                     trigger OnAction()
                     begin

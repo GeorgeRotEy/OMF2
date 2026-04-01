@@ -75,7 +75,7 @@ page 50055 "EDUCAMOS Interfaz Setup"
 
                         trigger OnValidate()
                         begin
-                            Rec.SetPassword(vSubscriptionKey);
+                            Rec.SetSubscriptionKey(vSubscriptionKey);
                             Commit();
                         end;
                     }
@@ -97,12 +97,9 @@ page 50055 "EDUCAMOS Interfaz Setup"
             {
                 trigger OnAction()
                 var
-                    APIConection: Codeunit "JSON Webservices Management";
-                    vlAccessToken: Text;
-                    vlResult: Text;
-                    clTempBlob: Codeunit "Temp Blob";
+                    clAPIConection: Codeunit "JSON Webservices Management";
                 begin
-                    APIConection.GetAccessToken(vlAccessToken, vlResult, clTempBlob);
+                    clAPIConection.Run();
                 end;
             }
         }
@@ -118,7 +115,6 @@ page 50055 "EDUCAMOS Interfaz Setup"
         if not Rec.Get() then begin
             Rec.Init();
             Rec.Insert();
-            Rec.SetPassword('');
         end else begin
             vClientSecret := '*******';
             vSubscriptionKey := '*******';

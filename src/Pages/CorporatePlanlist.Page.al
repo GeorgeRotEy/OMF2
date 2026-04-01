@@ -19,6 +19,7 @@ page 50042 "Corporate Plan list"
             {
                 IndentationColumn = NameIndent;
                 IndentationControls = Name;
+
                 field("No."; Rec."No.")
                 {
                 }
@@ -57,6 +58,7 @@ page 50042 "Corporate Plan list"
             group("A&ccount")
             {
                 Caption = 'Account', Comment = 'ESP="Cuenta"';
+
                 action(Card)
                 {
                     Caption = 'Card', Comment = 'ESP="Ficha"';
@@ -67,9 +69,8 @@ page 50042 "Corporate Plan list"
                 }
                 action("Mapping cuenta grupo")
                 {
-                    Caption = 'Group account mapping', Comment = 'ESP="Mapeo de cuenta de grupo"';
+                    Caption = 'Group Account Mapping', Comment = 'ESP="Mapeo de cuenta de grupo"';
                     Image = RoutingVersions;
-                    Promoted = true;
                     Visible = false;
 
                     trigger OnAction()
@@ -80,6 +81,17 @@ page 50042 "Corporate Plan list"
                         //CLEAR(clMapping);
                         //clMapping.fAbrirPaginaCuentaGrupo(0,"No.");
                     end;
+                }
+            }
+        }
+        area(Promoted)
+        {
+            group(Process)
+            {
+                Caption = 'Process', Comment = 'ESP="Procesar"';
+
+                actionref(GroupAccountMapping_Promoted; "Mapping cuenta grupo")
+                {
                 }
             }
         }
