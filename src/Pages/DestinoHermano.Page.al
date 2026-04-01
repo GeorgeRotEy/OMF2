@@ -1,10 +1,10 @@
 page 50015 "Destino Hermano"
 {
-    PageType = List;
     Caption = 'Friar Destination', Comment = 'ESP="Destino Hermano"';
     SourceTable = "Friar Ledger Entry";
     SourceTableView = SORTING("Date start")
                       ORDER(Descending);
+    PageType = List;
     ApplicationArea = All;
     UsageCategory = Lists;
 

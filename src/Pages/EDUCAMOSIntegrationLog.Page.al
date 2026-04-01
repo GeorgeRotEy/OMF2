@@ -157,28 +157,28 @@ page 50054 "EDUCAMOS Integration Log"
                 end;
             }
 
-            action(ImportarFacturasTPVAuto)
-            {
-                Caption = 'Importar Facturas TPV (Auto)';
-                ApplicationArea = All;
-                Image = Import;
+            // action(ImportarFacturasTPVAuto)
+            // {
+            //     Caption = 'Importar Facturas TPV (Auto)';
+            //     ApplicationArea = All;
+            //     Image = Import;
 
-                trigger OnAction()
-                var
-                    cuJSON: Codeunit "JSON Webservices Management";
-                    Ok: Boolean;
-                begin
-                    Clear(cuJSON);
-                    Ok := cuJSON.ImportFacturasTPV();
+            //     trigger OnAction()
+            //     var
+            //         cuJSON: Codeunit "JSON Webservices Management";
+            //         Ok: Boolean;
+            //     begin
+            //         Clear(cuJSON);
+            //         Ok := cuJSON.ImportFacturasTPV();
 
-                    if Ok then
-                        Message('Importación FacturasTPV (Auto) finalizada. Revisa el LOG y/o Input Data.')
-                    else begin
-                        Commit();
-                        Error('La importación ha fallado. Revisa el LOG para ver el detalle.');
-                    end;
-                end;
-            }
+            //         if Ok then
+            //             Message('Importación FacturasTPV (Auto) finalizada. Revisa el LOG y/o Input Data.')
+            //         else begin
+            //             Commit();
+            //             Error('La importación ha fallado. Revisa el LOG para ver el detalle.');
+            //         end;
+            //     end;
+            // }
         }
     }
 

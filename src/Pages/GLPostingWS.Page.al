@@ -51,6 +51,10 @@ page 50048 "GL Posting WS"
                 {
                     ApplicationArea = All;
                 }
+                field(Reversed; Rec.Reversed)
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }
