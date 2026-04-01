@@ -9,7 +9,7 @@ pageextension 50058 "Sales Credit Memo Ext" extends "Sales Credit Memo"
         {
             group(Retenciones)
             {
-                Caption = 'Retenciones';
+                Caption = 'Withholdings', Comment = 'ESP="Retenciones"';
                 field("Control IRPF"; Rec."Control IRPF")
                 {
                     ApplicationArea = All;
@@ -45,10 +45,8 @@ pageextension 50058 "Sales Credit Memo Ext" extends "Sales Credit Memo"
         {
             action("Desbloquear operación")
             {
+                Caption = 'Unlock Operation', Comment = 'ESP="Desbloquear operación"';
                 Image = Approve;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
                 ApplicationArea = All;
 
                 trigger OnAction()
@@ -77,6 +75,17 @@ pageextension 50058 "Sales Credit Memo Ext" extends "Sales Credit Memo"
                     rBudgetControlSetup.fUnblockPosting(2, vDimkey);
                     //Mod. S2G (RBM-R) GF-007: Control Presupuestario. Fin
                 end;
+            }
+        }
+        addlast(Promoted)
+        {
+            group(Process)
+            {
+                Caption = 'Process', Comment = 'ESP="Procesar"';
+
+                actionref(UnlockOperation_Promoted; "Desbloquear operación")
+                {
+                }
             }
         }
     }

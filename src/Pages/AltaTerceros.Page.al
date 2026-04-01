@@ -41,10 +41,7 @@ page 50046 "Alta Terceros "
             action("Crear Tercero")
             {
                 Image = CreateDocument;
-                Caption = 'Create Third Party', Comment = 'ESP="Crear Tercero"';
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedOnly = true;
+                Caption = 'Create Third Party', Comment = 'ESP="Crear tercero"';
 
                 trigger OnAction()
                 begin
@@ -53,6 +50,17 @@ page 50046 "Alta Terceros "
                     Rec.DELETE();
                     CurrPage.CLOSE();
                 end;
+            }
+        }
+        area(Promoted)
+        {
+            group(Process)
+            {
+                Caption = 'Process', Comment = 'ESP="Procesar"';
+
+                actionref(CreateThirdParty_Promoted; "Crear Tercero")
+                {
+                }
             }
         }
     }

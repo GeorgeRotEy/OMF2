@@ -570,15 +570,41 @@ codeunit 50016 "EY Subscribers"
         //Mod. S2G (RBM-R) GF-007: Control Presupuestario. Fin
     end;
 
+    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Line", OnBeforeInsertGlobalGLEntry, '', false, false)]
+    // local procedure es_c12_OnBeforeInsertGlobalGLEntry(var GlobalGLEntry: Record "G/L Entry"; GenJournalLine: Record "Gen. Journal Line"; GLRegister: Record "G/L Register"; FiscalYearStartDate: Date)
+    // begin
+    //     // Mod. S2G 28/12/2017 (SGP) : Retenciones. IRPF.inicio
+    //     CLEAR(cuGestionIRPF);
+    //     cuGestionIRPF.fCompletarCamposRetencion(GlobalGLEntry, GenJournalLine);
+    //     GlobalGLEntry."Movimiento IRPF liquidado" := GenJournalLine."Movimiento IRPF liquidado";
+    //     // Mod. S2G 28/12/2017 (SGP) : Retenciones. IRPF.fin
+    // end;
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Line", OnBeforeInsertGlobalGLEntry, '', false, false)]
     local procedure es_c12_OnBeforeInsertGlobalGLEntry(var GlobalGLEntry: Record "G/L Entry"; GenJournalLine: Record "Gen. Journal Line"; GLRegister: Record "G/L Register"; FiscalYearStartDate: Date)
+    var
+        CurrentGenJournalLine: Record "Gen. Journal Line";
     begin
-        // Mod. S2G 28/12/2017 (SGP) : Retenciones. IRPF.inicio
-        CLEAR(cuGestionIRPF);
-        cuGestionIRPF.fCompletarCamposRetencion(GlobalGLEntry, GenJournalLine);
-        GlobalGLEntry."Movimiento IRPF liquidado" := GenJournalLine."Movimiento IRPF liquidado";
-        // Mod. S2G 28/12/2017 (SGP) : Retenciones. IRPF.fin
+        // Mod. S2G 28/12/2017 (SGP) : Retenciones. IRPF.inicio
+        CLEAR(cuGestionIRPF);
+        if CurrentGenJournalLine.GET(GenJournalLine."Journal Template Name", GenJournalLine."Journal Batch Name", GenJournalLine."Line No.") then begin
+            cuGestionIRPF.fCompletarCamposRetencion(GlobalGLEntry, CurrentGenJournalLine);
+            GlobalGLEntry."Movimiento IRPF liquidado" := CurrentGenJournalLine."Movimiento IRPF liquidado";
+        end else begin
+            cuGestionIRPF.fCompletarCamposRetencion(GlobalGLEntry, GenJournalLine);
+            GlobalGLEntry."Movimiento IRPF liquidado" := GenJournalLine."Movimiento IRPF liquidado";
+        end;
     end;
+
+
+
+    [EventSubscriber(ObjectType::Table, Database::"G/L Entry", 'OnAfterInsertEvent', '', false, false)]
+    local procedure es_t17_OnAfterInsertEvent_UpdateRetention(var Rec: Record "G/L Entry"; RunTrigger: Boolean)
+    begin
+        if Rec."No. mov. retención" <> 0 then
+            cuGestionIRPF.UpdateRetentionEntryFromGLEntry(Rec."No. mov. retención", Rec."Entry No.", Rec."Dimension Set ID");
+    end;
+
+
 
     // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Batch", OnBeforeRaiseExceedLengthError, '', false, false)]
     // local procedure es_c13_OnBeforeRaiseExceedLengthError(var GenJournalBatch: Record "Gen. Journal Batch"; var RaiseError: Boolean; var GenJnlLine: Record "Gen. Journal Line")

@@ -17,6 +17,7 @@ page 50041 "Corporate Plan Card"
             group(General)
             {
                 Caption = 'General', Comment = 'ESP="General"';
+
                 field("No."; Rec."No.")
                 {
                 }
@@ -56,6 +57,7 @@ page 50041 "Corporate Plan Card"
             group(Posting)
             {
                 Caption = 'Posting', Comment = 'ESP="Registro"';
+
                 field("Gen. Posting Type"; Rec."Gen. Posting Type")
                 {
                 }
@@ -63,6 +65,7 @@ page 50041 "Corporate Plan Card"
             group(Consolidation)
             {
                 Caption = 'Consolidation', Comment = 'ESP="Consolidación"';
+
                 field("Consol. Debit Acc."; Rec."Consol. Debit Acc.")
                 {
                 }
@@ -79,20 +82,29 @@ page 50041 "Corporate Plan Card"
         {
             action("Mapping cuenta grupo")
             {
-                Caption = 'Group account mapping', Comment = 'ESP="Mapeo de cuenta de grupo"';
+                Caption = 'Group Account Mapping', Comment = 'ESP="Mapeo de cuenta de grupo"';
                 Image = RoutingVersions;
-                Promoted = true;
                 Visible = false;
 
                 trigger OnAction()
                 begin
-
                     //NameDataTypeSubtypeLength
                     //clMappingCodeunitCodeunit50151
                     //(MAP)
                     //CLEAR(clMapping);
                     //clMapping.fAbrirPaginaCuentaGrupo(0,"No.");
                 end;
+            }
+        }
+        area(Promoted)
+        {
+            group(Process)
+            {
+                Caption = 'Process', Comment = 'ESP="Procesar"';
+
+                actionref(GroupAccountMapping_Promoted; "Mapping cuenta grupo")
+                {
+                }
             }
         }
     }
