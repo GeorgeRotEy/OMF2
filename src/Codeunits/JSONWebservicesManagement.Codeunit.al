@@ -62,30 +62,46 @@ codeunit 50006 "JSON Webservices Management"
             exit(false);
         end;
 
-        if not TryGetActiveCalendar() then begin
-            cuInterface.fSetLogWithResponse(3, 'No se pudo determinar calendario activo: ' + vResult, CompanyName, 0, cTempBlob);
-            Commit();
-            exit(false);
-        end;
-
-        Ok := CallGETWithContinuationToken(BuildRemesasUrl());
+        //Traer pagadores - BEGIN.
+        Ok := CallGETWithContinuationToken(BuildPagadoresUrl());
         if not Ok then begin
-            cuInterface.fSetLogWithResponse(3, 'Error obteniendo remesas: ' + vResult, CompanyName, 0, cTempBlob);
+            cuInterface.fSetLogWithResponse(3, 'Error obteniendo pagadores: ' + vResult, CompanyName, 0, cTempBlob);
             Commit();
             exit(false);
         end;
 
-        if vFullJsonBody = '' then begin
-            cuInterface.fSetLogWithResponse(2, Error003, CompanyName, 0, cTempBlob);
+        if not TryGetPagadores() then begin
+            cuInterface.fSetLogWithResponse(3, 'No se pudieron traer los pagadores: ' + vResult, CompanyName, 0, cTempBlob);
             Commit();
             exit(false);
         end;
+        //Traer pagadores - END.
 
-        if not TryGetRemesas() then begin
-            cuInterface.fSetLogWithResponse(3, 'No se pudo determinar calendario activo: ' + vResult, CompanyName, 0, cTempBlob);
-            Commit();
-            exit(false);
-        end;
+        //Descomentar
+        // if not TryGetActiveCalendar() then begin
+        //     cuInterface.fSetLogWithResponse(3, 'No se pudo determinar calendario activo: ' + vResult, CompanyName, 0, cTempBlob);
+        //     Commit();
+        //     exit(false);
+        // end;
+
+        // Ok := CallGETWithContinuationToken(BuildRemesasUrl());
+        // if not Ok then begin
+        //     cuInterface.fSetLogWithResponse(3, 'Error obteniendo remesas: ' + vResult, CompanyName, 0, cTempBlob);
+        //     Commit();
+        //     exit(false);
+        // end;
+
+        // if vFullJsonBody = '' then begin
+        //     cuInterface.fSetLogWithResponse(2, Error003, CompanyName, 0, cTempBlob);
+        //     Commit();
+        //     exit(false);
+        // end;
+
+        // if not TryGetRemesas() then begin
+        //     cuInterface.fSetLogWithResponse(3, 'No se pudieron traer las remesas: ' + vResult, CompanyName, 0, cTempBlob);
+        //     Commit();
+        //     exit(false);
+        // end;
 
         //Descomentar
         // if not FillInputData(vFullJsonBody) then begin
@@ -411,7 +427,8 @@ codeunit 50006 "JSON Webservices Management"
 
             Activo := false;
             if ItemObj.Get('activo', Token) then
-                Activo := Token.AsValue().AsBoolean();
+                if not Token.AsValue().IsNull() then
+                    Activo := Token.AsValue().AsBoolean();
 
             if Activo then begin
                 if not ItemObj.Get('calendarioEscolarId', Token) then begin
@@ -426,10 +443,12 @@ codeunit 50006 "JSON Webservices Management"
                 end;
 
                 if ItemObj.Get('fechaInicio', Token) then
-                    vlStartDate := Token.AsValue().AsText();
+                    if not Token.AsValue().IsNull() then
+                        vlStartDate := Token.AsValue().AsText();
 
                 if ItemObj.Get('fechaFin', Token) then
-                    vlEndDate := Token.AsValue().AsText();
+                    if not Token.AsValue().IsNull() then
+                        vlEndDate := Token.AsValue().AsText();
 
                 if not Evaluate(vStartDate, vlStartDate) then begin
                     vResult := StrSubstNo('FechaInicio inválida: %1', vlStartDate);
@@ -490,6 +509,272 @@ codeunit 50006 "JSON Webservices Management"
         exit(Url);
     end;
 
+    local procedure BuildPagadoresUrl(): Text
+    var
+        Url: Label 'https://developer-api-neu.educamos.com/apismeducamos/api/colegio/pagadores', Locked = true;
+    begin
+        exit(Url);
+    end;
+
+    local procedure TryGetPagadores(): Boolean
+    var
+        Root: JsonObject;
+        PagadoresTok: JsonToken;
+        PagadoresArr: JsonArray;
+        DireccionTok: JsonToken;
+        DireccionArr: JsonArray;
+        MediosPagoTok: JsonToken;
+        MediosPagoArr: JsonArray;
+        CuentaBancariaTok: JsonToken;
+        CuentaBancariaArr: JsonArray;
+        DependientesEconomicosArr: JsonArray;
+        DependientesEconomicosTok: JsonToken;
+        ItemTok: JsonToken;
+        ItemObj: JsonObject;
+        i: Integer;
+    begin
+        vResult := '';
+
+        if not Root.ReadFrom(vFullJsonBody) then begin
+            vResult := NonJsonResponseErr;
+            exit(false);
+        end;
+
+        if not Root.Get('pagadores', PagadoresTok) then begin
+            vResult := 'La respuesta no contiene el nodo "Pagadores".';
+            exit(false);
+        end;
+
+        PagadoresArr := PagadoresTok.AsArray();
+
+        for i := 0 to PagadoresArr.Count() - 1 do begin
+            PagadoresArr.Get(i, ItemTok);
+            ItemObj := ItemTok.AsObject();
+
+            if not fFillPagadores(ItemObj) then begin
+                vResult := 'No se han podido tratar los pagadores.';
+                exit(false);
+            end;
+        end;
+
+        if not Root.Get('mediosPago', MediosPagoTok) then begin
+            vResult := 'La respuesta no contiene el nodo "MediosPago".';
+            exit(false);
+        end;
+
+        MediosPagoArr := MediosPagoTok.AsArray();
+
+        for i := 0 to MediosPagoArr.Count() - 1 do begin
+            MediosPagoArr.Get(i, ItemTok);
+            ItemObj := ItemTok.AsObject();
+
+            if not fFillPagadores(ItemObj) then begin
+                vResult := 'No se han podido tratar los medios de pago.';
+                exit(false);
+            end;
+        end;
+
+        if not Root.Get('cuentaBancaria', CuentaBancariaTok) then begin
+            vResult := 'La respuesta no contiene el nodo "cuentaBancaria".';
+            exit(false);
+        end;
+
+        CuentaBancariaArr := CuentaBancariaTok.AsArray();
+
+        for i := 0 to CuentaBancariaArr.Count() - 1 do begin
+            CuentaBancariaArr.Get(i, ItemTok);
+            ItemObj := ItemTok.AsObject();
+
+            if not fFillPagadores(ItemObj) then begin
+                vResult := 'No se han podido tratar las cuentas bancarias.';
+                exit(false);
+            end;
+        end;
+
+        if not Root.Get('dependientesEconomicos', DependientesEconomicosTok) then begin
+            vResult := 'La respuesta no contiene el nodo "dependientesEconomicos".';
+            exit(false);
+        end;
+
+        DependientesEconomicosArr := DependientesEconomicosTok.AsArray();
+
+        for i := 0 to DependientesEconomicosArr.Count() - 1 do begin
+            DependientesEconomicosArr.Get(i, ItemTok);
+            ItemObj := ItemTok.AsObject();
+
+            if not fFillPagadores(ItemObj) then begin
+                vResult := 'No se han podido tratar los dependientes económicos.';
+                exit(false);
+            end;
+        end;
+
+        vResult := 'Recibos importados correctamente.';
+        exit(false);
+    end;
+
+    local procedure fFillPagadores(ItemObj: JsonObject): Boolean
+    var
+        rlPagadores: Record "EDUCAMOS Pagadores";
+        vlToken: JsonToken;
+    begin
+        if ItemObj.Get('personaId', vlToken) then begin
+            if not rlPagadores.Get(vlToken.AsValue().AsText()) then begin
+                rlPagadores.Init();
+                rlPagadores.personaId := vlToken.AsValue().AsText();
+                rlPagadores.Insert();
+            end else begin
+                if ItemObj.Get('nombre', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.nombre := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('apellido1', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.apellido1 := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('apellido2', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.apellido2 := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('sexo', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.sexo := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('tipoDocumento', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.tipoDocumento := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('numeroDocumento', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.numeroDocumento := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('telefonoCasa', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.telefonoCasa := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('telefonoMovil1', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.telefonoMovil1 := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('correoElectronico', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.correoElectronico := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('codigoSAGE', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.codigoSAGE := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('calle', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.calle := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('codigoPostal', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.codigoPostal := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('region', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.region := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('pais', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.pais := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('tipoVia', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.tipoVia := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('numero', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.numero := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('bloque', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.bloque := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('escalera', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.escalera := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('piso', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.piso := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('puerta', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.puerta := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('localidad', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.localidad := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('codigoMunicipio', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.codigoMunicipio := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('concejo', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.concejo := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('provincia', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.provincia := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('pagadorMedioPagoId', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.pagadorMedioPagoId := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('medioPago', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.medioPago := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('porDefectoMedioPago', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.porDefectoMedioPago := vlToken.AsValue().AsBoolean();
+
+                if ItemObj.Get('bic', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.bic := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('codigoPais', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.codigoPais := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('digitoControlIban', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.digitoControlIban := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('entidad', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.entidad := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('sucursal', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.sucursal := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('digitoControl', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.digitoControl := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('numeroCuenta', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.numeroCuenta := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('dependientePersonaId', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.dependientePersonaId := vlToken.AsValue().AsText();
+
+                if ItemObj.Get('dependientePorDefecto', vlToken) then
+                    if not vlToken.AsValue().IsNull() then
+                        rlPagadores.dependientePorDefecto := vlToken.AsValue().AsBoolean();
+
+                rlPagadores."Importation DateTime" := CurrentDateTime;
+                rlPagadores.Processed := true;
+
+                rlPagadores.Modify();
+            end;
+        end;
+    end;
+
     local procedure TryGetRemesas(): Boolean
     var
         Root: JsonObject;
@@ -546,70 +831,92 @@ codeunit 50006 "JSON Webservices Management"
                 end;
             end else begin
                 if ItemObj.Get('descripcion', vlToken) then
-                    rlRemesa.descripcion := vlToken.AsValue().AsText();
+                    if not vlToken.AsValue().IsNull() then
+                        rlRemesa.descripcion := vlToken.AsValue().AsText();
 
                 if ItemObj.Get('reducido', vlToken) then
-                    rlRemesa.reducido := vlToken.AsValue().AsText();
+                    if not vlToken.AsValue().IsNull() then
+                        rlRemesa.reducido := vlToken.AsValue().AsText();
 
                 if ItemObj.Get('periodoFacturacionId', vlToken) then
-                    rlRemesa.periodoFacturacionId := vlToken.AsValue().AsText();
+                    if not vlToken.AsValue().IsNull() then
+                        rlRemesa.periodoFacturacionId := vlToken.AsValue().AsText();
 
                 if ItemObj.Get('nombrePeriodo', vlToken) then
-                    rlRemesa.nombrePeriodo := vlToken.AsValue().AsText();
+                    if not vlToken.AsValue().IsNull() then
+                        rlRemesa.nombrePeriodo := vlToken.AsValue().AsText();
 
                 if ItemObj.Get('pagadorComun', vlToken) then
-                    rlRemesa.pagadorComun := vlToken.AsValue().AsBoolean();
+                    if not vlToken.AsValue().IsNull() then
+                        rlRemesa.pagadorComun := vlToken.AsValue().AsBoolean();
 
                 if ItemObj.Get('fechaCreacion', vlToken) then
-                    Evaluate(rlRemesa.fechaCreacion, vlToken.AsValue().AsText());
+                    if not vlToken.AsValue().IsNull() then
+                        Evaluate(rlRemesa.fechaCreacion, vlToken.AsValue().AsText());
 
                 if ItemObj.Get('fechaEmision', vlToken) then
-                    Evaluate(rlRemesa.fechaEmision, vlToken.AsValue().AsText());
+                    if not vlToken.AsValue().IsNull() then
+                        Evaluate(rlRemesa.fechaEmision, vlToken.AsValue().AsText());
 
                 if ItemObj.Get('importe', vlToken) then
-                    Evaluate(rlRemesa.importe, vlToken.AsValue().AsText());
+                    if not vlToken.AsValue().IsNull() then
+                        Evaluate(rlRemesa.importe, vlToken.AsValue().AsText());
 
                 if ItemObj.Get('ordenanteCuentaBancariaId', vlToken) then
-                    rlRemesa.ordenanteCuentaBancariaId := vlToken.AsValue().AsText();
+                    if not vlToken.AsValue().IsNull() then
+                        rlRemesa.ordenanteCuentaBancariaId := vlToken.AsValue().AsText();
 
                 if ItemObj.Get('ordenante', vlToken) then
-                    rlRemesa.ordenante := vlToken.AsValue().AsText();
+                    if not vlToken.AsValue().IsNull() then
+                        rlRemesa.ordenante := vlToken.AsValue().AsText();
 
                 if ItemObj.Get('presentador', vlToken) then
-                    rlRemesa.presentador := vlToken.AsValue().AsText();
+                    if not vlToken.AsValue().IsNull() then
+                        rlRemesa.presentador := vlToken.AsValue().AsText();
 
                 if ItemObj.Get('datosBancarios', vlToken) then
-                    rlRemesa.datosBancarios := vlToken.AsValue().AsText();
+                    if not vlToken.AsValue().IsNull() then
+                        rlRemesa.datosBancarios := vlToken.AsValue().AsText();
 
                 if ItemObj.Get('fechaCargo', vlToken) then
-                    Evaluate(rlRemesa.fechaCargo, vlToken.AsValue().AsText());
+                    if not vlToken.AsValue().IsNull() then
+                        Evaluate(rlRemesa.fechaCargo, vlToken.AsValue().AsText());
 
                 if ItemObj.Get('cuadernoBancario', vlToken) then
-                    rlRemesa.cuadernoBancario := vlToken.AsValue().AsText();
+                    if not vlToken.AsValue().IsNull() then
+                        rlRemesa.cuadernoBancario := vlToken.AsValue().AsText();
 
                 if ItemObj.Get('esquemaSEPA', vlToken) then
-                    rlRemesa.esquemaSEPA := vlToken.AsValue().AsText();
+                    if not vlToken.AsValue().IsNull() then
+                        rlRemesa.esquemaSEPA := vlToken.AsValue().AsText();
 
                 if ItemObj.Get('textoReciboRecargo', vlToken) then
-                    rlRemesa.textoReciboRecargo := vlToken.AsValue().AsText();
+                    if not vlToken.AsValue().IsNull() then
+                        rlRemesa.textoReciboRecargo := vlToken.AsValue().AsText();
 
                 if ItemObj.Get('importeRecargo', vlToken) then
-                    Evaluate(rlRemesa.importeRecargo, vlToken.AsValue().AsText());
+                    if not vlToken.AsValue().IsNull() then
+                        Evaluate(rlRemesa.importeRecargo, vlToken.AsValue().AsText());
 
                 if ItemObj.Get('numeroRecibosBanco', vlToken) then
-                    rlRemesa.numeroRecibosBanco := vlToken.AsValue().AsInteger();
+                    if not vlToken.AsValue().IsNull() then
+                        rlRemesa.numeroRecibosBanco := vlToken.AsValue().AsInteger();
 
                 if ItemObj.Get('importeTotalBanco', vlToken) then
-                    Evaluate(rlRemesa.importeTotalBanco, vlToken.AsValue().AsText());
+                    if not vlToken.AsValue().IsNull() then
+                        Evaluate(rlRemesa.importeTotalBanco, vlToken.AsValue().AsText());
 
                 if ItemObj.Get('numeroRecibosVentanilla', vlToken) then
-                    rlRemesa.numeroRecibosVentanilla := vlToken.AsValue().AsInteger();
+                    if not vlToken.AsValue().IsNull() then
+                        rlRemesa.numeroRecibosVentanilla := vlToken.AsValue().AsInteger();
 
                 if ItemObj.Get('importeTotalVentanilla', vlToken) then
-                    Evaluate(rlRemesa.importeTotalVentanilla, vlToken.AsValue().AsText());
+                    if not vlToken.AsValue().IsNull() then
+                        Evaluate(rlRemesa.importeTotalVentanilla, vlToken.AsValue().AsText());
 
                 if ItemObj.Get('esRemitida', vlToken) then
-                    rlRemesa.esRemitida := vlToken.AsValue().AsBoolean();
+                    if not vlToken.AsValue().IsNull() then
+                        rlRemesa.esRemitida := vlToken.AsValue().AsBoolean();
 
                 rlRemesa."Importation DateTime" := CurrentDateTime;
                 rlRemesa.Processed := true;
@@ -803,91 +1110,119 @@ codeunit 50006 "JSON Webservices Management"
                 rlRecibosRemesa.Insert();
             end else begin
                 if ItemObj.Get('medioPago', vlToken) then
-                    rlRecibosRemesa.medioPago := vlToken.AsValue().AsText();
+                    if not vlToken.AsValue().IsNull() then
+                        rlRecibosRemesa.medioPago := vlToken.AsValue().AsText();
 
                 if ItemObj.Get('pagadorMedioPagoId', vlToken) then
-                    Evaluate(rlRecibosRemesa.pagadorMedioPagoId, vlToken.AsValue().AsText());
+                    if not vlToken.AsValue().IsNull() then
+                        Evaluate(rlRecibosRemesa.pagadorMedioPagoId, vlToken.AsValue().AsText());
 
                 if ItemObj.Get('prefijo', vlToken) then
-                    rlRecibosRemesa.prefijo := vlToken.AsValue().AsText();
+                    if not vlToken.AsValue().IsNull() then
+                        rlRecibosRemesa.prefijo := vlToken.AsValue().AsText();
 
                 if ItemObj.Get('numero', vlToken) then
-                    rlRecibosRemesa.numero := vlToken.AsValue().AsInteger();
+                    if not vlToken.AsValue().IsNull() then
+                        rlRecibosRemesa.numero := vlToken.AsValue().AsInteger();
 
                 if ItemObj.Get('sufijoAnulacion', vlToken) then
-                    rlRecibosRemesa.sufijoAnulacion := vlToken.AsValue().AsText();
+                    if not vlToken.AsValue().IsNull() then
+                        rlRecibosRemesa.sufijoAnulacion := vlToken.AsValue().AsText();
 
                 if ItemObj.Get('reciboConceptoId', vlToken) then
-                    Evaluate(rlRecibosRemesa.reciboConceptoId, vlToken.AsValue().AsText());
+                    if not vlToken.AsValue().IsNull() then
+                        Evaluate(rlRecibosRemesa.reciboConceptoId, vlToken.AsValue().AsText());
 
                 if ItemObj.Get('importeConcepto', vlToken) then
-                    Evaluate(rlRecibosRemesa.importeConcepto, vlToken.AsValue().AsText());
+                    if not vlToken.AsValue().IsNull() then
+                        Evaluate(rlRecibosRemesa.importeConcepto, vlToken.AsValue().AsText());
 
                 if ItemObj.Get('importePagado', vlToken) then
-                    Evaluate(rlRecibosRemesa.importePagado, vlToken.AsValue().AsText());
+                    if not vlToken.AsValue().IsNull() then
+                        Evaluate(rlRecibosRemesa.importePagado, vlToken.AsValue().AsText());
 
                 if ItemObj.Get('fechaPago', vlToken) then
-                    Evaluate(rlRecibosRemesa.fechaPago, vlToken.AsValue().AsText());
+                    if not vlToken.AsValue().IsNull() then
+                        Evaluate(rlRecibosRemesa.fechaPago, vlToken.AsValue().AsText());
 
                 if ItemObj.Get('conceptoId', vlToken) then
-                    Evaluate(rlRecibosRemesa.conceptoId, vlToken.AsValue().AsText());
+                    if not vlToken.AsValue().IsNull() then
+                        Evaluate(rlRecibosRemesa.conceptoId, vlToken.AsValue().AsText());
 
                 if ItemObj.Get('texto', vlToken) then
-                    rlRecibosRemesa.texto := vlToken.AsValue().AsText();
+                    if not vlToken.AsValue().IsNull() then
+                        rlRecibosRemesa.texto := vlToken.AsValue().AsText();
 
                 if ItemObj.Get('personaId', vlToken) then
-                    Evaluate(rlRecibosRemesa.personaId, vlToken.AsValue().AsText());
+                    if not vlToken.AsValue().IsNull() then
+                        Evaluate(rlRecibosRemesa.personaId, vlToken.AsValue().AsText());
 
                 if ItemObj.Get('estado', vlToken) then
-                    rlRecibosRemesa.estado := vlToken.AsValue().AsText();
+                    if not vlToken.AsValue().IsNull() then
+                        rlRecibosRemesa.estado := vlToken.AsValue().AsText();
 
                 if ItemObj.Get('descuentoId', vlToken) then
-                    Evaluate(rlRecibosRemesa.descuentoId, vlToken.AsValue().AsText());
+                    if not vlToken.AsValue().IsNull() then
+                        Evaluate(rlRecibosRemesa.descuentoId, vlToken.AsValue().AsText());
 
                 if ItemObj.Get('nombreDescuento', vlToken) then
-                    rlRecibosRemesa.nombreDescuento := vlToken.AsValue().AsText();
+                    if not vlToken.AsValue().IsNull() then
+                        rlRecibosRemesa.nombreDescuento := vlToken.AsValue().AsText();
 
                 if ItemObj.Get('importe', vlToken) then
-                    Evaluate(rlRecibosRemesa.importe, vlToken.AsValue().AsText());
+                    if not vlToken.AsValue().IsNull() then
+                        Evaluate(rlRecibosRemesa.importe, vlToken.AsValue().AsText());
 
                 if ItemObj.Get('porcentaje', vlToken) then
-                    Evaluate(rlRecibosRemesa.porcentaje, vlToken.AsValue().AsText());
+                    if not vlToken.AsValue().IsNull() then
+                        Evaluate(rlRecibosRemesa.porcentaje, vlToken.AsValue().AsText());
 
                 if ItemObj.Get('nombreResponsable', vlToken) then
-                    rlRecibosRemesa.nombreResponsable := vlToken.AsValue().AsText();
+                    if not vlToken.AsValue().IsNull() then
+                        rlRecibosRemesa.nombreResponsable := vlToken.AsValue().AsText();
 
                 if ItemObj.Get('apellido1Responsable', vlToken) then
-                    rlRecibosRemesa.apellido1Responsable := vlToken.AsValue().AsText();
+                    if not vlToken.AsValue().IsNull() then
+                        rlRecibosRemesa.apellido1Responsable := vlToken.AsValue().AsText();
 
                 if ItemObj.Get('apellido2Responsable', vlToken) then
                     rlRecibosRemesa.apellido2Responsable := vlToken.AsValue().AsText();
 
                 if ItemObj.Get('fechaMovimiento', vlToken) then
-                    Evaluate(rlRecibosRemesa.fechaMovimiento, vlToken.AsValue().AsText());
+                    if not vlToken.AsValue().IsNull() then
+                        Evaluate(rlRecibosRemesa.fechaMovimiento, vlToken.AsValue().AsText());
 
                 if ItemObj.Get('fechaValor', vlToken) then
-                    Evaluate(rlRecibosRemesa.fechaValor, vlToken.AsValue().AsText());
+                    if not vlToken.AsValue().IsNull() then
+                        Evaluate(rlRecibosRemesa.fechaValor, vlToken.AsValue().AsText());
 
                 if ItemObj.Get('estadoRecibo', vlToken) then
-                    rlRecibosRemesa.estadoRecibo := vlToken.AsValue().AsText();
+                    if not vlToken.AsValue().IsNull() then
+                        rlRecibosRemesa.estadoRecibo := vlToken.AsValue().AsText();
 
                 if ItemObj.Get('motivoDevolucion', vlToken) then
-                    rlRecibosRemesa.motivoDevolucion := vlToken.AsValue().AsText();
+                    if not vlToken.AsValue().IsNull() then
+                        rlRecibosRemesa.motivoDevolucion := vlToken.AsValue().AsText();
 
                 if ItemObj.Get('comentario', vlToken) then
-                    rlRecibosRemesa.comentario := vlToken.AsValue().AsText();
+                    if not vlToken.AsValue().IsNull() then
+                        rlRecibosRemesa.comentario := vlToken.AsValue().AsText();
 
                 if ItemObj.Get('domiciliado', vlToken) then
-                    rlRecibosRemesa.domiciliado := vlToken.AsValue().AsBoolean();
+                    if not vlToken.AsValue().IsNull() then
+                        rlRecibosRemesa.domiciliado := vlToken.AsValue().AsBoolean();
 
                 if ItemObj.Get('importePago', vlToken) then
-                    Evaluate(rlRecibosRemesa.pago_importePago, vlToken.AsValue().AsText());
+                    if not vlToken.AsValue().IsNull() then
+                        Evaluate(rlRecibosRemesa.pago_importePago, vlToken.AsValue().AsText());
 
                 if ItemObj.Get('reciboConceptoId', vlToken) then
-                    Evaluate(rlRecibosRemesa.pago_reciboConceptoId, vlToken.AsValue().AsText());
+                    if not vlToken.AsValue().IsNull() then
+                        Evaluate(rlRecibosRemesa.pago_reciboConceptoId, vlToken.AsValue().AsText());
 
                 if ItemObj.Get('importePagado', vlToken) then
-                    Evaluate(rlRecibosRemesa.pago_importePagado, vlToken.AsValue().AsText());
+                    if not vlToken.AsValue().IsNull() then
+                        Evaluate(rlRecibosRemesa.pago_importePagado, vlToken.AsValue().AsText());
 
                 rlRecibosRemesa."Importation DateTime" := CurrentDateTime;
                 rlRecibosRemesa.Processed := true;
