@@ -578,7 +578,7 @@ codeunit 50002 "WS Functions"
         CopyStream(vOutStr, pInStr);
     end;
 
-    procedure fRevertirMovsContable(pGLEntryNo: Integer): Text
+    procedure fRevertirMovimientoContable(pGLEntryNo: Integer): Text
     var
         rlGLEntry: Record "G/L Entry";
         jlResponse: JsonObject;
@@ -586,33 +586,55 @@ codeunit 50002 "WS Functions"
         vlTransactionNo: Integer;
         vbVendorEntryFound: Boolean;
         vbVendorUnapplied: Boolean;
-
     begin
-        Clear(rlGLEntry);
-        if rlGLEntry.Get(pGLEntryNo) then
-            vlTransactionNo := rlGLEntry."Transaction No.";
+        CLEAR(rlGLEntry);
+        IF NOT rlGLEntry.GET(pGLEntryNo) THEN BEGIN
+            jlResponse.Add('success', FALSE);
+            jlResponse.Add('glEntryNo', pGLEntryNo);
+            jlResponse.Add('transactionNo', 0);
+            jlResponse.Add('vendorEntryFound', FALSE);
+            jlResponse.Add('vendorUnapplied', FALSE);
+            jlResponse.Add('message', STRSUBSTNO(TextWSGLEntryNotFoundLbl, pGLEntryNo, COMPANYNAME));
+            jlResponse.WriteTo(vlResponseText);
+            EXIT(vlResponseText);
+        END;
 
-        if lfTryRevertirMovimientoContable(pGLEntryNo, vbVendorEntryFound, vbVendorUnapplied) then begin
-            jlResponse.Add('success', true);
+        vlTransactionNo := rlGLEntry."Transaction No.";
+        IF vlTransactionNo = 0 THEN BEGIN
+            jlResponse.Add('success', FALSE);
+            jlResponse.Add('glEntryNo', pGLEntryNo);
+            jlResponse.Add('transactionNo', 0);
+            jlResponse.Add('vendorEntryFound', FALSE);
+            jlResponse.Add('vendorUnapplied', FALSE);
+            jlResponse.Add('message', STRSUBSTNO(TextWSMissingTransactionNoLbl, pGLEntryNo));
+            jlResponse.WriteTo(vlResponseText);
+            EXIT(vlResponseText);
+        END;
+
+        CLEARLASTERROR();
+        IF lfTryRevertirMovimientoContable(pGLEntryNo, vbVendorEntryFound, vbVendorUnapplied) THEN BEGIN
+            jlResponse.Add('success', TRUE);
             jlResponse.Add('glEntryNo', pGLEntryNo);
             jlResponse.Add('transactionNo', vlTransactionNo);
             jlResponse.Add('vendorEntryFound', vbVendorEntryFound);
             jlResponse.Add('vendorUnapplied', vbVendorUnapplied);
-            jlResponse.Add('messsge', lfGetReversionMessage(vbVendorEntryFound, vbVendorUnapplied));
-        end else begin
-            jlResponse.Add('success', false);
+            jlResponse.Add('message', lfGetReversionMessage(vbVendorEntryFound, vbVendorUnapplied));
+        END ELSE BEGIN
+            jlResponse.Add('success', FALSE);
             jlResponse.Add('glEntryNo', pGLEntryNo);
             jlResponse.Add('transactionNo', vlTransactionNo);
-            jlResponse.Add('vendorEntryFound', false);
-            jlResponse.Add('vendorUnapplied', false);
-            jlResponse.Add('messsge', lfGetReversionMessage(vbVendorEntryFound, vbVendorUnapplied));
-
-        end;
+            jlResponse.Add('vendorEntryFound', FALSE);
+            jlResponse.Add('vendorUnapplied', FALSE);
+            jlResponse.Add('message', GetLastErrorText());
+        END;
 
         jlResponse.WriteTo(vlResponseText);
-        exit(vlResponseText);
-
+        EXIT(vlResponseText);
     end;
+
+
+
+
 
     [TryFunction]
     local procedure lfTryRevertirMovimientoContable(pGlEntryNo: Integer; var pVendorEntryFound: Boolean; var pVendorUnapplied: Boolean)
@@ -692,6 +714,8 @@ codeunit 50002 "WS Functions"
         ctTemplateNotFound: Label 'Debe configurar un libro diario de tipo "Registro simple" antes de continuar.';
         Text000Lbl1: Label 'El "Registro Simple" se ha llevado a cabo correctamente';
         TextWSReversionLbl: Label 'La transaccion se ha revertido correctamente.';
-        TextWSReversionWithVendorLbl: Label 'La transaccion se ha revertido correctamente. Se han detectado movimientos de proveedor sin necesidad de desliquidar.';
-        TextWSReversionWithVendorUnapplyLbl: Label 'Se ha desliquidado el movimiento de proveedor y se ha revertido la transaccion correctamente.';
+        TextWSReversionWithVendorLbl: Label 'La transaccion se ha revertido correctamente. Se han detectado movimientos de proveedor sin necesidad de desaplicacion.';
+        TextWSReversionWithVendorUnapplyLbl: Label 'Se ha desaplicado el movimiento de proveedor y se ha revertido la transaccion correctamente.';
+        TextWSGLEntryNotFoundLbl: Label 'No existe el movimiento contable %1 en la empresa %2.';
+        TextWSMissingTransactionNoLbl: Label 'El movimiento contable %1 no tiene numero de transaccion. No se puede revertir desde esta funcion.';
 }
