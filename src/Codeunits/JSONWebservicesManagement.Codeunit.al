@@ -25,21 +25,14 @@ codeunit 50006 "JSON Webservices Management"
         vFullJsonBody: Text;
         vStatusCode: Integer;
         vOutStr: OutStream;
-        vInstr: InStream;
-        vFileName: Text;
         vBaseUrl: Text;
-
         vPersonaId: Text[50];
         vPagadorMedioPagoId: Text[50];
         vDependientePersonaId: Text[50];
-        vPagadorReadyToInsert: Boolean;
-
-        Text001: Label 'Datos importados correctamente. Por favor, revise el LOG';
         Error001: Label 'Fail to access API. Code %1 - %2', Comment = 'ESP="Error al acceder a la API. Código %1 - %2"';
         Error002: Label 'No response from api', Comment = 'ESP="Sin respuesta de la API"';
         Error003: Label 'No se obtuvieron datos para importar';
         Error004: Label 'No se pudo obtener token para hacer login';
-        Error006: Label 'No se pudo rellenar la tabla Input Data';
         InvalidResponseErr: Label 'The response was not valid', Comment = 'ESP="La respuesta no era válida"';
         NonJsonResponseErr: Label 'Respuesta no JSON (revisa "Open" en el LOG)';
 
@@ -142,7 +135,6 @@ codeunit 50006 "JSON Webservices Management"
         ReqHeaders: HttpHeaders;
         Base64: Codeunit "Base64 Convert";
         BasicValue: Text;
-        NewRefreshToken: Text;
     begin
         if rEDUSetup."Token URL" = '' then begin
             vResult := 'Token URL vacío en Setup';
@@ -166,7 +158,6 @@ codeunit 50006 "JSON Webservices Management"
         vRequest.SetRequestUri(rEDUSetup."Token URL");
         vRequest.Method := 'POST';
 
-        // HEADER Authorization: Basic base64(client_id:client_secret)
         vRequest.GetHeaders(ReqHeaders);
         ReqHeaders.Clear();
 
@@ -174,7 +165,6 @@ codeunit 50006 "JSON Webservices Management"
         ReqHeaders.Add('Authorization', StrSubstNo('Basic %1', BasicValue));
         ReqHeaders.Add('Accept', 'application/json');
 
-        // BODY x-www-form-urlencoded: grant_type + refresh_token
         Body := 'grant_type=authorization_code' +
                 '&content-type=application/x-www-form-urlencoded' +
                 '&code=' + UrlEncode(rEDUSetup."Auth Grant") +
@@ -185,7 +175,6 @@ codeunit 50006 "JSON Webservices Management"
         vContent.WriteFrom(Body);
         vContent.GetHeaders(ContentHeaders);
         ContentHeaders.Clear();
-        // ContentHeaders.Add('Content-Type', 'application/x-www-form-urlencoded');
 
         vRequest.Content := vContent;
 
@@ -197,7 +186,6 @@ codeunit 50006 "JSON Webservices Management"
         vStatusCode := vResponse.HttpStatusCode();
         vResponse.Content.ReadAs(RespTxt);
 
-        // Guardar respuesta token para LOG "Open"
         Clear(cTempBlob);
         cTempBlob.CreateOutStream(vOutStr);
         vOutStr.WriteText(RespTxt);
@@ -509,7 +497,6 @@ codeunit 50006 "JSON Webservices Management"
     local procedure BuildRecibosRemesaUrl(pRemesaID: Text): Text
     var
         Url: Text;
-        HasQuery: Boolean;
     begin
         Url := vBaseUrl + '/' + Format(vCalendarioId) + '/remesas/' +
         pRemesaID + '/recibos';
@@ -539,7 +526,6 @@ codeunit 50006 "JSON Webservices Management"
         i: Integer;
         j: Integer;
         k: Integer;
-        LengthRead: Integer;
         OpenPos: Integer;
         ClosePos: Integer;
         RemainingText: Text;
@@ -609,12 +595,11 @@ codeunit 50006 "JSON Webservices Management"
 
                                 vPagadorMedioPagoId := vlToken.AsValue().AsText();
 
-                                if not fFillMediosPago(PagObj) then begin
+                                if not fFillMediosPago(MedPagObj) then begin
                                     vResult := 'No se han podido tratar los medios de pago.';
                                     exit(false);
                                 end;
                             end;
-
                     end;
                 end;
 
@@ -637,10 +622,8 @@ codeunit 50006 "JSON Webservices Management"
                                     vResult := 'No se han podido tratar los dependientes económicos.';
                                     exit(false);
                                 end;
-
                             end
                     end;
-
                 end;
             end;
 
@@ -654,10 +637,7 @@ codeunit 50006 "JSON Webservices Management"
     local procedure fFillPagadores(PagadorObj: JsonObject): Boolean
     var
         rlPagador: Record "EDUCAMOS Pagador";
-        vlToken: JsonToken;
         DireccionTok: JsonToken;
-        DireccionArr: JsonArray;
-        DirTok: JsonToken;
         DirObj: JsonObject;
     begin
         if vPersonaId = '' then begin
@@ -696,61 +676,44 @@ codeunit 50006 "JSON Webservices Management"
         exit(true);
     end;
 
-    local procedure fFillMediosPago(PagadorObj: JsonObject): Boolean
+    local procedure fFillMediosPago(MediosPagoObj: JsonObject): Boolean
     var
         rlMedioPago: Record "EDUCAMOS MedioPago";
-        MediosPagoTok: JsonToken;
-        MediosPagoArr: JsonArray;
-        MedPagTok: JsonToken;
-        MedPagObj: JsonObject;
         CuentaBancariaTok: JsonToken;
-        CuentaBancariaObj: JsonObject;
-        CuenBancTok: JsonToken;
         CuenBancObj: JsonObject;
-        i: Integer;
     begin
         if vPagadorMedioPagoId = '' then begin
             vResult := 'El pagador no tiene identificadores suficientes.';
             exit(false);
         end;
 
-        if PagadorObj.Get('mediosPago', MediosPagoTok) then
-            if MediosPagoTok.IsArray() then begin
-                MediosPagoArr := MediosPagoTok.AsArray();
+        if not rlMedioPago.Get(vPersonaId, vPagadorMedioPagoId) then begin
+            rlMedioPago.Init();
+            rlMedioPago.personaId := vPersonaId;
+            rlMedioPago.pagadorMedioPagoId := vPagadorMedioPagoId;
 
-                for i := 0 to MediosPagoArr.Count() - 1 do begin
-                    MediosPagoArr.Get(i, MedPagTok);
-                    MedPagObj := MedPagTok.AsObject();
+            fFillMedioPagoData(MediosPagoObj, rlMedioPago);
 
-                    if not rlMedioPago.Get(vPersonaId, vPagadorMedioPagoId) then begin
-                        rlMedioPago.Init();
-                        rlMedioPago.personaId := vPersonaId;
-                        rlMedioPago.pagadorMedioPagoId := vPagadorMedioPagoId;
+            rlMedioPago."Importation DateTime" := CurrentDateTime;
+            rlMedioPago.Processed := true;
+            rlMedioPago.Insert();
+        end else begin
+            fFillMedioPagoData(MediosPagoObj, rlMedioPago);
 
-                        fFillMedioPagoData(MedPagObj, rlMedioPago);
+            rlMedioPago."Importation DateTime" := CurrentDateTime;
+            rlMedioPago.Processed := true;
+            rlMedioPago.Modify();
+        end;
 
-                        rlMedioPago."Importation DateTime" := CurrentDateTime;
-                        rlMedioPago.Processed := true;
-                        rlMedioPago.Insert();
-                    end else begin
-                        fFillMedioPagoData(MedPagObj, rlMedioPago);
+        if MediosPagoObj.Get('cuentaBancaria', CuentaBancariaTok) then
+            if CuentaBancariaTok.IsObject() then begin
+                CuenBancObj := CuentaBancariaTok.AsObject();
 
-                        rlMedioPago."Importation DateTime" := CurrentDateTime;
-                        rlMedioPago.Processed := true;
-                        rlMedioPago.Modify();
-                    end;
+                fFillCuentaBancariaData(CuenBancObj, rlMedioPago);
 
-                    if MedPagObj.Get('cuentaBancaria', CuentaBancariaTok) then
-                        if CuentaBancariaTok.IsObject() then begin
-                            CuenBancObj := CuentaBancariaTok.AsObject();
-
-                            fFillCuentaBancariaData(CuenBancObj, rlMedioPago);
-
-                            rlMedioPago."Importation DateTime" := CurrentDateTime;
-                            rlMedioPago.Processed := true;
-                            rlMedioPago.Modify();
-                        end;
-                end;
+                rlMedioPago."Importation DateTime" := CurrentDateTime;
+                rlMedioPago.Processed := true;
+                rlMedioPago.Modify();
             end;
 
         exit(true);
@@ -774,30 +737,30 @@ codeunit 50006 "JSON Webservices Management"
             if DependientesEconomicosTok.IsArray() then begin
                 DependientesEconomicosArr := DependientesEconomicosTok.AsArray();
 
-                for i := 0 to DependientesEconomicosArr.Count() - 1 do begin
-                    DependientesEconomicosArr.Get(i, DepEconTok);
-                    DepEconObj := DepEconTok.AsObject();
+                DependientesEconomicosArr.Get(i, DepEconTok);
+                DepEconObj := DepEconTok.AsObject();
 
-                    if not rlDependienteEconomico.Get(vPersonaId, vDependientePersonaId) then begin
-                        rlDependienteEconomico.Init();
-                        rlDependienteEconomico.personaId := vPersonaId;
-                        rlDependienteEconomico.dependientePersonaId := vDependientePersonaId;
+                if not rlDependienteEconomico.Get(vPersonaId, vDependientePersonaId) then begin
+                    rlDependienteEconomico.Init();
+                    rlDependienteEconomico.personaId := vPersonaId;
+                    rlDependienteEconomico.dependientePersonaId := vDependientePersonaId;
 
-                        fFillDependienteData(DepEconObj, rlDependienteEconomico);
+                    fFillDependienteData(DepEconObj, rlDependienteEconomico);
 
-                        rlDependienteEconomico."Importation DateTime" := CurrentDateTime;
-                        rlDependienteEconomico.Processed := true;
-                        rlDependienteEconomico.Insert();
-                    end else begin
-                        fFillDependienteData(DepEconObj, rlDependienteEconomico);
+                    rlDependienteEconomico."Importation DateTime" := CurrentDateTime;
+                    rlDependienteEconomico.Processed := true;
+                    rlDependienteEconomico.Insert();
+                end else begin
+                    fFillDependienteData(DepEconObj, rlDependienteEconomico);
 
-                        rlDependienteEconomico."Importation DateTime" := CurrentDateTime;
-                        rlDependienteEconomico.Processed := true;
-                        rlDependienteEconomico.Modify();
-                    end;
+                    rlDependienteEconomico."Importation DateTime" := CurrentDateTime;
+                    rlDependienteEconomico.Processed := true;
+                    rlDependienteEconomico.Modify();
                 end;
             end;
         end;
+
+        exit(true);
     end;
 
     local procedure fFillPagadorData(PagadorObj: JsonObject; var pPagadores: Record "EDUCAMOS Pagador")
@@ -1044,7 +1007,6 @@ codeunit 50006 "JSON Webservices Management"
             end else begin
                 fFillRemesasData(ItemObj, rlRemesa);
                 rlRemesa.Modify();
-
             end;
 
             exit(true);
@@ -1148,13 +1110,7 @@ codeunit 50006 "JSON Webservices Management"
     end;
 
     local procedure fTratarRecibosRemesa(pRemesaID: Text): Boolean
-    var
-        rlRecibosRemesa: Record "EDUCAMOS RecibosRemesa";
-        vlToken: JsonToken;
-        vlItemObj: JsonObject;
     begin
-        //Por cada remesa, insertar los recibos.
-        //Llamar a CallGETWithContinuationToken
         Ok := CallGETWithContinuationToken(BuildRecibosRemesaUrl(pRemesaID));
         if not Ok then begin
             cuInterface.fSetLogWithResponse(3, 'Error obteniendo recibos: ' + vResult, CompanyName, 0, cTempBlob);
@@ -1162,7 +1118,6 @@ codeunit 50006 "JSON Webservices Management"
             exit(false);
         end;
 
-        //Crear y llamar TryGetRecibosRemesa y fFillRecibosRemesas
         if not TryGetRecibosRemesa(pRemesaID) then begin
             cuInterface.fSetLogWithResponse(3, 'No se pudieron traer los recibos de remesas: ' + vResult, CompanyName, 0, cTempBlob);
             Commit();
