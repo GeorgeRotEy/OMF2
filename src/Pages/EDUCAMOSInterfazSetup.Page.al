@@ -102,10 +102,15 @@ page 50055 "EDUCAMOS Interfaz Setup"
                     clAPIConection.Run();
                 end;
             }
+            action(Log)
+            {
+                RunObject = page "EDUCAMOS Integration Log";
+            }
         }
         area(Promoted)
         {
             actionref(Test_Promoted; Test) { }
+            actionref(Log_Promoted; Log) { }
         }
     }
 

@@ -3,6 +3,7 @@ codeunit 50006 "JSON Webservices Management"
     trigger OnRun()
     begin
         Code();
+        Message('Proceso completado. Por favor, revise el LOG para más detalles.');
     end;
 
     var
@@ -24,7 +25,15 @@ codeunit 50006 "JSON Webservices Management"
         vFullJsonBody: Text;
         vStatusCode: Integer;
         vOutStr: OutStream;
-        vBaseUrl: Text; //Inicializar con rEDUSetup."API URL"
+        vInstr: InStream;
+        vFileName: Text;
+        vBaseUrl: Text;
+
+        vPersonaId: Text[50];
+        vPagadorMedioPagoId: Text[50];
+        vDependientePersonaId: Text[50];
+        vPagadorReadyToInsert: Boolean;
+
         Text001: Label 'Datos importados correctamente. Por favor, revise el LOG';
         Error001: Label 'Fail to access API. Code %1 - %2', Comment = 'ESP="Error al acceder a la API. Código %1 - %2"';
         Error002: Label 'No response from api', Comment = 'ESP="Sin respuesta de la API"';
@@ -293,7 +302,6 @@ codeunit 50006 "JSON Webservices Management"
             end;
 
             Aggregated.AddText(vlPageTxt);
-            Aggregated.AddText('\');
 
             vlContinuationTkn := ExtractContinuationToken(vlPageTxt);
         until vlContinuationTkn = '';
@@ -521,284 +529,461 @@ codeunit 50006 "JSON Webservices Management"
         Root: JsonObject;
         PagadoresTok: JsonToken;
         PagadoresArr: JsonArray;
-        DireccionTok: JsonToken;
-        DireccionArr: JsonArray;
         MediosPagoTok: JsonToken;
         MediosPagoArr: JsonArray;
-        CuentaBancariaTok: JsonToken;
-        CuentaBancariaArr: JsonArray;
-        DependientesEconomicosArr: JsonArray;
-        DependientesEconomicosTok: JsonToken;
-        ItemTok: JsonToken;
-        ItemObj: JsonObject;
+        DepEconTok: JsonToken;
+        DepEconArr: JsonArray;
+        PagTok: JsonToken;
+        PagObj: JsonObject;
+        vlToken: JsonToken;
         i: Integer;
+        j: Integer;
+        k: Integer;
+        LengthRead: Integer;
+        OpenPos: Integer;
+        ClosePos: Integer;
+        RemainingText: Text;
+        OneJsonText: Text;
+        MedPagTok: JsonToken;
+        MedPagObj: JsonObject;
+        DepTok: JsonToken;
+        DepObj: JsonObject;
     begin
         vResult := '';
 
-        if not Root.ReadFrom(vFullJsonBody) then begin
-            vResult := NonJsonResponseErr;
-            exit(false);
-        end;
+        RemainingText := vFullJsonBody;
 
-        if not Root.Get('pagadores', PagadoresTok) then begin
-            vResult := 'La respuesta no contiene el nodo "Pagadores".';
-            exit(false);
-        end;
+        while StrLen(RemainingText) > 0 do begin
+            OpenPos := StrPos(RemainingText, '{');
+            if OpenPos = 0 then
+                break;
 
-        PagadoresArr := PagadoresTok.AsArray();
-
-        for i := 0 to PagadoresArr.Count() - 1 do begin
-            PagadoresArr.Get(i, ItemTok);
-            ItemObj := ItemTok.AsObject();
-
-            if not fFillPagadores(ItemObj) then begin
-                vResult := 'No se han podido tratar los pagadores.';
+            ClosePos := fFindMatchingBrace(RemainingText, OpenPos);
+            if ClosePos = 0 then begin
+                vResult := 'JSON de pagadores incompleto.';
                 exit(false);
             end;
-        end;
 
-        if not Root.Get('direccion', DireccionTok) then begin
-            vResult := 'La respuesta no contiene el nodo "Direccion".';
-            exit(false);
-        end;
+            OneJsonText := CopyStr(RemainingText, OpenPos, ClosePos - OpenPos + 1);
 
-        DireccionArr := DireccionTok.AsArray();
+            Clear(Root);
 
-        for i := 0 to DireccionArr.Count() - 1 do begin
-            DireccionArr.Get(i, ItemTok);
-            ItemObj := ItemTok.AsObject();
-
-            if not fFillPagadores(ItemObj) then begin
-                vResult := 'No se han podido tratar las direcciones.';
+            if not Root.ReadFrom(OneJsonText) then begin
+                vResult := NonJsonResponseErr;
                 exit(false);
             end;
-        end;
 
-        if not Root.Get('mediosPago', MediosPagoTok) then begin
-            vResult := 'La respuesta no contiene el nodo "MediosPago".';
-            exit(false);
-        end;
-
-        MediosPagoArr := MediosPagoTok.AsArray();
-
-        for i := 0 to MediosPagoArr.Count() - 1 do begin
-            MediosPagoArr.Get(i, ItemTok);
-            ItemObj := ItemTok.AsObject();
-
-            if not fFillPagadores(ItemObj) then begin
-                vResult := 'No se han podido tratar los medios de pago.';
+            if not Root.Get('pagadores', PagadoresTok) then begin
+                vResult := 'La respuesta no contiene el nodo "Pagadores".';
                 exit(false);
             end;
-        end;
 
-        if not Root.Get('cuentaBancaria', CuentaBancariaTok) then begin
-            vResult := 'La respuesta no contiene el nodo "cuentaBancaria".';
-            exit(false);
-        end;
+            PagadoresArr := PagadoresTok.AsArray();
 
-        CuentaBancariaArr := CuentaBancariaTok.AsArray();
+            for i := 0 to PagadoresArr.Count() - 1 do begin
+                PagadoresArr.Get(i, PagTok);
+                PagObj := PagTok.AsObject();
 
-        for i := 0 to CuentaBancariaArr.Count() - 1 do begin
-            CuentaBancariaArr.Get(i, ItemTok);
-            ItemObj := ItemTok.AsObject();
+                vPersonaId := '';
+                if PagObj.Get('personaId', vlToken) then
+                    if vlToken.IsValue() and (not vlToken.AsValue.IsNull) then begin
 
-            if not fFillPagadores(ItemObj) then begin
-                vResult := 'No se han podido tratar las cuentas bancarias.';
-                exit(false);
+                        vPersonaId := vlToken.AsValue().AsText();
+
+                        if not fFillPagadores(PagObj) then begin
+                            vResult := 'No se han podido tratar los pagadores.';
+                            exit(false);
+                        end
+                    end;
+
+                if PagObj.Get('mediosPago', MediosPagoTok) and MediosPagoTok.IsArray() then begin
+                    MediosPagoArr := MediosPagoTok.AsArray();
+
+                    for j := 0 to MediosPagoArr.Count() - 1 do begin
+                        MediosPagoArr.Get(j, MedPagTok);
+                        MedPagObj := MedPagTok.AsObject();
+
+                        vPagadorMedioPagoId := '';
+                        if MedPagObj.Get('pagadorMedioPagoId', vlToken) then
+                            if vlToken.IsValue() and (not vlToken.AsValue.IsNull) then begin
+
+                                vPagadorMedioPagoId := vlToken.AsValue().AsText();
+
+                                if not fFillMediosPago(PagObj) then begin
+                                    vResult := 'No se han podido tratar los medios de pago.';
+                                    exit(false);
+                                end;
+                            end;
+
+                    end;
+                end;
+
+                if PagObj.Get('dependientesEconomicos', DepEconTok) and DepEconTok.IsArray() then begin
+                    DepEconArr := DepEconTok.AsArray();
+
+                    for k := 0 to DepEconArr.Count() - 1 do begin
+                        DepEconArr.Get(k, DepTok);
+                        DepObj := DepTok.AsObject();
+
+                        vDependientePersonaId := '';
+                        if DepObj.Get('personaId', vlToken) then
+                            if vlToken.IsValue() and (not vlToken.AsValue.IsNull) then begin
+
+                                vDependientePersonaId := vlToken.AsValue().AsText();
+                                if vDependientePersonaId = '' then
+                                    vDependientePersonaId := 'null';
+
+                                if not fFillDepEconomicos(PagObj) then begin
+                                    vResult := 'No se han podido tratar los dependientes económicos.';
+                                    exit(false);
+                                end;
+
+                            end
+                    end;
+
+                end;
             end;
+
+            RemainingText := CopyStr(RemainingText, ClosePos + 1);
         end;
 
-        if not Root.Get('dependientesEconomicos', DependientesEconomicosTok) then begin
-            vResult := 'La respuesta no contiene el nodo "dependientesEconomicos".';
-            exit(false);
-        end;
-
-        DependientesEconomicosArr := DependientesEconomicosTok.AsArray();
-
-        for i := 0 to DependientesEconomicosArr.Count() - 1 do begin
-            DependientesEconomicosArr.Get(i, ItemTok);
-            ItemObj := ItemTok.AsObject();
-
-            if not fFillPagadores(ItemObj) then begin
-                vResult := 'No se han podido tratar los dependientes económicos.';
-                exit(false);
-            end;
-        end;
-
-        vResult := 'Recibos importados correctamente.';
-        exit(false);
+        vResult := 'Pagadores importados correctamente.';
+        exit(true);
     end;
 
-    local procedure fFillPagadores(ItemObj: JsonObject): Boolean
+    local procedure fFillPagadores(PagadorObj: JsonObject): Boolean
     var
-        rlPagadores: Record "EDUCAMOS Pagadores";
+        rlPagador: Record "EDUCAMOS Pagador";
         vlToken: JsonToken;
+        DireccionTok: JsonToken;
+        DireccionArr: JsonArray;
+        DirTok: JsonToken;
+        DirObj: JsonObject;
     begin
-        if ItemObj.Get('personaId', vlToken) then begin
-            if not rlPagadores.Get(vlToken.AsValue().AsText()) then begin
-                rlPagadores.Init();
-                rlPagadores.personaId := vlToken.AsValue().AsText();
-                fFillPagadoresData(ItemObj, rlPagadores);
-                rlPagadores.Insert();
-            end else begin
-                fFillPagadoresData(ItemObj, rlPagadores);
-                rlPagadores.Modify();
+        if vPersonaId = '' then begin
+            vResult := 'El pagador no tiene identificadores suficientes.';
+            exit(false);
+        end;
 
-                exit(true);
+        if not rlPagador.Get(vPersonaId) then begin
+            rlPagador.Init();
+            rlPagador.personaId := vPersonaId;
+
+            fFillPagadorData(PagadorObj, rlPagador);
+
+            rlPagador."Importation DateTime" := CurrentDateTime;
+            rlPagador.Processed := true;
+            rlPagador.Insert();
+        end else begin
+            fFillPagadorData(PagadorObj, rlPagador);
+
+            rlPagador."Importation DateTime" := CurrentDateTime;
+            rlPagador.Processed := true;
+            rlPagador.Modify();
+        end;
+
+        if PagadorObj.Get('direccion', DireccionTok) then
+            if DireccionTok.IsObject() then begin
+                DirObj := DireccionTok.AsObject();
+
+                fFillDireccionData(DirObj, rlPagador);
+
+                rlPagador."Importation DateTime" := CurrentDateTime;
+                rlPagador.Processed := true;
+                rlPagador.Modify();
+            end;
+
+        exit(true);
+    end;
+
+    local procedure fFillMediosPago(PagadorObj: JsonObject): Boolean
+    var
+        rlMedioPago: Record "EDUCAMOS MedioPago";
+        MediosPagoTok: JsonToken;
+        MediosPagoArr: JsonArray;
+        MedPagTok: JsonToken;
+        MedPagObj: JsonObject;
+        CuentaBancariaTok: JsonToken;
+        CuentaBancariaObj: JsonObject;
+        CuenBancTok: JsonToken;
+        CuenBancObj: JsonObject;
+        i: Integer;
+    begin
+        if vPagadorMedioPagoId = '' then begin
+            vResult := 'El pagador no tiene identificadores suficientes.';
+            exit(false);
+        end;
+
+        if PagadorObj.Get('mediosPago', MediosPagoTok) then
+            if MediosPagoTok.IsArray() then begin
+                MediosPagoArr := MediosPagoTok.AsArray();
+
+                for i := 0 to MediosPagoArr.Count() - 1 do begin
+                    MediosPagoArr.Get(i, MedPagTok);
+                    MedPagObj := MedPagTok.AsObject();
+
+                    if not rlMedioPago.Get(vPersonaId, vPagadorMedioPagoId) then begin
+                        rlMedioPago.Init();
+                        rlMedioPago.personaId := vPersonaId;
+                        rlMedioPago.pagadorMedioPagoId := vPagadorMedioPagoId;
+
+                        fFillMedioPagoData(MedPagObj, rlMedioPago);
+
+                        rlMedioPago."Importation DateTime" := CurrentDateTime;
+                        rlMedioPago.Processed := true;
+                        rlMedioPago.Insert();
+                    end else begin
+                        fFillMedioPagoData(MedPagObj, rlMedioPago);
+
+                        rlMedioPago."Importation DateTime" := CurrentDateTime;
+                        rlMedioPago.Processed := true;
+                        rlMedioPago.Modify();
+                    end;
+
+                    if MedPagObj.Get('cuentaBancaria', CuentaBancariaTok) then
+                        if CuentaBancariaTok.IsObject() then begin
+                            CuenBancObj := CuentaBancariaTok.AsObject();
+
+                            fFillCuentaBancariaData(CuenBancObj, rlMedioPago);
+
+                            rlMedioPago."Importation DateTime" := CurrentDateTime;
+                            rlMedioPago.Processed := true;
+                            rlMedioPago.Modify();
+                        end;
+                end;
+            end;
+
+        exit(true);
+    end;
+
+    local procedure fFillDepEconomicos(PagadorObj: JsonObject): Boolean
+    var
+        rlDependienteEconomico: Record "EDUCAMOS Dep. Economico";
+        DependientesEconomicosArr: JsonArray;
+        DependientesEconomicosTok: JsonToken;
+        DepEconTok: JsonToken;
+        DepEconObj: JsonObject;
+        i: Integer;
+    begin
+        if vDependientePersonaId = '' then begin
+            vResult := 'El pagador no tiene identificadores suficientes.';
+            exit(false);
+        end;
+
+        if PagadorObj.Get('dependientesEconomicos', DependientesEconomicosTok) then begin
+            if DependientesEconomicosTok.IsArray() then begin
+                DependientesEconomicosArr := DependientesEconomicosTok.AsArray();
+
+                for i := 0 to DependientesEconomicosArr.Count() - 1 do begin
+                    DependientesEconomicosArr.Get(i, DepEconTok);
+                    DepEconObj := DepEconTok.AsObject();
+
+                    if not rlDependienteEconomico.Get(vPersonaId, vDependientePersonaId) then begin
+                        rlDependienteEconomico.Init();
+                        rlDependienteEconomico.personaId := vPersonaId;
+                        rlDependienteEconomico.dependientePersonaId := vDependientePersonaId;
+
+                        fFillDependienteData(DepEconObj, rlDependienteEconomico);
+
+                        rlDependienteEconomico."Importation DateTime" := CurrentDateTime;
+                        rlDependienteEconomico.Processed := true;
+                        rlDependienteEconomico.Insert();
+                    end else begin
+                        fFillDependienteData(DepEconObj, rlDependienteEconomico);
+
+                        rlDependienteEconomico."Importation DateTime" := CurrentDateTime;
+                        rlDependienteEconomico.Processed := true;
+                        rlDependienteEconomico.Modify();
+                    end;
+                end;
             end;
         end;
     end;
 
-    local procedure fFillPagadoresData(ItemObj: JsonObject; var pPagadores: Record "EDUCAMOS Pagadores")
+    local procedure fFillPagadorData(PagadorObj: JsonObject; var pPagadores: Record "EDUCAMOS Pagador")
     var
         vlToken: JsonToken;
     begin
-        if ItemObj.Get('nombre', vlToken) then
+        if PagadorObj.Get('nombre', vlToken) then
             if not vlToken.AsValue().IsNull() then
                 pPagadores.nombre := vlToken.AsValue().AsText();
 
-        if ItemObj.Get('apellido1', vlToken) then
+        if PagadorObj.Get('apellido1', vlToken) then
             if not vlToken.AsValue().IsNull() then
                 pPagadores.apellido1 := vlToken.AsValue().AsText();
 
-        if ItemObj.Get('apellido2', vlToken) then
+        if PagadorObj.Get('apellido2', vlToken) then
             if not vlToken.AsValue().IsNull() then
                 pPagadores.apellido2 := vlToken.AsValue().AsText();
 
-        if ItemObj.Get('sexo', vlToken) then
+        if PagadorObj.Get('sexo', vlToken) then
             if not vlToken.AsValue().IsNull() then
                 pPagadores.sexo := vlToken.AsValue().AsText();
 
-        if ItemObj.Get('tipoDocumento', vlToken) then
+        if PagadorObj.Get('tipoDocumento', vlToken) then
             if not vlToken.AsValue().IsNull() then
                 pPagadores.tipoDocumento := vlToken.AsValue().AsText();
 
-        if ItemObj.Get('numeroDocumento', vlToken) then
+        if PagadorObj.Get('numeroDocumento', vlToken) then
             if not vlToken.AsValue().IsNull() then
                 pPagadores.numeroDocumento := vlToken.AsValue().AsText();
 
-        if ItemObj.Get('telefonoCasa', vlToken) then
+        if PagadorObj.Get('telefonoCasa', vlToken) then
             if not vlToken.AsValue().IsNull() then
                 pPagadores.telefonoCasa := vlToken.AsValue().AsText();
 
-        if ItemObj.Get('telefonoMovil1', vlToken) then
+        if PagadorObj.Get('telefonoMovil1', vlToken) then
             if not vlToken.AsValue().IsNull() then
                 pPagadores.telefonoMovil1 := vlToken.AsValue().AsText();
 
-        if ItemObj.Get('correoElectronico', vlToken) then
+        if PagadorObj.Get('correoElectronico', vlToken) then
             if not vlToken.AsValue().IsNull() then
                 pPagadores.correoElectronico := vlToken.AsValue().AsText();
 
-        if ItemObj.Get('codigoSAGE', vlToken) then
+        if PagadorObj.Get('codigoSAGE', vlToken) then
             if not vlToken.AsValue().IsNull() then
                 pPagadores.codigoSAGE := vlToken.AsValue().AsText();
+    end;
 
-        if ItemObj.Get('calle', vlToken) then
+    local procedure fFillDireccionData(DirObj: JsonObject; var pPagadores: Record "EDUCAMOS Pagador")
+    var
+        vlToken: JsonToken;
+    begin
+        if DirObj.Get('calle', vlToken) then
             if not vlToken.AsValue().IsNull() then
                 pPagadores.calle := vlToken.AsValue().AsText();
 
-        if ItemObj.Get('codigoPostal', vlToken) then
+        if DirObj.Get('codigoPostal', vlToken) then
             if not vlToken.AsValue().IsNull() then
                 pPagadores.codigoPostal := vlToken.AsValue().AsText();
 
-        if ItemObj.Get('region', vlToken) then
+        if DirObj.Get('region', vlToken) then
             if not vlToken.AsValue().IsNull() then
                 pPagadores.region := vlToken.AsValue().AsText();
 
-        if ItemObj.Get('pais', vlToken) then
+        if DirObj.Get('pais', vlToken) then
             if not vlToken.AsValue().IsNull() then
                 pPagadores.pais := vlToken.AsValue().AsText();
 
-        if ItemObj.Get('tipoVia', vlToken) then
+        if DirObj.Get('tipoVia', vlToken) then
             if not vlToken.AsValue().IsNull() then
                 pPagadores.tipoVia := vlToken.AsValue().AsText();
 
-        if ItemObj.Get('numero', vlToken) then
+        if DirObj.Get('numero', vlToken) then
             if not vlToken.AsValue().IsNull() then
                 pPagadores.numero := vlToken.AsValue().AsText();
 
-        if ItemObj.Get('bloque', vlToken) then
+        if DirObj.Get('bloque', vlToken) then
             if not vlToken.AsValue().IsNull() then
                 pPagadores.bloque := vlToken.AsValue().AsText();
 
-        if ItemObj.Get('escalera', vlToken) then
+        if DirObj.Get('escalera', vlToken) then
             if not vlToken.AsValue().IsNull() then
                 pPagadores.escalera := vlToken.AsValue().AsText();
 
-        if ItemObj.Get('piso', vlToken) then
+        if DirObj.Get('piso', vlToken) then
             if not vlToken.AsValue().IsNull() then
                 pPagadores.piso := vlToken.AsValue().AsText();
 
-        if ItemObj.Get('puerta', vlToken) then
+        if DirObj.Get('puerta', vlToken) then
             if not vlToken.AsValue().IsNull() then
                 pPagadores.puerta := vlToken.AsValue().AsText();
 
-        if ItemObj.Get('localidad', vlToken) then
+        if DirObj.Get('localidad', vlToken) then
             if not vlToken.AsValue().IsNull() then
                 pPagadores.localidad := vlToken.AsValue().AsText();
 
-        if ItemObj.Get('codigoMunicipio', vlToken) then
+        if DirObj.Get('codigoMunicipio', vlToken) then
             if not vlToken.AsValue().IsNull() then
                 pPagadores.codigoMunicipio := vlToken.AsValue().AsText();
 
-        if ItemObj.Get('concejo', vlToken) then
+        if DirObj.Get('concejo', vlToken) then
             if not vlToken.AsValue().IsNull() then
                 pPagadores.concejo := vlToken.AsValue().AsText();
 
-        if ItemObj.Get('provincia', vlToken) then
+        if DirObj.Get('provincia', vlToken) then
             if not vlToken.AsValue().IsNull() then
                 pPagadores.provincia := vlToken.AsValue().AsText();
+    end;
 
-        if ItemObj.Get('pagadorMedioPagoId', vlToken) then
+    local procedure fFillMedioPagoData(MedPagObj: JsonObject; var pMedioPago: Record "EDUCAMOS MedioPago")
+    var
+        vlToken: JsonToken;
+    begin
+        if MedPagObj.Get('medioPago', vlToken) then
             if not vlToken.AsValue().IsNull() then
-                pPagadores.pagadorMedioPagoId := vlToken.AsValue().AsText();
+                pMedioPago.medioPago := vlToken.AsValue().AsText();
 
-        if ItemObj.Get('medioPago', vlToken) then
+        if MedPagObj.Get('porDefecto', vlToken) then
             if not vlToken.AsValue().IsNull() then
-                pPagadores.medioPago := vlToken.AsValue().AsText();
+                pMedioPago.porDefecto := vlToken.AsValue().AsBoolean();
+    end;
 
-        if ItemObj.Get('porDefectoMedioPago', vlToken) then
+    local procedure fFillCuentaBancariaData(CuenBancObj: JsonObject; var pMedioPago: Record "EDUCAMOS MedioPago")
+    var
+        vlToken: JsonToken;
+    begin
+        if CuenBancObj.Get('bic', vlToken) then
             if not vlToken.AsValue().IsNull() then
-                pPagadores.porDefectoMedioPago := vlToken.AsValue().AsBoolean();
+                pMedioPago.bic := vlToken.AsValue().AsText();
 
-        if ItemObj.Get('bic', vlToken) then
+        if CuenBancObj.Get('codigoPais', vlToken) then
             if not vlToken.AsValue().IsNull() then
-                pPagadores.bic := vlToken.AsValue().AsText();
+                pMedioPago.codigoPais := vlToken.AsValue().AsText();
 
-        if ItemObj.Get('codigoPais', vlToken) then
+        if CuenBancObj.Get('digitoControlIban', vlToken) then
             if not vlToken.AsValue().IsNull() then
-                pPagadores.codigoPais := vlToken.AsValue().AsText();
+                pMedioPago.digitoControlIban := vlToken.AsValue().AsText();
 
-        if ItemObj.Get('digitoControlIban', vlToken) then
+        if CuenBancObj.Get('entidad', vlToken) then
             if not vlToken.AsValue().IsNull() then
-                pPagadores.digitoControlIban := vlToken.AsValue().AsText();
+                pMedioPago.entidad := vlToken.AsValue().AsText();
 
-        if ItemObj.Get('entidad', vlToken) then
+        if CuenBancObj.Get('sucursal', vlToken) then
             if not vlToken.AsValue().IsNull() then
-                pPagadores.entidad := vlToken.AsValue().AsText();
+                pMedioPago.sucursal := vlToken.AsValue().AsText();
 
-        if ItemObj.Get('sucursal', vlToken) then
+        if CuenBancObj.Get('digitoControl', vlToken) then
             if not vlToken.AsValue().IsNull() then
-                pPagadores.sucursal := vlToken.AsValue().AsText();
+                pMedioPago.digitoControl := vlToken.AsValue().AsText();
 
-        if ItemObj.Get('digitoControl', vlToken) then
+        if CuenBancObj.Get('numeroCuenta', vlToken) then
             if not vlToken.AsValue().IsNull() then
-                pPagadores.digitoControl := vlToken.AsValue().AsText();
+                pMedioPago.numeroCuenta := vlToken.AsValue().AsText();
+    end;
 
-        if ItemObj.Get('numeroCuenta', vlToken) then
+    local procedure fFillDependienteData(DepEconObj: JsonObject; var pDepEconomico: Record "EDUCAMOS Dep. Economico")
+    var
+        vlToken: JsonToken;
+    begin
+        if DepEconObj.Get('porDefecto', vlToken) then
             if not vlToken.AsValue().IsNull() then
-                pPagadores.numeroCuenta := vlToken.AsValue().AsText();
+                pDepEconomico.porDefecto := vlToken.AsValue().AsBoolean();
+    end;
 
-        if ItemObj.Get('dependientePersonaId', vlToken) then
-            if not vlToken.AsValue().IsNull() then
-                pPagadores.dependientePersonaId := vlToken.AsValue().AsText();
+    local procedure fFindMatchingBrace(TextToScan: Text; StartPos: Integer): Integer
+    var
+        i: Integer;
+        Level: Integer;
+        c: Char;
+    begin
+        Level := 0;
 
-        if ItemObj.Get('dependientePorDefecto', vlToken) then
-            if not vlToken.AsValue().IsNull() then
-                pPagadores.dependientePorDefecto := vlToken.AsValue().AsBoolean();
+        for i := StartPos to StrLen(TextToScan) do begin
+            c := TextToScan[i];
 
-        pPagadores."Importation DateTime" := CurrentDateTime;
-        pPagadores.Processed := true;
+            if c = '{' then
+                Level += 1;
+
+            if c = '}' then begin
+                Level -= 1;
+
+                if Level = 0 then
+                    exit(i);
+            end;
+        end;
+
+        exit(0);
     end;
 
     local procedure TryGetRemesas(): Boolean
@@ -860,8 +1045,9 @@ codeunit 50006 "JSON Webservices Management"
                 fFillRemesasData(ItemObj, rlRemesa);
                 rlRemesa.Modify();
 
-                exit(true);
             end;
+
+            exit(true);
         end;
     end;
 
@@ -1131,9 +1317,9 @@ codeunit 50006 "JSON Webservices Management"
             end else begin
                 fFillRecibosRemesaData(ItemObj, rlRecibosRemesa);
                 rlRecibosRemesa.Modify();
-
-                exit(true);
             end;
+
+            exit(true);
         end;
     end;
 
@@ -1319,6 +1505,7 @@ codeunit 50006 "JSON Webservices Management"
         Ok := false;
         vFullJsonBody := '';
         vStatusCode := 0;
+        vBaseUrl := rEDUSetup."API URL";
 
         exit(true);
     end;
