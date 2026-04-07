@@ -119,9 +119,10 @@ codeunit 50002 "WS Functions"
         rGenJnlTemplate.RESET();
         rGenJnlTemplate.SETRANGE(Type, rGenJnlTemplate.Type::EasyRegister);
         IF NOT rGenJnlTemplate.FINDFIRST() THEN
-            resp := ctTemplateNotFound
-        ELSE
-            clCashRegMgt.fSetGenJnlTemplate(rGenJnlTemplate.Name);
+            //resp := ctTemplateNotFound
+            exit(ctTemplateNotFound);
+        //ELSE
+        clCashRegMgt.fSetGenJnlTemplate(rGenJnlTemplate.Name);
 
         clCashRegMgt.fSetPayrollPostData(pPostingDate, pCocinaComedor, pVigilanciaRecepcion, pLimpieza, pBiblioteca, pEnfermeria, pOtros, pCompanySS, pEmployeeSS, pIRPF, pNetAmount,
         pITCocinaComedor, pITVigilanciaRecepcion, pITLimpieza, pITBiblioteca, pITEnfermeria, pITOtros);
@@ -581,6 +582,7 @@ codeunit 50002 "WS Functions"
     procedure fRevertirMovimientoContable(pGLEntryNo: Integer): Text
     var
         rlGLEntry: Record "G/L Entry";
+        clEYFunctions: Codeunit "EY Functions";
         jlResponse: JsonObject;
         vlResponseText: Text;
         vlTransactionNo: Integer;
@@ -612,13 +614,13 @@ codeunit 50002 "WS Functions"
         END;
 
         CLEARLASTERROR();
-        IF lfTryRevertirMovimientoContable(pGLEntryNo, vbVendorEntryFound, vbVendorUnapplied) THEN BEGIN
+        IF clEYFunctions.lfTryRevertirMovimientoContable(pGLEntryNo, vbVendorEntryFound, vbVendorUnapplied) THEN BEGIN
             jlResponse.Add('success', TRUE);
             jlResponse.Add('glEntryNo', pGLEntryNo);
             jlResponse.Add('transactionNo', vlTransactionNo);
             jlResponse.Add('vendorEntryFound', vbVendorEntryFound);
             jlResponse.Add('vendorUnapplied', vbVendorUnapplied);
-            jlResponse.Add('message', lfGetReversionMessage(vbVendorEntryFound, vbVendorUnapplied));
+            jlResponse.Add('message', clEYFunctions.lfGetReversionMessage(vbVendorEntryFound, vbVendorUnapplied));
         END ELSE BEGIN
             jlResponse.Add('success', FALSE);
             jlResponse.Add('glEntryNo', pGLEntryNo);
@@ -636,70 +638,70 @@ codeunit 50002 "WS Functions"
 
 
 
-    [TryFunction]
-    local procedure lfTryRevertirMovimientoContable(pGlEntryNo: Integer; var pVendorEntryFound: Boolean; var pVendorUnapplied: Boolean)
-    var
-        rlGlEntry: Record "G/L Entry";
-    begin
-        rlGlEntry.Get(pGlEntryNo);
-        rlGlEntry.TestField("Transaction No.");
+    // [TryFunction]
+    // local procedure lfTryRevertirMovimientoContable(pGlEntryNo: Integer; var pVendorEntryFound: Boolean; var pVendorUnapplied: Boolean)
+    // var
+    //     rlGlEntry: Record "G/L Entry";
+    // begin
+    //     rlGlEntry.Get(pGlEntryNo);
+    //     rlGlEntry.TestField("Transaction No.");
 
-        lfDesliquidarProveedor(rlGlEntry."Transaction No.", pVendorEntryFound, pVendorUnapplied);
-        lfRevertirTransaccion(rlGlEntry."Transaction No.");
+    //     lfDesliquidarProveedor(rlGlEntry."Transaction No.", pVendorEntryFound, pVendorUnapplied);
+    //     lfRevertirTransaccion(rlGlEntry."Transaction No.");
 
-    end;
+    // end;
 
-    local procedure lfDesliquidarProveedor(pTransactionNo: Integer; var PvendorEntryFound: Boolean; var pVendorUnapplied: Boolean)
-    var
-        rlVendLedgEntry: Record "Vendor Ledger Entry";
-        rlDtldVendLedgEntry: Record "Detailed Vendor Ledg. Entry";
-        rlApplyUnapplyParameters: Record "Apply Unapply Parameters";
-        clVendEntryApplyPostedEntries: Codeunit "VendEntry-Apply Posted Entries";
-        vlApplicationEntryNo: Integer;
-        vbRetry: Boolean;
-    begin
-        REPEAT
-            vbRetry := FALSE;
-            vlApplicationEntryNo := 0;
+    // local procedure lfDesliquidarProveedor(pTransactionNo: Integer; var PvendorEntryFound: Boolean; var pVendorUnapplied: Boolean)
+    // var
+    //     rlVendLedgEntry: Record "Vendor Ledger Entry";
+    //     rlDtldVendLedgEntry: Record "Detailed Vendor Ledg. Entry";
+    //     rlApplyUnapplyParameters: Record "Apply Unapply Parameters";
+    //     clVendEntryApplyPostedEntries: Codeunit "VendEntry-Apply Posted Entries";
+    //     vlApplicationEntryNo: Integer;
+    //     vbRetry: Boolean;
+    // begin
+    //     REPEAT
+    //         vbRetry := FALSE;
+    //         vlApplicationEntryNo := 0;
 
-            rlVendLedgEntry.RESET();
-            rlVendLedgEntry.SETRANGE("Transaction No.", pTransactionNo);
-            IF rlVendLedgEntry.FINDSET() THEN
-                REPEAT
-                    pVendorEntryFound := TRUE;
-                    vlApplicationEntryNo := clVendEntryApplyPostedEntries.FindLastApplEntry(rlVendLedgEntry."Entry No.");
-                    IF vlApplicationEntryNo <> 0 THEN BEGIN
-                        rlDtldVendLedgEntry.GET(vlApplicationEntryNo);
-                        CLEAR(rlApplyUnapplyParameters);
-                        rlApplyUnapplyParameters."Document No." := rlDtldVendLedgEntry."Document No.";
-                        rlApplyUnapplyParameters."Posting Date" := rlDtldVendLedgEntry."Posting Date";
-                        clVendEntryApplyPostedEntries.PostUnApplyVendor(rlDtldVendLedgEntry, rlApplyUnapplyParameters);
-                        pVendorUnapplied := TRUE;
-                        vbRetry := TRUE;
-                    END;
-                UNTIL (rlVendLedgEntry.NEXT() = 0) OR vbRetry;
-        UNTIL NOT vbRetry;
-    end;
+    //         rlVendLedgEntry.RESET();
+    //         rlVendLedgEntry.SETRANGE("Transaction No.", pTransactionNo);
+    //         IF rlVendLedgEntry.FINDSET() THEN
+    //             REPEAT
+    //                 pVendorEntryFound := TRUE;
+    //                 vlApplicationEntryNo := clVendEntryApplyPostedEntries.FindLastApplEntry(rlVendLedgEntry."Entry No.");
+    //                 IF vlApplicationEntryNo <> 0 THEN BEGIN
+    //                     rlDtldVendLedgEntry.GET(vlApplicationEntryNo);
+    //                     CLEAR(rlApplyUnapplyParameters);
+    //                     rlApplyUnapplyParameters."Document No." := rlDtldVendLedgEntry."Document No.";
+    //                     rlApplyUnapplyParameters."Posting Date" := rlDtldVendLedgEntry."Posting Date";
+    //                     clVendEntryApplyPostedEntries.PostUnApplyVendor(rlDtldVendLedgEntry, rlApplyUnapplyParameters);
+    //                     pVendorUnapplied := TRUE;
+    //                     vbRetry := TRUE;
+    //                 END;
+    //             UNTIL (rlVendLedgEntry.NEXT() = 0) OR vbRetry;
+    //     UNTIL NOT vbRetry;
+    // end;
 
-    local procedure lfRevertirTransaccion(pTransactionNo: Integer)
-    var
-        rlReversalEntry: Record "Reversal Entry";
-    begin
-        CLEAR(rlReversalEntry);
-        rlReversalEntry.SetHideWarningDialogs();
-        rlReversalEntry.ReverseTransaction(pTransactionNo);
-    end;
+    // local procedure lfRevertirTransaccion(pTransactionNo: Integer)
+    // var
+    //     rlReversalEntry: Record "Reversal Entry";
+    // begin
+    //     CLEAR(rlReversalEntry);
+    //     rlReversalEntry.SetHideWarningDialogs();
+    //     rlReversalEntry.ReverseTransaction(pTransactionNo);
+    // end;
 
-    local procedure lfGetReversionMessage(pVendorEntryFound: Boolean; pVendorUnapplied: Boolean): Text
-    begin
-        IF pVendorUnapplied THEN
-            EXIT(TextWSReversionWithVendorUnapplyLbl);
+    // local procedure lfGetReversionMessage(pVendorEntryFound: Boolean; pVendorUnapplied: Boolean): Text
+    // begin
+    //     IF pVendorUnapplied THEN
+    //         EXIT(TextWSReversionWithVendorUnapplyLbl);
 
-        IF pVendorEntryFound THEN
-            EXIT(TextWSReversionWithVendorLbl);
+    //     IF pVendorEntryFound THEN
+    //         EXIT(TextWSReversionWithVendorLbl);
 
-        EXIT(TextWSReversionLbl);
-    end;
+    //     EXIT(TextWSReversionLbl);
+    // end;
 
 
     var

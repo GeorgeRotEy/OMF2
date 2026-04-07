@@ -1566,6 +1566,10 @@ codeunit 50000 "Easy Register Management"
         rlSourceCodeSetup.GET();
         rlSourceCodeSetup.TESTFIELD("Easy Register Journal");
 
+        rGenJnlBatch.Reset();
+        rGenJnlBatch.SetRange("Journal Template Name", vGenJnlTemplate);
+        rGenJnlBatch.FindFirst();
+
         vFirstLineNo := 0;
         vLastLineNo := 0;
 
@@ -1952,6 +1956,9 @@ codeunit 50000 "Easy Register Management"
         rlGenJnlLine."Line No." := vlNextLineNo;
         rlGenJnlLine.INSERT(TRUE);
 
+        rlSourceCodeSetup.Get();
+        rlSourceCodeSetup.TestField("Easy Register Journal");
+
         rlGenJnlLine.VALIDATE("Posting Date", vPostingDate);
 
         vDocNo := FORMAT(DATE2DMY(vPostingDate, 3)) + FORMAT(DATE2DMY(vPostingDate, 2)) + FORMAT(DATE2DMY(vPostingDate, 1)) + STRSUBSTNO('%1', TIME);
@@ -1980,7 +1987,8 @@ codeunit 50000 "Easy Register Management"
         rlGenJnlLine."Bal. Gen. Prod. Posting Group" := '';
         rlGenJnlLine."Bal. VAT Bus. Posting Group" := '';
         rlGenJnlLine."Bal. VAT Prod. Posting Group" := '';
-        rlGenJnlLine."Source Code" := rlSourceCodeSetup."Easy Register Journal";
+        //rlGenJnlLine."Source Code" := rlSourceCodeSetup."Easy Register Journal";
+        rlGenJnlLine.Validate("Source Code", rlSourceCodeSetup."Easy Register Journal");
         rlGenJnlLine."System-Created Entry" := TRUE;
 
         //(CR003) S2G (RBM-R) 07-08-18: Modificaciones Registro simple. Inicio
