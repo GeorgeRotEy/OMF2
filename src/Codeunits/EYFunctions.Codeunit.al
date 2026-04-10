@@ -731,7 +731,6 @@ codeunit 50015 "EY Functions"
 
         lfDesliquidarProveedor(rlGlEntry."Transaction No.", pVendorEntryFound, pVendorUnapplied);
         lfRevertirTransaccion(rlGlEntry."Transaction No.");
-
     end;
 
     procedure lfDesliquidarProveedor(pTransactionNo: Integer; var PvendorEntryFound: Boolean; var pVendorUnapplied: Boolean)

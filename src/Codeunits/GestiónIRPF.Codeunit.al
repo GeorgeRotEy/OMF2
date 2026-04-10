@@ -892,7 +892,6 @@ codeunit 50008 "Gestión IRPF"
         UpdateMovIRPFDesdeMismoMovConta(MovRetencion, GLEntryNo);
     end;
 
-
     procedure GetRetentionEntryNoFromPurchLine(PurchLine: Record "Purchase Line"): Integer
     var
         MovRetenciones: Record "Movs. retenciones";
@@ -964,6 +963,4 @@ codeunit 50008 "Gestión IRPF"
 
         exit(2);
     end;
-
-
 }

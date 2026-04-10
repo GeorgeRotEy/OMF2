@@ -1,4 +1,4 @@
-table 50207 "EDUCAMOS EtapaEducativa" //EDUCAMOS
+table 50207 "EDUCAMOS EtapaEducativa Old"
 {
     // Mod. S2G (RBM-R) IN-001: Interfaz Educamos
 

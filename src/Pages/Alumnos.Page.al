@@ -46,5 +46,5 @@ page 50122 Alumnos
 
     // var
     //     Companies: Record Company;
-    //     EDUCAMOSEtapaEducativa: Record "EDUCAMOS EtapaEducativa";
+    //     EDUCAMOSEtapaEducativa: Record "EDUCAMOS EtapaEducativa Old";
 }

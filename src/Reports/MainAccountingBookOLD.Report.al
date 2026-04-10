@@ -807,9 +807,9 @@ report 50019 "Main Accounting Book_OLD"
     }
 
     var
-    Text1100002: Label 'Period: %1', Comment = 'ESP="Período: %1"';
-    Text1100003: Label 'All Amounts are in %1', Comment = 'ESP="Todos los importes están en %1"';
-    Text1100005: Label 'There is no period within this date range.', Comment = 'ESP="No hay ningún período dentro de este rango de fechas."';
+        Text1100002: Label 'Period: %1', Comment = 'ESP="Período: %1"';
+        Text1100003: Label 'All Amounts are in %1', Comment = 'ESP="Todos los importes están en %1"';
+        Text1100005: Label 'There is no period within this date range.', Comment = 'ESP="No hay ningún período dentro de este rango de fechas."';
         GLSetup: Record "General Ledger Setup";
         GLAccount: Record "G/L Account";
         GLEntry3: Record "G/L Entry";
@@ -857,32 +857,32 @@ report 50019 "Main Accounting Book_OLD"
         GLFilterDim2: Code[20];
         TempTotalCreditHead: Decimal;
         TempTotalDebitHead: Decimal;
-    Main_Accounting_BookCaptionLbl: Label 'Main Accounting Book', Comment = 'ESP="Libro mayor"';
-    CurrReport_PAGENOCaptionLbl: Label 'Page', Comment = 'ESP="Página"';
-    Posting_DateCaptionLbl: Label 'Posting Date', Comment = 'ESP="Fecha de registro"';
-    DescriptionCaptionLbl: Label 'Description', Comment = 'ESP="Descripción"';
-    DebitCaptionLbl: Label 'Debit', Comment = 'ESP="Debe"';
-    CreditCaptionLbl: Label 'Credit', Comment = 'ESP="Haber"';
-    Acum__Balance_at_dateCaptionLbl: Label 'Accum. Bal. at Date', Comment = 'ESP="Saldo acum. a la fecha"';
-    Net_ChangeCaptionLbl: Label 'Net Change', Comment = 'ESP="Variación neta"';
-    Continued____________________________CaptionLbl: Label 'Continued............................', Comment = 'ESP="Continuación............................"';
-    Num_Account_CaptionLbl: Label 'Num.Account:', Comment = 'ESP="Núm. cuenta:"';
-    Continued____________________________Caption_Control51Lbl: Label 'Continued............................', Comment = 'ESP="Continuación............................"';
-    Num_Account_Caption_Control6Lbl: Label 'Num.Account:', Comment = 'ESP="Núm. cuenta:"';
-    TotalCaptionLbl: Label 'Total', Comment = 'ESP="Total"';
-    Total_Opening_EntriesCaptionLbl: Label 'Total Opening Entries', Comment = 'ESP="Total movimientos de apertura"';
-    Total_Opening_EntriesCaption_Control31Lbl: Label 'Total Opening Entries', Comment = 'ESP="Total movimientos de apertura"';
-    Total_Closing_EntriesCaptionLbl: Label 'Total Closing Entries', Comment = 'ESP="Total movimientos de cierre"';
-    Text1100000LblLbl: Label 'Heading', Comment = 'ESP="Título"';
-    Total_Period_EntriesCaptionLbl: Label 'Total Period Entries', Comment = 'ESP="Total movimientos del período"';
-    Total_Period_EntriesCaption_Control50Lbl: Label 'Total Period Entries', Comment = 'ESP="Total movimientos del período"';
-    Total_Opening_EntriesCaption_Control108Lbl: Label 'Total Opening Entries', Comment = 'ESP="Total movimientos de apertura"';
-    Total_Closing_EntriesCaption_Control109Lbl: Label 'Total Closing Entries', Comment = 'ESP="Total movimientos de cierre"';
-    Total_Opening_EntriesCaption_Control68Lbl: Label 'Total Opening Entries', Comment = 'ESP="Total movimientos de apertura"';
-    Total_Closing_EntriesCaption_Control70Lbl: Label 'Total Closing Entries', Comment = 'ESP="Total movimientos de cierre"';
-    Total_Closing_EntriesCaption_Control91Lbl: Label 'Total Closing Entries', Comment = 'ESP="Total movimientos de cierre"';
-    Num_Account_Caption_Control62Lbl: Label 'Num.Account:', Comment = 'ESP="Núm. cuenta:"';
-    TotalCaption_Control64Lbl: Label 'Total', Comment = 'ESP="Total"';
+        Main_Accounting_BookCaptionLbl: Label 'Main Accounting Book', Comment = 'ESP="Libro mayor"';
+        CurrReport_PAGENOCaptionLbl: Label 'Page', Comment = 'ESP="Página"';
+        Posting_DateCaptionLbl: Label 'Posting Date', Comment = 'ESP="Fecha de registro"';
+        DescriptionCaptionLbl: Label 'Description', Comment = 'ESP="Descripción"';
+        DebitCaptionLbl: Label 'Debit', Comment = 'ESP="Debe"';
+        CreditCaptionLbl: Label 'Credit', Comment = 'ESP="Haber"';
+        Acum__Balance_at_dateCaptionLbl: Label 'Accum. Bal. at Date', Comment = 'ESP="Saldo acum. a la fecha"';
+        Net_ChangeCaptionLbl: Label 'Net Change', Comment = 'ESP="Variación neta"';
+        Continued____________________________CaptionLbl: Label 'Continued............................', Comment = 'ESP="Continuación............................"';
+        Num_Account_CaptionLbl: Label 'Num.Account:', Comment = 'ESP="Núm. cuenta:"';
+        Continued____________________________Caption_Control51Lbl: Label 'Continued............................', Comment = 'ESP="Continuación............................"';
+        Num_Account_Caption_Control6Lbl: Label 'Num.Account:', Comment = 'ESP="Núm. cuenta:"';
+        TotalCaptionLbl: Label 'Total', Comment = 'ESP="Total"';
+        Total_Opening_EntriesCaptionLbl: Label 'Total Opening Entries', Comment = 'ESP="Total movimientos de apertura"';
+        Total_Opening_EntriesCaption_Control31Lbl: Label 'Total Opening Entries', Comment = 'ESP="Total movimientos de apertura"';
+        Total_Closing_EntriesCaptionLbl: Label 'Total Closing Entries', Comment = 'ESP="Total movimientos de cierre"';
+        Text1100000LblLbl: Label 'Heading', Comment = 'ESP="Título"';
+        Total_Period_EntriesCaptionLbl: Label 'Total Period Entries', Comment = 'ESP="Total movimientos del período"';
+        Total_Period_EntriesCaption_Control50Lbl: Label 'Total Period Entries', Comment = 'ESP="Total movimientos del período"';
+        Total_Opening_EntriesCaption_Control108Lbl: Label 'Total Opening Entries', Comment = 'ESP="Total movimientos de apertura"';
+        Total_Closing_EntriesCaption_Control109Lbl: Label 'Total Closing Entries', Comment = 'ESP="Total movimientos de cierre"';
+        Total_Opening_EntriesCaption_Control68Lbl: Label 'Total Opening Entries', Comment = 'ESP="Total movimientos de apertura"';
+        Total_Closing_EntriesCaption_Control70Lbl: Label 'Total Closing Entries', Comment = 'ESP="Total movimientos de cierre"';
+        Total_Closing_EntriesCaption_Control91Lbl: Label 'Total Closing Entries', Comment = 'ESP="Total movimientos de cierre"';
+        Num_Account_Caption_Control62Lbl: Label 'Num.Account:', Comment = 'ESP="Núm. cuenta:"';
+        TotalCaption_Control64Lbl: Label 'Total', Comment = 'ESP="Total"';
 
     procedure CalcPeriod(InitialDate: Date): Date
     var

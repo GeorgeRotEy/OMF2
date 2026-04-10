@@ -521,7 +521,6 @@ codeunit 50016 "EY Subscribers"
         // TER001 - Maestro de terceros.end
     end;
 
-
     [EventSubscriber(ObjectType::Table, Database::"Gen. Journal Line", OnAfterCopyGenJnlLineFromPurchHeader, '', false, false)]
     local procedure es_t81_OnAfterCopyGenJnlLineFromPurchHeader(PurchaseHeader: Record "Purchase Header"; var GenJournalLine: Record "Gen. Journal Line")
     begin
@@ -611,16 +610,12 @@ codeunit 50016 "EY Subscribers"
         end;
     end;
 
-
-
     [EventSubscriber(ObjectType::Table, Database::"G/L Entry", 'OnAfterInsertEvent', '', false, false)]
     local procedure es_t17_OnAfterInsertEvent_UpdateRetention(var Rec: Record "G/L Entry"; RunTrigger: Boolean)
     begin
         if Rec."No. mov. retención" <> 0 then
             cuGestionIRPF.UpdateRetentionEntryFromGLEntry(Rec."No. mov. retención", Rec."Entry No.", Rec."Dimension Set ID");
     end;
-
-
 
     // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Batch", OnBeforeRaiseExceedLengthError, '', false, false)]
     // local procedure es_c13_OnBeforeRaiseExceedLengthError(var GenJournalBatch: Record "Gen. Journal Batch"; var RaiseError: Boolean; var GenJnlLine: Record "Gen. Journal Line")
@@ -928,7 +923,6 @@ codeunit 50016 "EY Subscribers"
     begin
         CuGestionIRPF.ActualizarRegistroIRPFVtas(SalesHeader, SalesCrMemoHeader."No.", SalesCrMemoHeader."External Document No.");
     end;
-
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post", OnAfterValidatePostingAndDocumentDate, '', false, false)]
     local procedure es_c90_OnAfterValidatePostingAndDocumentDate(var PurchaseHeader: Record "Purchase Header"; CommitIsSuppressed: Boolean; PreviewMode: Boolean)

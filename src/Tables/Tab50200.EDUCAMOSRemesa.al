@@ -1,108 +1,94 @@
-table 50200 "EDUCAMOS Remesa"
+table 50200 "EDUCAMOS Remesa Old" //EDUCAMOS
 {
+    // Mod. S2G (RBM-R) IN-001: Interfaz Educamos
+
     fields
     {
-        field(1; remesaId; Text[50])
+        field(1; id_remesa; Text[30])
         {
-            Caption = 'Remittance ID', Comment = 'ESP="Id de la remesa"';
+            Caption = 'Batch ID', Comment = 'ESP="Id remesa"';
         }
-        field(2; "ID Remesa BC"; Text[50])
+        field(2; id_unique_remesa; Text[50])
         {
-            Caption = 'BC Remittance ID', Comment = 'ESP="ID Remesa BC"';
+            Caption = 'Unique Batch ID', Comment = 'ESP="Id único remesa"';
         }
-        field(3; descripcion; Text[250])
+        field(3; id_colegio; Text[30])
         {
-            Caption = 'Description', Comment = 'ESP="Descripción"';
+            Caption = 'School ID', Comment = 'ESP="Id colegio"';
         }
-        field(4; reducido; Text[100])
+        field(4; primeraSincroContab; Text[2])
         {
-            Caption = 'Short Description', Comment = 'ESP="Reducido"';
+            Caption = 'First Accounting Sync', Comment = 'ESP="Primera sincronización contable"';
         }
-        field(5; periodoFacturacionId; Text[50])
+        field(5; id_ordenante; Text[30])
         {
-            Caption = 'Billing Period ID', Comment = 'ESP="Id periodo facturación"';
+            Caption = 'Ordering Party ID', Comment = 'ESP="Id ordenante"';
         }
-        field(6; nombrePeriodo; Text[150])
+        field(6; id_unique_ordenante; Text[50])
         {
-            Caption = 'Period Name', Comment = 'ESP="Nombre del periodo"';
+            Caption = 'Unique Ordering Party ID', Comment = 'ESP="Id único ordenante"';
         }
-        field(7; pagadorComun; Boolean)
+        field(7; nombre_ordenante; Text[150])
         {
-            Caption = 'Common Payer', Comment = 'ESP="Pagador común"';
+            Caption = 'Ordering Party Name', Comment = 'ESP="Nombre ordenante"';
         }
-        field(8; fechaCreacion; DateTime)
+        field(8; reducido_ordenante; Text[50])
         {
-            Caption = 'Creation DateTime', Comment = 'ESP="Fecha creación"';
+            Caption = 'Ordering Party Short Name', Comment = 'ESP="Nombre reducido ordenante"';
         }
-        field(9; fechaEmision; Date)
+        field(9; cif_ordenante; Text[50])
+        {
+            Caption = 'Ordering Party Tax ID', Comment = 'ESP="CIF ordenante"';
+        }
+        field(10; id_presentador; Text[30])
+        {
+            Caption = 'Presenter ID', Comment = 'ESP="Id presentador"';
+        }
+        field(11; id_unique_presentador; Text[50])
+        {
+            Caption = 'Unique Presenter ID', Comment = 'ESP="Id único presentador"';
+        }
+        field(12; nombre_presentador; Text[100])
+        {
+            Caption = 'Presenter Name', Comment = 'ESP="Nombre presentador"';
+        }
+        field(13; nif_presentador; Text[50])
+        {
+            Caption = 'Presenter Tax ID', Comment = 'ESP="NIF presentador"';
+        }
+        field(14; cuenta_presentador; Text[20])
+        {
+            Caption = 'Presenter Account No.', Comment = 'ESP="Cuenta presentador"';
+        }
+        field(15; cuenta_presentador_IBAN; Text[25])
+        {
+            Caption = 'Presenter IBAN', Comment = 'ESP="IBAN cuenta presentador"';
+        }
+        field(16; fecha_creacion; Text[30])
+        {
+            Caption = 'Creation Date', Comment = 'ESP="Fecha creación"';
+        }
+        field(17; fecha_emision; Text[30])
         {
             Caption = 'Issue Date', Comment = 'ESP="Fecha emisión"';
         }
-        field(10; importe; Decimal)
+        field(18; fecha_cargo; Text[30])
         {
-            Caption = 'Amount', Comment = 'ESP="Importe"';
+            Caption = 'Charge Date', Comment = 'ESP="Fecha cargo"';
         }
-        field(11; ordenanteCuentaBancariaId; Text[50])
+        field(19; accion; Integer)
         {
-            Caption = 'Ordering Party Bank Account ID', Comment = 'ESP="Id cuenta bancaria ordenante"';
+            Caption = 'Action', Comment = 'ESP="Acción"';
         }
-        field(12; ordenante; Text[150])
+        field(20; calendario; Text[50])
         {
-            Caption = 'Ordering Party', Comment = 'ESP="Ordenante"';
+            Caption = 'Calendar', Comment = 'ESP="Calendario"';
         }
-        field(13; presentador; Text[150])
-        {
-            Caption = 'Presenter', Comment = 'ESP="Presentador"';
-        }
-        field(14; datosBancarios; Text[250])
-        {
-            Caption = 'Bank Data', Comment = 'ESP="Datos bancarios"';
-        }
-        field(15; fechaCargo; Date)
-        {
-            Caption = 'Charge Date', Comment = 'ESP="Fecha de cargo"';
-        }
-        field(16; cuadernoBancario; Text[50])
-        {
-            Caption = 'Bank Format', Comment = 'ESP="Cuaderno bancario"';
-        }
-        field(17; esquemaSEPA; Text[50])
-        {
-            Caption = 'SEPA Scheme', Comment = 'ESP="Esquema SEPA"';
-        }
-        field(18; textoReciboRecargo; Text[250])
-        {
-            Caption = 'Surcharge Text', Comment = 'ESP="Texto recibo recargo"';
-        }
-        field(19; importeRecargo; Decimal)
-        {
-            Caption = 'Surcharge Amount', Comment = 'ESP="Importe recargo"';
-        }
-        field(20; numeroRecibosBanco; Integer)
-        {
-            Caption = 'Bank Receipt Count', Comment = 'ESP="Número recibos banco"';
-        }
-        field(21; importeTotalBanco; Decimal)
-        {
-            Caption = 'Total Bank Amount', Comment = 'ESP="Importe total banco"';
-        }
-        field(22; numeroRecibosVentanilla; Integer)
-        {
-            Caption = 'Window Receipt Count', Comment = 'ESP="Número recibos ventanilla"';
-        }
-        field(23; importeTotalVentanilla; Decimal)
-        {
-            Caption = 'Total Window Amount', Comment = 'ESP="Importe total ventanilla"';
-        }
-        field(24; esRemitida; Boolean)
-        {
-            Caption = 'Is Sent', Comment = 'ESP="Es remitida"';
-        }
-        field(40; "Importation DateTime"; DateTime)
+        field(30; "Importation DateTime"; DateTime)
         {
             Caption = 'Import Date/Time', Comment = 'ESP="Fecha y hora de importación"';
         }
-        field(41; Processed; Boolean)
+        field(31; Processed; Boolean)
         {
             Caption = 'Processed', Comment = 'ESP="Procesado"';
         }
@@ -110,11 +96,11 @@ table 50200 "EDUCAMOS Remesa"
 
     keys
     {
-        key(PK; remesaId)
+        key(Key1; id_unique_remesa)
         {
             Clustered = true;
         }
-        key(Key2; Processed, ordenante)
+        key(Key2; Processed, cif_ordenante, accion)
         {
         }
     }

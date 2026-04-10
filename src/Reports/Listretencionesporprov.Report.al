@@ -125,10 +125,10 @@ report 50085 "List. retenciones por prov."
 
     var
         RecProveedor: Record Vendor;
-    CurrReport_PAGENOCaptionLbl: Label 'Página', Comment = 'ESP="Página"';
-    LISTADO_DE_RETENCIONES_POR_PROVEEDORCaptionLbl: Label 'LISTADO DE RETENCIONES POR PROVEEDOR', Comment = 'ESP="LISTADO DE RETENCIONES POR PROVEEDOR"';
-    Periodo_CaptionLbl: Label 'Periodo:', Comment = 'ESP="Periodo:"';
-    Fecha_MovimientoCaptionLbl: Label 'Fecha Movimiento', Comment = 'ESP="Fecha Movimiento"';
-    Movs__IRPF__Cod__Origen_CaptionLbl: Label 'Nº Proveedor', Comment = 'ESP="Nº Proveedor"';
-    Nombre_ProveedorCaptionLbl: Label 'Nombre Proveedor', Comment = 'ESP="Nombre Proveedor"';
+        CurrReport_PAGENOCaptionLbl: Label 'Página', Comment = 'ESP="Página"';
+        LISTADO_DE_RETENCIONES_POR_PROVEEDORCaptionLbl: Label 'LISTADO DE RETENCIONES POR PROVEEDOR', Comment = 'ESP="LISTADO DE RETENCIONES POR PROVEEDOR"';
+        Periodo_CaptionLbl: Label 'Periodo:', Comment = 'ESP="Periodo:"';
+        Fecha_MovimientoCaptionLbl: Label 'Fecha Movimiento', Comment = 'ESP="Fecha Movimiento"';
+        Movs__IRPF__Cod__Origen_CaptionLbl: Label 'Nº Proveedor', Comment = 'ESP="Nº Proveedor"';
+        Nombre_ProveedorCaptionLbl: Label 'Nombre Proveedor', Comment = 'ESP="Nombre Proveedor"';
 }

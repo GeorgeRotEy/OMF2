@@ -101,5 +101,5 @@ report 50000 "CFG INICIAL RSIM"
 
     var
         vWindow: Dialog;
-    ctConfEmpresa: Label 'Configurando empresa %1', Comment = 'ESP="Configurando empresa %1"';
+        ctConfEmpresa: Label 'Configurando empresa %1', Comment = 'ESP="Configurando empresa %1"';
 }

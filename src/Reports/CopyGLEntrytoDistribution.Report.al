@@ -97,14 +97,14 @@ report 50003 "Copy GL Entry to Distribution"
         vUltimoMov: Integer;
         TransactionNo: Integer;
         DistribRegister: Record "Distribution Registers";
-    Text_Actualizando: Label 'Copying G/L Entries...\', Comment = 'ESP="Copiando movimientos de G/L...\\"';
-    Text_Procesados: Label 'Procesed #1##### of #2#####', Comment = 'ESP="Procesados #1##### de #2#####"';
+        Text_Actualizando: Label 'Copying G/L Entries...\', Comment = 'ESP="Copiando movimientos de G/L...\\"';
+        Text_Procesados: Label 'Procesed #1##### of #2#####', Comment = 'ESP="Procesados #1##### de #2#####"';
         Window: Dialog;
         indice: Integer;
-    Text_ProcesoFinalizado: Label 'Process finished', Comment = 'ESP="Proceso finalizado"';
-    Text_NadaQueactualizar: Label 'All entries are synchronizeed. \There''s nothing to update', Comment = 'ESP="Todos los movimientos están sincronizados. \No hay nada que actualizar"';
-    Text_Advertencia: Label 'This process copies the G/L Entries not updatred before. Do you want to continue?', Comment = 'ESP="Este proceso copia los movimientos de G/L no actualizados previamente. ¿Desea continuar?"';
-    Text_ProcessCancelled: Label 'Process cancelled by the user', Comment = 'ESP="Proceso cancelado por el usuario"';
+        Text_ProcesoFinalizado: Label 'Process finished', Comment = 'ESP="Proceso finalizado"';
+        Text_NadaQueactualizar: Label 'All entries are synchronizeed. \There''s nothing to update', Comment = 'ESP="Todos los movimientos están sincronizados. \No hay nada que actualizar"';
+        Text_Advertencia: Label 'This process copies the G/L Entries not updatred before. Do you want to continue?', Comment = 'ESP="Este proceso copia los movimientos de G/L no actualizados previamente. ¿Desea continuar?"';
+        Text_ProcessCancelled: Label 'Process cancelled by the user', Comment = 'ESP="Proceso cancelado por el usuario"';
 
     local procedure fInsert()
     begin

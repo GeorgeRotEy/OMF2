@@ -1,10 +1,10 @@
-page 50057 "EDUCAMOS EtapaEducativa"
+page 50057 "EDUCAMOS EtapaEducativa Old"
 {
     // Mod. S2G (RBM-R) IN-001: Interfaz Educamos
 
     Caption = 'Educational Stage', Comment = 'ESP="Etapa Educativa"';
     PageType = List;
-    SourceTable = "EDUCAMOS EtapaEducativa";
+    SourceTable = "EDUCAMOS EtapaEducativa Old";
     ApplicationArea = All;
 
     layout
