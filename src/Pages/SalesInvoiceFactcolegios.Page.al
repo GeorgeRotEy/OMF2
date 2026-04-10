@@ -303,7 +303,6 @@ page 50037 "Sales Invoice - Fact. colegios"
                 }
             }
         }
-
         area(navigation)
         {
             group(InvoiceNav)
@@ -331,7 +330,6 @@ page 50037 "Sales Invoice - Fact. colegios"
                         end
                     end;
                 }
-
                 action("Co&mments")
                 {
                     Caption = 'Co&mments', Comment = 'ESP="Comentarios"';
@@ -342,7 +340,6 @@ page 50037 "Sales Invoice - Fact. colegios"
                                   "Document Line No." = CONST(0);
                     ToolTip = 'View or add notes about the sales invoice.', Comment = 'ESP="Ver o agregar notas sobre la factura de venta."';
                 }
-
                 action(Approvals)
                 {
                     AccessByPermission = TableData "Approval Entry" = R;
@@ -359,7 +356,6 @@ page 50037 "Sales Invoice - Fact. colegios"
                         ApprovalEntries.Run();
                     end;
                 }
-
                 action(Function_CustomerCard)
                 {
                     ApplicationArea = Basic, Suite;
@@ -371,7 +367,6 @@ page 50037 "Sales Invoice - Fact. colegios"
                     ShortCutKey = 'Shift+F7';
                     ToolTip = 'View or edit detailed information about the customer on the sales document.', Comment = 'ESP="Ver o editar información detallada del cliente en el documento de venta."';
                 }
-
                 action(Dimensions)
                 {
                     AccessByPermission = TableData Dimension = R;
@@ -390,7 +385,6 @@ page 50037 "Sales Invoice - Fact. colegios"
                 }
             }
         }
-
         area(processing)
         {
             group(ApprovalGroup)
@@ -409,7 +403,6 @@ page 50037 "Sales Invoice - Fact. colegios"
                         ApprovalsMgmt.ApproveRecordApprovalRequest(Rec.RecordId);
                     end;
                 }
-
                 action(Reject)
                 {
                     Caption = 'Reject', Comment = 'ESP="Rechazar"';
@@ -422,7 +415,6 @@ page 50037 "Sales Invoice - Fact. colegios"
                         ApprovalsMgmt.RejectRecordApprovalRequest(Rec.RecordId);
                     end;
                 }
-
                 action(Delegate)
                 {
                     Caption = 'Delegate', Comment = 'ESP="Delegar"';
@@ -435,7 +427,6 @@ page 50037 "Sales Invoice - Fact. colegios"
                         ApprovalsMgmt.DelegateRecordApprovalRequest(Rec.RecordId);
                     end;
                 }
-
                 action(Comment)
                 {
                     Caption = 'Comments', Comment = 'ESP="Comentarios"';
@@ -450,7 +441,6 @@ page 50037 "Sales Invoice - Fact. colegios"
                         ApprovalsMgmt.GetApprovalComment(Rec);
                     end;
                 }
-
                 action("Desbloquear operación")
                 {
                     Caption = 'Unlock operation', Comment = 'ESP="Desbloquear operación"';
@@ -500,7 +490,6 @@ page 50037 "Sales Invoice - Fact. colegios"
                         ReleaseSalesDoc.PerformManualRelease(Rec);
                     end;
                 }
-
                 action(Reopen)
                 {
                     ApplicationArea = Suite;
@@ -539,7 +528,6 @@ page 50037 "Sales Invoice - Fact. colegios"
                         PurchInvFromSalesInvoice.CreatePurchaseInvoice(Rec, SelectedSalesLine);
                     end;
                 }
-
                 action(GetRecurringSalesLines)
                 {
                     ApplicationArea = Suite;
@@ -555,7 +543,6 @@ page 50037 "Sales Invoice - Fact. colegios"
                         StdCustSalesCode.InsertSalesLines(Rec);
                     end;
                 }
-
                 action(CalculateInvoiceDiscount)
                 {
                     AccessByPermission = TableData "Cust. Invoice Disc." = R;
@@ -570,7 +557,6 @@ page 50037 "Sales Invoice - Fact. colegios"
                         SalesCalcDiscountByType.ResetRecalculateInvoiceDisc(Rec);
                     end;
                 }
-
                 action(CopyDocument)
                 {
                     ApplicationArea = Suite;
@@ -587,7 +573,6 @@ page 50037 "Sales Invoice - Fact. colegios"
                         if Rec.Get(Rec."Document Type", Rec."No.") then;
                     end;
                 }
-
                 action("Move Negative Lines")
                 {
                     Caption = 'Move Negative Lines', Comment = 'ESP="Mover líneas negativas"';
@@ -602,7 +587,6 @@ page 50037 "Sales Invoice - Fact. colegios"
                         MoveNegSalesLines.ShowDocument;
                     end;
                 }
-
                 group("Incoming Document")
                 {
                     Caption = 'Incoming Document', Comment = 'ESP="Documento entrante"';
@@ -622,7 +606,6 @@ page 50037 "Sales Invoice - Fact. colegios"
                             IncomingDocument.ShowCardFromEntryNo(Rec."Incoming Document Entry No.");
                         end;
                     }
-
                     action(SelectIncomingDoc)
                     {
                         AccessByPermission = TableData "Incoming Document" = R;
@@ -637,7 +620,6 @@ page 50037 "Sales Invoice - Fact. colegios"
                             Rec.Validate("Incoming Document Entry No.", IncomingDocument.SelectIncomingDocument(Rec."Incoming Document Entry No.", Rec.RecordId));
                         end;
                     }
-
                     action(IncomingDocAttachFile)
                     {
                         Caption = 'Create Incoming Document from File', Comment = 'ESP="Crear documento entrante desde archivo"';
@@ -653,7 +635,6 @@ page 50037 "Sales Invoice - Fact. colegios"
                             IncomingDocumentAttachment.NewAttachmentFromSalesDocument(Rec);
                         end;
                     }
-
                     action(RemoveIncomingDoc)
                     {
                         Caption = 'Remove Incoming Document', Comment = 'ESP="Eliminar documento entrante"';
@@ -692,7 +673,6 @@ page 50037 "Sales Invoice - Fact. colegios"
                             ApprovalsMgmt.OnSendSalesDocForApproval(Rec);
                     end;
                 }
-
                 action(CancelApprovalRequest)
                 {
                     ApplicationArea = Suite;
@@ -726,7 +706,6 @@ page 50037 "Sales Invoice - Fact. colegios"
                         Post(Codeunit::"Sales-Post (Yes/No)", NavigateAfterPost::"Posted Document");
                     end;
                 }
-
                 action(PostAndNew)
                 {
                     Caption = 'Post and New', Comment = 'ESP="Registrar y nuevo"';
@@ -739,7 +718,6 @@ page 50037 "Sales Invoice - Fact. colegios"
                         Post(Codeunit::"Sales-Post (Yes/No)", NavigateAfterPost::"New Document");
                     end;
                 }
-
                 action(PostAndSend)
                 {
                     ApplicationArea = Basic, Suite;
@@ -753,7 +731,6 @@ page 50037 "Sales Invoice - Fact. colegios"
                         Post(Codeunit::"Sales-Post and Send", NavigateAfterPost::Nowhere);
                     end;
                 }
-
                 action(Preview)
                 {
                     ApplicationArea = Basic, Suite;
@@ -766,7 +743,6 @@ page 50037 "Sales Invoice - Fact. colegios"
                         ShowPreview;
                     end;
                 }
-
                 action(PrintDraftInvoice)
                 {
                     ApplicationArea = Basic, Suite;
@@ -782,7 +758,6 @@ page 50037 "Sales Invoice - Fact. colegios"
                         DocumentPrint.PrintSalesHeader(Rec);
                     end;
                 }
-
                 action("Test Report")
                 {
                     Caption = 'Test Report', Comment = 'ESP="Informe de prueba"';
@@ -794,7 +769,6 @@ page 50037 "Sales Invoice - Fact. colegios"
                         ReportPrint.PrintSalesHeader(Rec);
                     end;
                 }
-
                 action("Remove From Job Queue")
                 {
                     Caption = 'Remove From Job Queue', Comment = 'ESP="Eliminar de cola de trabajos"';

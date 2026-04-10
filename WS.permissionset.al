@@ -6,7 +6,6 @@ using Microsoft.EServices.EDocument;
 using Microsoft.FixedAssets.FixedAsset;
 using Microsoft.FixedAssets.Ledger;
 
-
 permissionset 50002 "Web Service"
 {
     Assignable = true;
@@ -25,5 +24,4 @@ permissionset 50002 "Web Service"
         table "Vendor Ledger Entry" = X,
         table "SII Setup" = X,
         table "Fixed Asset" = X;
-
 }

@@ -296,7 +296,6 @@ page 50086 "Third Party Ledger Entries"
                 }
             }
         }
-
         area(navigation)
         {
             group(EntryNav)
@@ -315,7 +314,6 @@ page 50086 "Third Party Ledger Entries"
                     Scope = Repeater;
                     ToolTip = 'View the reminders and finance charge entries that you have entered for the customer.', Comment = 'ESP="Ver los recordatorios y movimientos de intereses que ha introducido para el cliente."';
                 }
-
                 action("Applied E&ntries")
                 {
                     ApplicationArea = Basic, Suite;
@@ -327,7 +325,6 @@ page 50086 "Third Party Ledger Entries"
                     Scope = Repeater;
                     ToolTip = 'View the ledger entries that have been applied to this record.', Comment = 'ESP="Ver los movimientos que se han aplicado a este registro."';
                 }
-
                 action(Dimensions)
                 {
                     AccessByPermission = TableData Dimension = R;
@@ -343,7 +340,6 @@ page 50086 "Third Party Ledger Entries"
                         Rec.ShowDimensions;
                     end;
                 }
-
                 action("Detailed &Ledger Entries")
                 {
                     ApplicationArea = Basic, Suite;
@@ -360,7 +356,6 @@ page 50086 "Third Party Ledger Entries"
                 }
             }
         }
-
         area(processing)
         {
             group(FunctionsNav)
@@ -391,7 +386,6 @@ page 50086 "Third Party Ledger Entries"
                         CurrPage.Update;
                     end;
                 }
-
                 action(UnapplyEntries)
                 {
                     ApplicationArea = Basic, Suite;
@@ -411,7 +405,6 @@ page 50086 "Third Party Ledger Entries"
                         CustEntryApplyPostedEntries.UnApplyCustLedgEntry(Rec."Entry No.");
                     end;
                 }
-
                 action(ReverseTransaction)
                 {
                     ApplicationArea = Basic, Suite;
@@ -437,7 +430,6 @@ page 50086 "Third Party Ledger Entries"
                         ReversalEntry.ReverseTransaction(Rec."Transaction No.");
                     end;
                 }
-
                 group(IncomingDocument)
                 {
                     Caption = 'Incoming Document', Comment = 'ESP="Documento entrante"';
@@ -458,7 +450,6 @@ page 50086 "Third Party Ledger Entries"
                             IncomingDocument.ShowCard(Rec."Document No.", Rec."Posting Date");
                         end;
                     }
-
                     action(SelectIncomingDoc)
                     {
                         AccessByPermission = TableData "Incoming Document" = R;
@@ -475,7 +466,6 @@ page 50086 "Third Party Ledger Entries"
                             IncomingDocument.SelectIncomingDocumentForPostedDocument(Rec."Document No.", Rec."Posting Date", Rec.RecordId);
                         end;
                     }
-
                     action(IncomingDocAttachFile)
                     {
                         ApplicationArea = Basic, Suite;

@@ -1,9 +1,8 @@
-codeunit 50006 "JSON Webservices Management"
+codeunit 50006 "EDUCAMOS API Management"
 {
     trigger OnRun()
     begin
         Code();
-        Message('Proceso completado. Por favor, revise el LOG para más detalles.');
     end;
 
     var
@@ -15,20 +14,24 @@ codeunit 50006 "JSON Webservices Management"
         vRequest: HttpRequestMessage;
         vHeaders: HttpHeaders;
         vContent: HttpContent;
+        vStatusCode: Integer;
+        vMovimientoId: Integer;
+        vOutStr: OutStream;
+        vStartDate: Date;
+        vEndDate: Date;
         vAccessToken: Text;
         vResult: Text;
         vCalendarioId: Text;
-        vStartDate: Date;
-        vEndDate: Date;
         vJsonBody: Text;
-        Ok: Boolean;
         vFullJsonBody: Text;
-        vStatusCode: Integer;
-        vOutStr: OutStream;
         vBaseUrl: Text;
         vPersonaId: Text[50];
         vPagadorMedioPagoId: Text[50];
         vDependientePersonaId: Text[50];
+        vRemesaId: Text[50];
+        vReciboId: Text[50];
+        vReciboConceptoId: Text[50];
+        vDescuentoId: Text[50];
         Error001: Label 'Fail to access API. Code %1 - %2', Comment = 'ESP="Error al acceder a la API. Código %1 - %2"';
         Error002: Label 'No response from api', Comment = 'ESP="Sin respuesta de la API"';
         Error003: Label 'No se obtuvieron datos para importar';
@@ -43,16 +46,13 @@ codeunit 50006 "JSON Webservices Management"
             exit(false);
 
         // 1) Token
-        Ok := GetAccessToken();
-        if not Ok then begin
+        if not GetAccessToken() then begin
             cuInterface.fSetLogWithResponse(3, StrSubstNo('%1: %2', Error004, vResult), CompanyName, 0, cTempBlob);
             Commit();
             exit(false);
         end;
 
-        // 2) GET Calendarios
-        Ok := CallGET();
-        if not Ok then begin
+        if not CallGET() then begin
             cuInterface.fSetLogWithResponse(3, vResult, CompanyName, 0, cTempBlob);
             Commit();
             exit(false);
@@ -64,9 +64,7 @@ codeunit 50006 "JSON Webservices Management"
             exit(false);
         end;
 
-        //Traer pagadores - BEGIN.
-        Ok := CallGETWithContinuationToken(BuildPagadoresUrl());
-        if not Ok then begin
+        if not CallGETWithContinuationToken(BuildPagadoresUrl()) then begin
             cuInterface.fSetLogWithResponse(3, 'Error obteniendo pagadores: ' + vResult, CompanyName, 0, cTempBlob);
             Commit();
             exit(false);
@@ -77,33 +75,42 @@ codeunit 50006 "JSON Webservices Management"
             Commit();
             exit(false);
         end;
-        //Traer pagadores - END.
 
-        //Descomentar
-        // if not TryGetActiveCalendar() then begin
-        //     cuInterface.fSetLogWithResponse(3, 'No se pudo determinar calendario activo: ' + vResult, CompanyName, 0, cTempBlob);
-        //     Commit();
-        //     exit(false);
-        // end;
+        if not TryGetActiveCalendar() then begin
+            cuInterface.fSetLogWithResponse(3, 'No se pudo determinar calendario activo: ' + vResult, CompanyName, 0, cTempBlob);
+            Commit();
+            exit(false);
+        end;
 
-        // Ok := CallGETWithContinuationToken(BuildRemesasUrl());
-        // if not Ok then begin
-        //     cuInterface.fSetLogWithResponse(3, 'Error obteniendo remesas: ' + vResult, CompanyName, 0, cTempBlob);
-        //     Commit();
-        //     exit(false);
-        // end;
+        if not CallGETWithContinuationToken(BuildRemesasUrl()) then begin
+            cuInterface.fSetLogWithResponse(3, 'Error obteniendo remesas: ' + vResult, CompanyName, 0, cTempBlob);
+            Commit();
+            exit(false);
+        end;
 
-        // if vFullJsonBody = '' then begin
-        //     cuInterface.fSetLogWithResponse(2, Error003, CompanyName, 0, cTempBlob);
-        //     Commit();
-        //     exit(false);
-        // end;
+        if vFullJsonBody = '' then begin
+            cuInterface.fSetLogWithResponse(2, Error003, CompanyName, 0, cTempBlob);
+            Commit();
+            exit(false);
+        end;
 
-        // if not TryGetRemesas() then begin
-        //     cuInterface.fSetLogWithResponse(3, 'No se pudieron traer las remesas: ' + vResult, CompanyName, 0, cTempBlob);
-        //     Commit();
-        //     exit(false);
-        // end;
+        if not TryGetRemesas() then begin
+            cuInterface.fSetLogWithResponse(3, 'No se pudieron traer las remesas: ' + vResult, CompanyName, 0, cTempBlob);
+            Commit();
+            exit(false);
+        end;
+
+        if not CallGETWithContinuationToken(BuildMovsReciboUrl()) then begin
+            cuInterface.fSetLogWithResponse(3, 'Error obteniendo movimientos de recibo: ' + vResult, CompanyName, 0, cTempBlob);
+            Commit();
+            exit(false);
+        end;
+
+        if not TryGetMovsRecibo() then begin
+            cuInterface.fSetLogWithResponse(3, 'No se pudieron traer los movimientos de recibo: ' + vResult, CompanyName, 0, cTempBlob);
+            Commit();
+            exit(false);
+        end;
 
         //Descomentar
         // if not FillInputData(vFullJsonBody) then begin
@@ -469,6 +476,13 @@ codeunit 50006 "JSON Webservices Management"
         exit(false);
     end;
 
+    local procedure BuildPagadoresUrl(): Text
+    var
+        Url: Label 'https://developer-api-neu.educamos.com/apismeducamos/api/colegio/pagadores', Locked = true;
+    begin
+        exit(Url);
+    end;
+
     local procedure BuildRemesasUrl(): Text
     var
         Url: Text;
@@ -494,20 +508,23 @@ codeunit 50006 "JSON Webservices Management"
         exit(Url);
     end;
 
-    local procedure BuildRecibosRemesaUrl(pRemesaID: Text): Text
+    local procedure BuildRecibosRemesaUrl(): Text
     var
         Url: Text;
     begin
         Url := vBaseUrl + '/' + Format(vCalendarioId) + '/remesas/' +
-        pRemesaID + '/recibos';
+        vRemesaId + '/recibos';
 
         exit(Url);
     end;
 
-    local procedure BuildPagadoresUrl(): Text
+    local procedure BuildMovsReciboUrl(): Text
     var
-        Url: Label 'https://developer-api-neu.educamos.com/apismeducamos/api/colegio/pagadores', Locked = true;
+        Url: Text;
     begin
+        Url := vBaseUrl + '/' + Format(vCalendarioId) + '/remesas/' +
+        vRemesaId + '/recibos/' + vReciboId + '/historicoRecibo';
+
         exit(Url);
     end;
 
@@ -651,14 +668,10 @@ codeunit 50006 "JSON Webservices Management"
 
             fFillPagadorData(PagadorObj, rlPagador);
 
-            rlPagador."Importation DateTime" := CurrentDateTime;
-            rlPagador.Processed := true;
             rlPagador.Insert();
         end else begin
             fFillPagadorData(PagadorObj, rlPagador);
 
-            rlPagador."Importation DateTime" := CurrentDateTime;
-            rlPagador.Processed := true;
             rlPagador.Modify();
         end;
 
@@ -668,8 +681,6 @@ codeunit 50006 "JSON Webservices Management"
 
                 fFillDireccionData(DirObj, rlPagador);
 
-                rlPagador."Importation DateTime" := CurrentDateTime;
-                rlPagador.Processed := true;
                 rlPagador.Modify();
             end;
 
@@ -694,14 +705,10 @@ codeunit 50006 "JSON Webservices Management"
 
             fFillMedioPagoData(MediosPagoObj, rlMedioPago);
 
-            rlMedioPago."Importation DateTime" := CurrentDateTime;
-            rlMedioPago.Processed := true;
             rlMedioPago.Insert();
         end else begin
             fFillMedioPagoData(MediosPagoObj, rlMedioPago);
 
-            rlMedioPago."Importation DateTime" := CurrentDateTime;
-            rlMedioPago.Processed := true;
             rlMedioPago.Modify();
         end;
 
@@ -747,14 +754,10 @@ codeunit 50006 "JSON Webservices Management"
 
                     fFillDependienteData(DepEconObj, rlDependienteEconomico);
 
-                    rlDependienteEconomico."Importation DateTime" := CurrentDateTime;
-                    rlDependienteEconomico.Processed := true;
                     rlDependienteEconomico.Insert();
                 end else begin
                     fFillDependienteData(DepEconObj, rlDependienteEconomico);
 
-                    rlDependienteEconomico."Importation DateTime" := CurrentDateTime;
-                    rlDependienteEconomico.Processed := true;
                     rlDependienteEconomico.Modify();
                 end;
             end;
@@ -806,6 +809,9 @@ codeunit 50006 "JSON Webservices Management"
         if PagadorObj.Get('codigoSAGE', vlToken) then
             if not vlToken.AsValue().IsNull() then
                 pPagadores.codigoSAGE := vlToken.AsValue().AsText();
+
+        pPagadores."Importation DateTime" := CurrentDateTime;
+        pPagadores.Processed := true;
     end;
 
     local procedure fFillDireccionData(DirObj: JsonObject; var pPagadores: Record "EDUCAMOS Pagador")
@@ -867,6 +873,9 @@ codeunit 50006 "JSON Webservices Management"
         if DirObj.Get('provincia', vlToken) then
             if not vlToken.AsValue().IsNull() then
                 pPagadores.provincia := vlToken.AsValue().AsText();
+
+        pPagadores."Importation DateTime" := CurrentDateTime;
+        pPagadores.Processed := true;
     end;
 
     local procedure fFillMedioPagoData(MedPagObj: JsonObject; var pMedioPago: Record "EDUCAMOS MedioPago")
@@ -880,6 +889,9 @@ codeunit 50006 "JSON Webservices Management"
         if MedPagObj.Get('porDefecto', vlToken) then
             if not vlToken.AsValue().IsNull() then
                 pMedioPago.porDefecto := vlToken.AsValue().AsBoolean();
+
+        pMedioPago."Importation DateTime" := CurrentDateTime;
+        pMedioPago.Processed := true;
     end;
 
     local procedure fFillCuentaBancariaData(CuenBancObj: JsonObject; var pMedioPago: Record "EDUCAMOS MedioPago")
@@ -913,6 +925,9 @@ codeunit 50006 "JSON Webservices Management"
         if CuenBancObj.Get('numeroCuenta', vlToken) then
             if not vlToken.AsValue().IsNull() then
                 pMedioPago.numeroCuenta := vlToken.AsValue().AsText();
+
+        pMedioPago."Importation DateTime" := CurrentDateTime;
+        pMedioPago.Processed := true;
     end;
 
     local procedure fFillDependienteData(DepEconObj: JsonObject; var pDepEconomico: Record "EDUCAMOS Dep. Economico")
@@ -922,6 +937,9 @@ codeunit 50006 "JSON Webservices Management"
         if DepEconObj.Get('porDefecto', vlToken) then
             if not vlToken.AsValue().IsNull() then
                 pDepEconomico.porDefecto := vlToken.AsValue().AsBoolean();
+
+        pDepEconomico."Importation DateTime" := CurrentDateTime;
+        pDepEconomico.Processed := true;
     end;
 
     local procedure fFindMatchingBrace(TextToScan: Text; StartPos: Integer): Integer
@@ -980,33 +998,50 @@ codeunit 50006 "JSON Webservices Management"
                 vResult := 'No se han podido tratar los recibos de las remesas.';
                 exit(false);
             end;
-
-            exit(true);
         end;
 
         vResult := 'Remesas importadas correctamente';
-        exit(false);
+        exit(true);
     end;
 
     local procedure fFillRemesas(ItemObj: JsonObject): Boolean
     var
         rlRemesa: Record "EDUCAMOS Remesa";
+        rlRemesaAux: Record "EDUCAMOS Remesa";
         vlToken: JsonToken;
     begin
         if ItemObj.Get('remesaId', vlToken) then begin
-            if not rlRemesa.Get(vlToken.AsValue().AsText()) then begin
+            rlRemesa.Reset();
+            rlRemesa.SetRange(remesaId, vlToken.AsValue().AsText());
+            if not rlRemesa.FindFirst() then begin
+                vRemesaId := vlToken.AsValue().AsText();
+
                 rlRemesa.Init();
+                rlRemesaAux.Reset();
+                if rlRemesaAux.FindLast() then
+                    rlRemesa."ID Remesa BC" := rlRemesaAux."ID Remesa BC" + 1
+                else
+                    rlRemesa."ID Remesa BC" := 1;
                 rlRemesa.remesaId := vlToken.AsValue().AsText();
                 fFillRemesasData(ItemObj, rlRemesa);
                 rlRemesa.Insert();
+                Commit();
 
-                if not fTratarRecibosRemesa(rlRemesa.remesaId) then begin
+                if not fTratarRecibosRemesa() then begin
                     vResult := 'No se han podido tratar los recibos de las remesas.';
                     exit(false);
                 end;
             end else begin
+                vRemesaId := vlToken.AsValue().AsText();
+
                 fFillRemesasData(ItemObj, rlRemesa);
                 rlRemesa.Modify();
+                Commit();
+
+                if not fTratarRecibosRemesa() then begin
+                    vResult := 'No se han podido tratar los recibos de las remesas.';
+                    exit(false);
+                end;
             end;
 
             exit(true);
@@ -1109,296 +1144,560 @@ codeunit 50006 "JSON Webservices Management"
         pRemesa.Processed := true;
     end;
 
-    local procedure fTratarRecibosRemesa(pRemesaID: Text): Boolean
+    local procedure fTratarRecibosRemesa(): Boolean
     begin
-        Ok := CallGETWithContinuationToken(BuildRecibosRemesaUrl(pRemesaID));
-        if not Ok then begin
+        if not CallGETWithContinuationToken(BuildRecibosRemesaUrl()) then begin
             cuInterface.fSetLogWithResponse(3, 'Error obteniendo recibos: ' + vResult, CompanyName, 0, cTempBlob);
             Commit();
             exit(false);
         end;
 
-        if not TryGetRecibosRemesa(pRemesaID) then begin
+        if not TryGetRecibosRemesa() then begin
             cuInterface.fSetLogWithResponse(3, 'No se pudieron traer los recibos de remesas: ' + vResult, CompanyName, 0, cTempBlob);
             Commit();
             exit(false);
         end;
+
+        exit(true);
     end;
 
-    local procedure TryGetRecibosRemesa(pRemesaID: Text): Boolean
+    local procedure TryGetRecibosRemesa(): Boolean
     var
         Root: JsonObject;
-        recibosTok: JsonToken;
-        recibosArr: JsonArray;
-        conceptosTok: JsonToken;
-        conceptosArr: JsonArray;
-        descuentosTok: JsonToken;
-        descuentosArr: JsonArray;
-        movimientosTok: JsonToken;
-        movimientosArr: JsonArray;
-        pagoTok: JsonToken;
-        pagoArr: JsonArray;
-        conceptosPagadosTok: JsonToken;
-        conceptosPagadosArr: JsonArray;
-        ItemTok: JsonToken;
-        ItemObj: JsonObject;
+        RecibosTok: JsonToken;
+        RecibosArr: JsonArray;
+        ConceptosTok: JsonToken;
+        ConceptosArr: JsonArray;
+        DescuentosTok: JsonToken;
+        DescuentosArr: JsonArray;
+        RecTok: JsonToken;
+        RecObj: JsonObject;
+        ConTok: JsonToken;
+        ConObj: JsonObject;
+        DescTok: JsonToken;
+        DescObj: JsonObject;
         i: Integer;
+        j: Integer;
+        k: Integer;
+        OpenPos: Integer;
+        ClosePos: Integer;
+        RemainingText: Text;
+        OneJsonText: Text;
     begin
         vResult := '';
+        RemainingText := vFullJsonBody;
 
-        if not Root.ReadFrom(vFullJsonBody) then begin
-            vResult := NonJsonResponseErr;
-            exit(false);
-        end;
+        while StrLen(RemainingText) > 0 do begin
+            OpenPos := StrPos(RemainingText, '{');
+            if OpenPos = 0 then
+                break;
 
-        if not Root.Get('recibos', recibosTok) then begin
-            vResult := 'La respuesta no contiene el nodo "Recibos".';
-            exit(false);
-        end;
-
-        recibosArr := recibosTok.AsArray();
-
-        for i := 0 to recibosArr.Count() - 1 do begin
-            RecibosArr.Get(i, ItemTok);
-            ItemObj := ItemTok.AsObject();
-
-            if not fFillRecibosRemesa(ItemObj, pRemesaID) then begin
-                vResult := 'No se han podido tratar los recibos de las remesas.';
+            ClosePos := fFindMatchingBrace(RemainingText, OpenPos);
+            if ClosePos = 0 then begin
+                vResult := 'JSON de recibos incompleto.';
                 exit(false);
             end;
-        end;
 
-        if not Root.Get('conceptos', conceptosTok) then begin
-            vResult := 'La respuesta no contiene el nodo "Conceptos".';
-            exit(false);
-        end;
+            OneJsonText := CopyStr(RemainingText, OpenPos, ClosePos - OpenPos + 1);
+            Clear(Root);
 
-        conceptosArr := conceptosTok.AsArray();
-
-        for i := 0 to conceptosArr.Count() - 1 do begin
-            conceptosArr.Get(i, ItemTok);
-            ItemObj := ItemTok.AsObject();
-
-            if not fFillRecibosRemesa(ItemObj, pRemesaID) then begin
-                vResult := 'No se han podido tratar los recibos de las remesas.';
+            if not Root.ReadFrom(OneJsonText) then begin
+                vResult := NonJsonResponseErr;
                 exit(false);
             end;
-        end;
 
-        if not Root.Get('descuentos', descuentosTok) then begin
-            vResult := 'La respuesta no contiene el nodo "descuentos".';
-            exit(false);
-        end;
-
-        descuentosArr := descuentosTok.AsArray();
-
-        for i := 0 to descuentosArr.Count() - 1 do begin
-            descuentosArr.Get(i, ItemTok);
-            ItemObj := ItemTok.AsObject();
-
-            if not fFillRecibosRemesa(ItemObj, pRemesaID) then begin
-                vResult := 'No se han podido tratar los descuentos.';
+            if not Root.Get('recibos', RecibosTok) then begin
+                vResult := 'La respuesta no contiene el nodo "recibos".';
                 exit(false);
             end;
-        end;
 
-        if not Root.Get('movimientos', movimientosTok) then begin
-            vResult := 'La respuesta no contiene el nodo "movimientos".';
-            exit(false);
-        end;
+            if RecibosTok.IsValue() then
+                if (RecibosTok.AsValue().IsNull()) then
+                    exit(true);
 
-        movimientosArr := movimientosTok.AsArray();
+            RecibosArr := RecibosTok.AsArray();
 
-        for i := 0 to movimientosArr.Count() - 1 do begin
-            movimientosArr.Get(i, ItemTok);
-            ItemObj := ItemTok.AsObject();
+            for i := 0 to RecibosArr.Count() - 1 do begin
+                RecibosArr.Get(i, RecTok);
+                RecObj := RecTok.AsObject();
 
-            if not fFillRecibosRemesa(ItemObj, pRemesaID) then begin
-                vResult := 'No se han podido tratar los movimientos.';
-                exit(false);
+                if not fFillRecibosRemesa(RecObj) then begin
+                    vResult := 'No se han podido tratar los recibos.';
+                    exit(false);
+                end;
+
+                if RecObj.Get('conceptos', ConceptosTok) and ConceptosTok.IsArray() then begin
+                    ConceptosArr := ConceptosTok.AsArray();
+
+                    for j := 0 to ConceptosArr.Count() - 1 do begin
+                        ConceptosArr.Get(j, ConTok);
+                        ConObj := ConTok.AsObject();
+
+                        if not fFillConceptosRecibo(ConObj) then begin
+                            vResult := 'No se han podido tratar los conceptos.';
+                            exit(false);
+                        end;
+
+                        if ConObj.Get('descuentos', DescuentosTok) and DescuentosTok.IsArray() then begin
+                            DescuentosArr := DescuentosTok.AsArray();
+
+                            for k := 0 to DescuentosArr.Count() - 1 do begin
+                                DescuentosArr.Get(k, DescTok);
+                                DescObj := DescTok.AsObject();
+
+                                if not fFillDescuentosConcepto(DescObj) then begin
+                                    vResult := 'No se han podido tratar los descuentos.';
+                                    exit(false);
+                                end;
+                            end;
+                        end;
+                    end;
+                end;
             end;
-        end;
 
-        if not Root.Get('pago', pagoTok) then begin
-            vResult := 'La respuesta no contiene el nodo "pago".';
-            exit(false);
-        end;
-
-        pagoArr := pagoTok.AsArray();
-
-        for i := 0 to pagoArr.Count() - 1 do begin
-            pagoArr.Get(i, ItemTok);
-            ItemObj := ItemTok.AsObject();
-
-            if not fFillRecibosRemesa(ItemObj, pRemesaID) then begin
-                vResult := 'No se han podido tratar los pagos.';
-                exit(false);
-            end;
-        end;
-
-        if not Root.Get('conceptosPagados', conceptosPagadosTok) then begin
-            vResult := 'La respuesta no contiene el nodo "conceptosPagados".';
-            exit(false);
-        end;
-
-        conceptosPagadosArr := conceptosPagadosTok.AsArray();
-
-        for i := 0 to conceptosPagadosArr.Count() - 1 do begin
-            conceptosPagadosArr.Get(i, ItemTok);
-            ItemObj := ItemTok.AsObject();
-
-            if not fFillRecibosRemesa(ItemObj, pRemesaID) then begin
-                vResult := 'No se han podido tratar los conceptos pagados.';
-                exit(false);
-            end;
+            RemainingText := CopyStr(RemainingText, ClosePos + 1);
         end;
 
         vResult := 'Recibos importados correctamente.';
-        exit(false);
+        exit(true);
     end;
 
-    local procedure fFillRecibosRemesa(ItemObj: JsonObject; pRemesaID: Text): Boolean
+    local procedure fFillRecibosRemesa(RecObj: JsonObject): Boolean
     var
-        rlRecibosRemesa: Record "EDUCAMOS RecibosRemesa";
+        rlRecibo: Record "EDUCAMOS ReciboRemesa";
         vlToken: JsonToken;
     begin
-        if ItemObj.Get('reciboId', vlToken) then begin
-            if not rlRecibosRemesa.Get(pRemesaID, vlToken.AsValue().AsText()) then begin
-                rlRecibosRemesa.Init();
-                rlRecibosRemesa.remesaid := pRemesaID;
-                rlRecibosRemesa.reciboId := vlToken.AsValue().AsText();
-                fFillRecibosRemesaData(ItemObj, rlRecibosRemesa);
-                rlRecibosRemesa.Insert();
-            end else begin
-                fFillRecibosRemesaData(ItemObj, rlRecibosRemesa);
-                rlRecibosRemesa.Modify();
+        if not RecObj.Get('reciboId', vlToken) then begin
+            vResult := 'El recibo no tiene reciboId.';
+            exit(false);
+        end;
+
+        vReciboId := vlToken.AsValue().AsText();
+
+        if not rlRecibo.Get(vCalendarioId, vRemesaId, vReciboId) then begin
+            rlRecibo.Init();
+            rlRecibo.calendarioEscolarId := vCalendarioId;
+            rlRecibo.remesaId := vRemesaId;
+            rlRecibo.reciboId := vReciboId;
+
+            fFillReciboRemesaData(RecObj, rlRecibo);
+
+            rlRecibo.Insert();
+        end else begin
+            fFillReciboRemesaData(RecObj, rlRecibo);
+
+            rlRecibo.Modify();
+        end;
+
+        exit(true);
+    end;
+
+    local procedure fFillReciboRemesaData(RecObj: JsonObject; var pRecibo: Record "EDUCAMOS ReciboRemesa")
+    var
+        vlToken: JsonToken;
+        rlReciboRemesa: Record "EDUCAMOS ReciboRemesa";
+        rlRemesa: Record "EDUCAMOS Remesa";
+    begin
+        rlRemesa.Reset();
+        rlRemesa.SetRange(remesaId, vRemesaId);
+        if rlRemesa.FindFirst() then
+            pRecibo."ID Remesa BC" := rlRemesa."ID Remesa BC";
+
+        if rlReciboRemesa.Get(vCalendarioId, vRemesaId, vReciboId) then
+            pRecibo."ID Recibo BC" += 1;
+
+        if RecObj.Get('estado', vlToken) then
+            if not vlToken.AsValue().IsNull() then
+                pRecibo.estado := vlToken.AsValue().AsText();
+
+        if RecObj.Get('reciboOrigenId', vlToken) then
+            if not vlToken.AsValue().IsNull() then
+                pRecibo.reciboOrigenId := vlToken.AsValue().AsText();
+
+        if RecObj.Get('medioPago', vlToken) then
+            if not vlToken.AsValue().IsNull() then
+                pRecibo.medioPago := vlToken.AsValue().AsText();
+
+        if RecObj.Get('pagadorMedioPagoId', vlToken) then
+            if not vlToken.AsValue().IsNull() then
+                pRecibo.pagadorMedioPagoId := vlToken.AsValue().AsText();
+
+        if RecObj.Get('prefijo', vlToken) then
+            if not vlToken.AsValue().IsNull() then
+                pRecibo.prefijo := vlToken.AsValue().AsText();
+
+        if RecObj.Get('numero', vlToken) then
+            if not vlToken.AsValue().IsNull() then
+                pRecibo.numero := vlToken.AsValue().AsInteger();
+
+        if RecObj.Get('sufijoAnulacion', vlToken) then
+            if not vlToken.AsValue().IsNull() then
+                pRecibo.sufijoAnulacion := vlToken.AsValue().AsText();
+
+        pRecibo."Importation DateTime" := CurrentDateTime;
+        pRecibo.Processed := true;
+    end;
+
+    local procedure fFillConceptosRecibo(ConObj: JsonObject): Boolean
+    var
+        rlConcepto: Record "EDUCAMOS ConceptoRecibo";
+        vlToken: JsonToken;
+    begin
+        if not ConObj.Get('reciboConceptoId', vlToken) then
+            exit(false);
+
+        vReciboConceptoId := vlToken.AsValue().AsText();
+
+        if not rlConcepto.Get(vCalendarioId, vRemesaId, vReciboId, vReciboConceptoId) then begin
+            rlConcepto.Init();
+            rlConcepto.calendarioEscolarId := vCalendarioId;
+            rlConcepto.remesaId := vRemesaId;
+            rlConcepto.reciboId := vReciboId;
+            rlConcepto.reciboConceptoId := vReciboConceptoId;
+
+            fFillConceptoData(ConObj, rlConcepto);
+
+            rlConcepto.Insert();
+        end else begin
+            fFillConceptoData(ConObj, rlConcepto);
+
+            rlConcepto.Modify();
+        end;
+
+        exit(true);
+    end;
+
+    local procedure fFillConceptoData(ConObj: JsonObject; var pConcepto: Record "EDUCAMOS ConceptoRecibo")
+    var
+        vlToken: JsonToken;
+    begin
+        if ConObj.Get('importe', vlToken) then
+            if not vlToken.AsValue().IsNull() then
+                pConcepto.importe := vlToken.AsValue().AsDecimal();
+
+        if ConObj.Get('importePagado', vlToken) then
+            if not vlToken.AsValue().IsNull() then
+                pConcepto.importePagado := vlToken.AsValue().AsDecimal();
+
+        if ConObj.Get('fechaPago', vlToken) then
+            if not vlToken.AsValue().IsNull() then
+                Evaluate(pConcepto.fechaPago, vlToken.AsValue().AsText());
+
+        if ConObj.Get('conceptoId', vlToken) then
+            if not vlToken.AsValue().IsNull() then
+                pConcepto.conceptoId := vlToken.AsValue().AsText();
+
+        if ConObj.Get('texto', vlToken) then
+            if not vlToken.AsValue().IsNull() then
+                pConcepto.texto := vlToken.AsValue().AsText();
+
+        if ConObj.Get('personaId', vlToken) then
+            if not vlToken.AsValue().IsNull() then
+                pConcepto.personaId := vlToken.AsValue().AsText();
+
+        if ConObj.Get('estado', vlToken) then
+            if not vlToken.AsValue().IsNull() then
+                pConcepto.estado := vlToken.AsValue().AsText();
+
+        pConcepto."Importation DateTime" := CurrentDateTime;
+        pConcepto.Processed := true;
+    end;
+
+    local procedure fFillDescuentosConcepto(DescObj: JsonObject): Boolean
+    var
+        rlDescuento: Record "EDUCAMOS DescuentoConcepto";
+        vlToken: JsonToken;
+    begin
+        if not DescObj.Get('descuentoId', vlToken) then
+            exit(false);
+
+        vDescuentoId := vlToken.AsValue().AsText();
+
+        if not rlDescuento.Get(vCalendarioId, vRemesaId, vReciboConceptoId, vDescuentoId) then begin
+            rlDescuento.Init();
+            rlDescuento.calendarioEscolarId := vCalendarioId;
+            rlDescuento.remesaId := vRemesaId;
+            rlDescuento.reciboConceptoId := vReciboConceptoId;
+            rlDescuento.descuentoId := vDescuentoId;
+
+            fFillDescuentosConceptoData(DescObj, rlDescuento);
+
+            rlDescuento.Insert();
+        end else begin
+            fFillDescuentosConceptoData(DescObj, rlDescuento);
+
+            rlDescuento.Modify();
+        end;
+
+        exit(true);
+    end;
+
+    local procedure fFillDescuentosConceptoData(DescObj: JsonObject; var pDescuento: Record "EDUCAMOS DescuentoConcepto"): Boolean
+    var
+        vlToken: JsonToken;
+    begin
+        if DescObj.Get('nombreDescuento', vlToken) then
+            if not vlToken.AsValue().IsNull() then
+                pDescuento.nombreDescuento := vlToken.AsValue().AsText();
+
+        if DescObj.Get('importe', vlToken) then
+            if not vlToken.AsValue().IsNull() then
+                pDescuento.importe := vlToken.AsValue().AsDecimal();
+
+        if DescObj.Get('porcentaje', vlToken) then
+            if not vlToken.AsValue().IsNull() then
+                pDescuento.porcentaje := vlToken.AsValue().AsDecimal();
+
+        pDescuento."Importation DateTime" := CurrentDateTime;
+        pDescuento.Processed := true;
+    end;
+
+    local procedure fFillConceptoPagadoData(ConPagObj: JsonObject): Boolean
+    var
+        rlConceptoPagado: Record "EDUCAMOS ConceptoPagado";
+        vlToken: JsonToken;
+    begin
+        if not ConPagObj.Get('reciboConceptoId', vlToken) then
+            exit(false);
+
+        vReciboConceptoId := vlToken.AsValue().AsText();
+
+        if not rlConceptoPagado.Get(vReciboConceptoId) then begin
+            rlConceptoPagado.Init();
+            rlConceptoPagado.reciboConceptoId := vReciboConceptoId;
+
+            if ConPagObj.Get('importePagado', vlToken) then
+                if not vlToken.AsValue().IsNull() then
+                    rlConceptoPagado.importePagado := vlToken.AsValue().AsDecimal();
+
+            rlConceptoPagado."Importation DateTime" := CurrentDateTime;
+            rlConceptoPagado.Processed := true;
+
+            rlConceptoPagado.Insert();
+        end;
+
+        exit(true);
+    end;
+
+    local procedure TryGetMovsRecibo(): Boolean
+    var
+        Root: JsonObject;
+        MovimientosTok: JsonToken;
+        MovimientosArr: JsonArray;
+
+        MovTok: JsonToken;
+        MovObj: JsonObject;
+
+        i: Integer;
+
+        OpenPos: Integer;
+        ClosePos: Integer;
+        RemainingText: Text;
+        OneJsonText: Text;
+    begin
+        vResult := '';
+        RemainingText := vFullJsonBody;
+
+        while StrLen(RemainingText) > 0 do begin
+            OpenPos := StrPos(RemainingText, '{');
+            if OpenPos = 0 then
+                break;
+
+            ClosePos := fFindMatchingBrace(RemainingText, OpenPos);
+            if ClosePos = 0 then begin
+                vResult := 'JSON de movimientos incompleto.';
+                exit(false);
             end;
 
-            exit(true);
+            OneJsonText := CopyStr(RemainingText, OpenPos, ClosePos - OpenPos + 1);
+            Clear(Root);
+
+            if not Root.ReadFrom(OneJsonText) then begin
+                vResult := NonJsonResponseErr;
+                exit(false);
+            end;
+
+            if not Root.Get('movimientos', MovimientosTok) then begin
+                vResult := 'La respuesta no contiene el nodo "calendarios".';
+                exit(false);
+            end;
+
+            if MovimientosTok.IsArray() then begin
+                MovimientosArr := MovimientosTok.AsArray();
+
+                if MovimientosArr.Count() <> 0 then
+                    for i := 0 to MovimientosArr.Count() - 1 do begin
+                        MovimientosArr.Get(i, MovTok);
+                        MovObj := MovTok.AsObject();
+
+                        if not fFillMovsRecibo(MovObj) then begin
+                            vResult := 'No se han podido tratar los movimientos del recibo.';
+                            exit(false);
+                        end;
+                    end;
+            end;
+
+            RemainingText := CopyStr(RemainingText, ClosePos + 1);
         end;
+
+        exit(true);
     end;
 
-    local procedure fFillRecibosRemesaData(ItemObj: JsonObject; var pRecibosRemesa: Record "EDUCAMOS RecibosRemesa")
+    local procedure fFillMovsRecibo(MovObj: JsonObject): Boolean
+    var
+        rlReciboRemesa: Record "EDUCAMOS ReciboRemesa";
+        rlMovRecibo: Record "EDUCAMOS MovRecibo";
+        rlMovReciboAux: Record "EDUCAMOS MovRecibo";
+        vlMovimientoId: Integer;
+    begin
+        rlReciboRemesa.Reset();
+        if rlReciboRemesa.FindSet() then
+            repeat
+                rlMovReciboAux.Reset();
+                rlMovReciboAux.SetRange(calendarioEscolarId, rlReciboRemesa.calendarioEscolarId);
+                rlMovReciboAux.SetRange(remesaId, rlReciboRemesa.remesaId);
+                rlMovReciboAux.SetRange(reciboId, rlReciboRemesa.reciboId);
+                if rlMovReciboAux.FindLast() then
+                    vlMovimientoId := rlMovReciboAux.movimientoId + 1
+                else
+                    vlMovimientoId := 1;
+
+                if not rlMovRecibo.Get(rlReciboRemesa.calendarioEscolarId, rlReciboRemesa.remesaId, rlReciboRemesa.reciboId, vlMovimientoId) then begin
+                    rlMovRecibo.Init();
+                    rlMovRecibo.calendarioEscolarId := rlReciboRemesa.calendarioEscolarId;
+                    rlMovRecibo.remesaId := rlReciboRemesa.remesaId;
+                    rlMovRecibo.reciboId := rlReciboRemesa.reciboId;
+                    rlMovRecibo.movimientoId := vlMovimientoId;
+
+                    fFillMovimientoData(MovObj, rlMovRecibo);
+
+                    rlMovRecibo.Insert();
+                end else begin
+                    fFillMovimientoData(MovObj, rlMovRecibo);
+
+                    rlMovRecibo.Modify();
+                end;
+            until rlReciboRemesa.Next() = 0;
+
+        exit(true);
+    end;
+
+    local procedure fFillMovimientoData(MovObj: JsonObject; var pMov: Record "EDUCAMOS MovRecibo")
+    var
+        vlToken: JsonToken;
+        PagoTok: JsonToken;
+        PagoObj: JsonObject;
+        ConceptosPagadosTok: JsonToken;
+        ConceptosPagadosArr: JsonArray;
+        j: integer;
+        ConTok: JsonToken;
+        ConObj: JsonObject;
+    begin
+        if MovObj.Get('nombreResponsable', vlToken) then
+            if not vlToken.AsValue().IsNull() then
+                pMov.nombreResponsable := vlToken.AsValue().AsText();
+
+        if MovObj.Get('apellido1Responsable', vlToken) then
+            if not vlToken.AsValue().IsNull() then
+                pMov.apellido1Responsable := vlToken.AsValue().AsText();
+
+        if MovObj.Get('apellido2Responsable', vlToken) then
+            if not vlToken.AsValue().IsNull() then
+                pMov.apellido2Responsable := vlToken.AsValue().AsText();
+
+        if MovObj.Get('fechaMovimiento', vlToken) then
+            if not vlToken.AsValue().IsNull() then
+                Evaluate(pMov.fechaMovimiento, vlToken.AsValue().AsText());
+
+        if MovObj.Get('fechaValor', vlToken) then
+            if not vlToken.AsValue().IsNull() then
+                Evaluate(pMov.fechaValor, vlToken.AsValue().AsText());
+
+        if MovObj.Get('estadoRecibo', vlToken) then
+            if not vlToken.AsValue().IsNull() then
+                pMov.estadoRecibo := vlToken.AsValue().AsText();
+
+        if MovObj.Get('motivoDevolucion', vlToken) then
+            if not vlToken.AsValue().IsNull() then
+                pMov.motivoDevolucion := vlToken.AsValue().AsText();
+
+        if MovObj.Get('comentario', vlToken) then
+            if not vlToken.AsValue().IsNull() then
+                pMov.comentario := vlToken.AsValue().AsText();
+
+        if MovObj.Get('domiciliado', vlToken) then
+            if not vlToken.AsValue().IsNull() then
+                pMov.domiciliado := vlToken.AsValue().AsBoolean();
+
+        if MovObj.Get('pago', PagoTok) then
+            if PagoTok.IsObject then begin
+                PagoObj := PagoTok.AsObject();
+
+                fFillPagoData(PagoObj, pMov);
+
+                if PagoObj.Get('conceptosPagados', ConceptosPagadosTok) then
+                    if ConceptosPagadosTok.IsArray() then begin
+                        ConceptosPagadosArr := ConceptosPagadosTok.AsArray();
+
+                        for j := 0 to ConceptosPagadosArr.Count() - 1 do begin
+                            ConceptosPagadosArr.Get(j, ConTok);
+                            ConObj := ConTok.AsObject();
+
+                            fFillConceptosPagados(ConObj);
+                        end;
+                    end;
+            end;
+
+        pMov."Importation DateTime" := CurrentDateTime;
+        pMov.Processed := true;
+    end;
+
+    local procedure fFillPagoData(PagoObj: JsonObject; var pMov: Record "EDUCAMOS MovRecibo")
     var
         vlToken: JsonToken;
     begin
-        if ItemObj.Get('medioPago', vlToken) then
+        if PagoObj.Get('fechaPago', vlToken) then
             if not vlToken.AsValue().IsNull() then
-                pRecibosRemesa.medioPago := vlToken.AsValue().AsText();
+                Evaluate(pMov.fechaPago, vlToken.AsValue().AsText());
 
-        if ItemObj.Get('pagadorMedioPagoId', vlToken) then
+        if PagoObj.Get('importePago', vlToken) then
             if not vlToken.AsValue().IsNull() then
-                Evaluate(pRecibosRemesa.pagadorMedioPagoId, vlToken.AsValue().AsText());
+                pMov.importePago := vlToken.AsValue().AsDecimal();
+    end;
 
-        if ItemObj.Get('prefijo', vlToken) then
+    local procedure fFillConceptosPagados(ConPagObj: JsonObject): Boolean
+    var
+        rlConceptoPagado: Record "EDUCAMOS ConceptoPagado";
+    begin
+        if not rlConceptoPagado.Get(vCalendarioId, vRemesaId, vReciboId, vMovimientoId) then begin
+            rlConceptoPagado.Init();
+            rlConceptoPagado.calendarioEscolarId := vCalendarioId;
+            rlConceptoPagado.remesaId := vRemesaId;
+            rlConceptoPagado.reciboId := vReciboId;
+            rlConceptoPagado.movimientoId := vMovimientoId;
+
+            fFillConceptosPagadosData(ConPagObj, rlConceptoPagado);
+
+            rlConceptoPagado.Insert();
+        end else begin
+            fFillConceptosPagadosData(ConPagObj, rlConceptoPagado);
+
+            rlConceptoPagado.Modify();
+        end;
+
+        exit(true);
+    end;
+
+    local procedure fFillConceptosPagadosData(pConPagObj: JsonObject; var pConceptoPagado: Record "EDUCAMOS ConceptoPagado")
+    var
+        vlToken: JsonToken;
+    begin
+        if pConPagObj.Get('importePagado', vlToken) then
             if not vlToken.AsValue().IsNull() then
-                pRecibosRemesa.prefijo := vlToken.AsValue().AsText();
+                pConceptoPagado.importePagado := vlToken.AsValue().AsDecimal();
 
-        if ItemObj.Get('numero', vlToken) then
-            if not vlToken.AsValue().IsNull() then
-                pRecibosRemesa.numero := vlToken.AsValue().AsInteger();
-
-        if ItemObj.Get('sufijoAnulacion', vlToken) then
-            if not vlToken.AsValue().IsNull() then
-                pRecibosRemesa.sufijoAnulacion := vlToken.AsValue().AsText();
-
-        if ItemObj.Get('reciboConceptoId', vlToken) then
-            if not vlToken.AsValue().IsNull() then
-                Evaluate(pRecibosRemesa.reciboConceptoId, vlToken.AsValue().AsText());
-
-        if ItemObj.Get('importeConcepto', vlToken) then
-            if not vlToken.AsValue().IsNull() then
-                Evaluate(pRecibosRemesa.importeConcepto, vlToken.AsValue().AsText());
-
-        if ItemObj.Get('importePagado', vlToken) then
-            if not vlToken.AsValue().IsNull() then
-                Evaluate(pRecibosRemesa.importePagado, vlToken.AsValue().AsText());
-
-        if ItemObj.Get('fechaPago', vlToken) then
-            if not vlToken.AsValue().IsNull() then
-                Evaluate(pRecibosRemesa.fechaPago, vlToken.AsValue().AsText());
-
-        if ItemObj.Get('conceptoId', vlToken) then
-            if not vlToken.AsValue().IsNull() then
-                Evaluate(pRecibosRemesa.conceptoId, vlToken.AsValue().AsText());
-
-        if ItemObj.Get('texto', vlToken) then
-            if not vlToken.AsValue().IsNull() then
-                pRecibosRemesa.texto := vlToken.AsValue().AsText();
-
-        if ItemObj.Get('personaId', vlToken) then
-            if not vlToken.AsValue().IsNull() then
-                Evaluate(pRecibosRemesa.personaId, vlToken.AsValue().AsText());
-
-        if ItemObj.Get('estado', vlToken) then
-            if not vlToken.AsValue().IsNull() then
-                pRecibosRemesa.estado := vlToken.AsValue().AsText();
-
-        if ItemObj.Get('descuentoId', vlToken) then
-            if not vlToken.AsValue().IsNull() then
-                Evaluate(pRecibosRemesa.descuentoId, vlToken.AsValue().AsText());
-
-        if ItemObj.Get('nombreDescuento', vlToken) then
-            if not vlToken.AsValue().IsNull() then
-                pRecibosRemesa.nombreDescuento := vlToken.AsValue().AsText();
-
-        if ItemObj.Get('importe', vlToken) then
-            if not vlToken.AsValue().IsNull() then
-                Evaluate(pRecibosRemesa.importe, vlToken.AsValue().AsText());
-
-        if ItemObj.Get('porcentaje', vlToken) then
-            if not vlToken.AsValue().IsNull() then
-                Evaluate(pRecibosRemesa.porcentaje, vlToken.AsValue().AsText());
-
-        if ItemObj.Get('nombreResponsable', vlToken) then
-            if not vlToken.AsValue().IsNull() then
-                pRecibosRemesa.nombreResponsable := vlToken.AsValue().AsText();
-
-        if ItemObj.Get('apellido1Responsable', vlToken) then
-            if not vlToken.AsValue().IsNull() then
-                pRecibosRemesa.apellido1Responsable := vlToken.AsValue().AsText();
-
-        if ItemObj.Get('apellido2Responsable', vlToken) then
-            pRecibosRemesa.apellido2Responsable := vlToken.AsValue().AsText();
-
-        if ItemObj.Get('fechaMovimiento', vlToken) then
-            if not vlToken.AsValue().IsNull() then
-                Evaluate(pRecibosRemesa.fechaMovimiento, vlToken.AsValue().AsText());
-
-        if ItemObj.Get('fechaValor', vlToken) then
-            if not vlToken.AsValue().IsNull() then
-                Evaluate(pRecibosRemesa.fechaValor, vlToken.AsValue().AsText());
-
-        if ItemObj.Get('estadoRecibo', vlToken) then
-            if not vlToken.AsValue().IsNull() then
-                pRecibosRemesa.estadoRecibo := vlToken.AsValue().AsText();
-
-        if ItemObj.Get('motivoDevolucion', vlToken) then
-            if not vlToken.AsValue().IsNull() then
-                pRecibosRemesa.motivoDevolucion := vlToken.AsValue().AsText();
-
-        if ItemObj.Get('comentario', vlToken) then
-            if not vlToken.AsValue().IsNull() then
-                pRecibosRemesa.comentario := vlToken.AsValue().AsText();
-
-        if ItemObj.Get('domiciliado', vlToken) then
-            if not vlToken.AsValue().IsNull() then
-                pRecibosRemesa.domiciliado := vlToken.AsValue().AsBoolean();
-
-        if ItemObj.Get('importePago', vlToken) then
-            if not vlToken.AsValue().IsNull() then
-                Evaluate(pRecibosRemesa.pago_importePago, vlToken.AsValue().AsText());
-
-        if ItemObj.Get('reciboConceptoId', vlToken) then
-            if not vlToken.AsValue().IsNull() then
-                Evaluate(pRecibosRemesa.pago_reciboConceptoId, vlToken.AsValue().AsText());
-
-        if ItemObj.Get('importePagado', vlToken) then
-            if not vlToken.AsValue().IsNull() then
-                Evaluate(pRecibosRemesa.pago_importePagado, vlToken.AsValue().AsText());
-
-        pRecibosRemesa."Importation DateTime" := CurrentDateTime;
-        pRecibosRemesa.Processed := true;
+        pConceptoPagado."Importation DateTime" := CurrentDateTime;
+        pConceptoPagado.Processed := true;
     end;
 
     local procedure FillInputData(pWSResult: Text): Boolean
@@ -1457,7 +1756,6 @@ codeunit 50006 "JSON Webservices Management"
         vStartDate := 0D;
         vEndDate := 0D;
         vJsonBody := '';
-        Ok := false;
         vFullJsonBody := '';
         vStatusCode := 0;
         vBaseUrl := rEDUSetup."API URL";

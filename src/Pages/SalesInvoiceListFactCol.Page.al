@@ -155,7 +155,6 @@ page 50039 "Sales Invoice List - Fact. Col"
                 }
             }
         }
-
         area(navigation)
         {
             group(InvoiceNav)
@@ -177,7 +176,6 @@ page 50039 "Sales Invoice List - Fact. Col"
                         Page.RunModal(Page::"Sales Statistics", Rec);
                     end;
                 }
-
                 action("Co&mments")
                 {
                     Caption = 'Comments', Comment = 'ESP="Comentarios"';
@@ -188,7 +186,6 @@ page 50039 "Sales Invoice List - Fact. Col"
                                   "Document Line No." = CONST(0);
                     ToolTip = 'View or add notes about the sales invoice.', Comment = 'ESP="Ver o agregar notas sobre la factura de venta."';
                 }
-
                 action(Dimensions)
                 {
                     AccessByPermission = TableData Dimension = R;
@@ -202,7 +199,6 @@ page 50039 "Sales Invoice List - Fact. Col"
                         Rec.ShowDocDim;
                     end;
                 }
-
                 action(Approvals)
                 {
                     AccessByPermission = TableData "Approval Entry" = R;
@@ -219,7 +215,6 @@ page 50039 "Sales Invoice List - Fact. Col"
                         ApprovalEntries.Run();
                     end;
                 }
-
                 action(Customer)
                 {
                     ApplicationArea = Basic, Suite;
@@ -233,7 +228,6 @@ page 50039 "Sales Invoice List - Fact. Col"
                 }
             }
         }
-
         area(processing)
         {
             group(InvoiceGroup)
@@ -260,7 +254,6 @@ page 50039 "Sales Invoice List - Fact. Col"
                         ReleaseSalesDoc.PerformManualRelease(Rec);
                     end;
                 }
-
                 action("Re&open")
                 {
                     Caption = 'Reopen', Comment = 'ESP="Reabrir"';
@@ -296,7 +289,6 @@ page 50039 "Sales Invoice List - Fact. Col"
                             ApprovalsMgmt.OnSendSalesDocForApproval(Rec);
                     end;
                 }
-
                 action(CancelApprovalRequest)
                 {
                     Caption = 'Cancel Approval Request', Comment = 'ESP="Cancelar solicitud de aprobación"';
@@ -330,7 +322,6 @@ page 50039 "Sales Invoice List - Fact. Col"
                         ReportPrint.PrintSalesHeader(Rec);
                     end;
                 }
-
                 action(Post_Action)
                 {
                     ApplicationArea = Basic, Suite;
@@ -344,7 +335,6 @@ page 50039 "Sales Invoice List - Fact. Col"
                         Post(Codeunit::"Sales-Post (Yes/No)");
                     end;
                 }
-
                 action("Post &Batch")
                 {
                     Caption = 'Post Batch', Comment = 'ESP="Registrar en lote"';
@@ -357,7 +347,6 @@ page 50039 "Sales Invoice List - Fact. Col"
                         CurrPage.Update(false);
                     end;
                 }
-
                 action(PostAndSend)
                 {
                     ApplicationArea = Basic, Suite;
@@ -372,7 +361,6 @@ page 50039 "Sales Invoice List - Fact. Col"
                         Rec.SendToPosting(Codeunit::"Sales-Post and Send");
                     end;
                 }
-
                 action("Remove From Job Queue")
                 {
                     Caption = 'Remove From Job Queue', Comment = 'ESP="Eliminar de cola de trabajos"';
@@ -385,7 +373,6 @@ page 50039 "Sales Invoice List - Fact. Col"
                         Rec.CancelBackgroundPosting;
                     end;
                 }
-
                 action(Preview)
                 {
                     Caption = 'Preview Posting', Comment = 'ESP="Previsualizar registro"';
@@ -399,7 +386,6 @@ page 50039 "Sales Invoice List - Fact. Col"
                 }
             }
         }
-
         area(reporting)
         {
             group(Reports)
@@ -426,7 +412,6 @@ page 50039 "Sales Invoice List - Fact. Col"
                             Codeunit.Run(Codeunit::"Customer Layout - Statement", Customer);
                         end;
                     }
-
                     action("Customer - Balance to Date")
                     {
                         Caption = 'Customer - Balance to Date', Comment = 'ESP="Cliente - Saldo a fecha"';
@@ -434,7 +419,6 @@ page 50039 "Sales Invoice List - Fact. Col"
                         RunObject = Report "Customer - Balance to Date";
                         ToolTip = 'View, print, or save customers'' balances on a certain date. You can use the report to extract your total sales income at the close of an accounting period or fiscal year.', Comment = 'ESP="Ver, imprimir o guardar los saldos de clientes en una fecha determinada. Puede utilizar el informe para extraer sus ingresos totales por ventas al cierre de un período contable o ejercicio fiscal."';
                     }
-
                     action("Customer - Trial Balance")
                     {
                         ApplicationArea = Suite;
@@ -443,7 +427,6 @@ page 50039 "Sales Invoice List - Fact. Col"
                         RunObject = Report "Customer - Trial Balance";
                         ToolTip = 'View the beginning and ending balance for customers with entries within a specified period. The report can be used to verify that the balance for a customer posting group is equal to the balance on the corresponding general ledger account on a certain date.', Comment = 'ESP="Ver el saldo inicial y final de los clientes con movimientos dentro de un período determinado. El informe puede usarse para comprobar que el saldo de un grupo contable de clientes coincide con el saldo de la cuenta contable correspondiente en una fecha concreta."';
                     }
-
                     action("Customer - Detail Trial Bal.")
                     {
                         ApplicationArea = Basic, Suite;
@@ -452,7 +435,6 @@ page 50039 "Sales Invoice List - Fact. Col"
                         RunObject = Report "Customer - Detail Trial Bal.";
                         ToolTip = 'View the balance for customers with balances on a specified date. For example, the report can be used at the close of an accounting period or for an audit.', Comment = 'ESP="Ver el saldo de los clientes con saldo en una fecha determinada. Por ejemplo, el informe puede utilizarse al cierre de un período contable o para una auditoría."';
                     }
-
                     action("Customer - Summary Aging")
                     {
                         Caption = 'Customer - Summary Aging', Comment = 'ESP="Cliente - Resumen de antigüedad"';
@@ -460,7 +442,6 @@ page 50039 "Sales Invoice List - Fact. Col"
                         RunObject = Report "Customer - Summary Aging";
                         ToolTip = 'View, print, or save a summary of each customer''s total payments due, divided into three time periods. The report can be used to decide when to issue reminders, to evaluate a customer''s creditworthiness, or to prepare liquidity analyses.', Comment = 'ESP="Ver, imprimir o guardar un resumen de los pagos totales vencidos de cada cliente, dividido en tres períodos de tiempo. El informe puede utilizarse para decidir cuándo emitir recordatorios, evaluar la solvencia del cliente o preparar análisis de liquidez."';
                     }
-
                     action("Customer - Detailed Aging")
                     {
                         Caption = 'Customer - Detailed Aging', Comment = 'ESP="Cliente - Antigüedad detallada"';
@@ -468,7 +449,6 @@ page 50039 "Sales Invoice List - Fact. Col"
                         RunObject = Report "Customer Detailed Aging";
                         ToolTip = 'View, print, or save a detailed list of each customer''s total payments due, divided into three time periods. The report can be used to decide when to issue reminders, to evaluate a customer''s creditworthiness, or to prepare liquidity analyses.', Comment = 'ESP="Ver, imprimir o guardar una lista detallada de los pagos totales vencidos de cada cliente, dividida en tres períodos de tiempo. El informe puede utilizarse para decidir cuándo emitir recordatorios, evaluar la solvencia del cliente o preparar análisis de liquidez."';
                     }
-
                     action("Aged Accounts Receivable")
                     {
                         ApplicationArea = Basic, Suite;
@@ -477,7 +457,6 @@ page 50039 "Sales Invoice List - Fact. Col"
                         RunObject = Report "Aged Accounts Receivable";
                         ToolTip = 'View an overview of when customer payments are due or overdue, divided into four periods. You must specify the date you want aging calculated from and the length of the period that each column will contain data for.', Comment = 'ESP="Ver un resumen de cuándo vencen o están vencidos los pagos de clientes, dividido en cuatro períodos. Debe especificar la fecha a partir de la cual desea calcular la antigüedad y la duración del período del que cada columna contendrá datos."';
                     }
-
                     action("Customer - Payment Receipt")
                     {
                         ApplicationArea = Suite;
@@ -487,7 +466,6 @@ page 50039 "Sales Invoice List - Fact. Col"
                         ToolTip = 'View a document showing which customer ledger entries that a payment has been applied to. This report can be used as a payment receipt that you send to the customer.', Comment = 'ESP="Ver un documento que muestra a qué movimientos de cliente se ha aplicado un pago. Este informe puede utilizarse como justificante de pago para enviárselo al cliente."';
                     }
                 }
-
                 group(SalesReports)
                 {
                     Caption = 'Sales Reports', Comment = 'ESP="Informes de ventas"';
@@ -501,7 +479,6 @@ page 50039 "Sales Invoice List - Fact. Col"
                         RunObject = Report "Customer - Top 10 List";
                         ToolTip = 'View which customers purchase the most or owe the most in a selected period. Only customers that have either purchases during the period or a balance at the end of the period will be included.', Comment = 'ESP="Ver qué clientes compran más o deben más en un período seleccionado. Solo se incluirán los clientes que tengan compras durante el período o saldo al final del mismo."';
                     }
-
                     action("Customer - Sales List")
                     {
                         ApplicationArea = Basic, Suite;
@@ -510,7 +487,6 @@ page 50039 "Sales Invoice List - Fact. Col"
                         RunObject = Report "Customer - Sales List";
                         ToolTip = 'View customer sales in a period, for example, to report sales activity to customs and tax authorities.', Comment = 'ESP="Ver las ventas de clientes en un período, por ejemplo para informar de la actividad de ventas a las autoridades aduaneras y fiscales."';
                     }
-
                     action("Sales Statistics")
                     {
                         ApplicationArea = Basic, Suite;

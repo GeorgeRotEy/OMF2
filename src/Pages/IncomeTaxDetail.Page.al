@@ -233,7 +233,6 @@ page 50077 "Income Tax Detail"
                 }
             }
         }
-
         area(processing)
         {
             action(Post)
@@ -438,7 +437,6 @@ page 50077 "Income Tax Detail"
         CurrPage.Update(false);
     end;
 
-
     local procedure BackfillRetentionLedgerLinks()
     var
         RetentionLedgEntry: Record "Movs. retenciones";
@@ -524,7 +522,6 @@ page 50077 "Income Tax Detail"
          SalesClosedCount);
     end;
 
-
     procedure fTestSetupRetention()
     var
         rlPurchSetup: Record "Purchases & Payables Setup";
@@ -541,5 +538,4 @@ page 50077 "Income Tax Detail"
         rlSourceCodeSetup.Get();
         rlSourceCodeSetup.TestField("Retention Application");
     end;
-
 }

@@ -110,7 +110,6 @@ page 50081 "Third Party List"
                 }
             }
         }
-
         area(navigation)
         {
             group(ThirdPartyNav)
@@ -124,7 +123,6 @@ page 50081 "Third Party List"
                     Caption = 'Create Third Party', Comment = 'ESP="Crear tercero"';
                     RunObject = Page "Alta Terceros ";
                 }
-
                 action(Dimensions)
                 {
                     ApplicationArea = Suite;
@@ -136,7 +134,6 @@ page 50081 "Third Party List"
                     ShortCutKey = 'Shift+Ctrl+D';
                     ToolTip = 'View or edits dimensions, such as area, project, or department, that you can assign to sales and purchase documents to distribute costs and analyze transaction history.', Comment = 'ESP="Ver o editar dimensiones, como área, proyecto o departamento, que se pueden asignar a documentos de ventas y compras para distribuir costes y analizar el historial de transacciones."';
                 }
-
                 action("Bank Accounts")
                 {
                     ApplicationArea = Basic, Suite;

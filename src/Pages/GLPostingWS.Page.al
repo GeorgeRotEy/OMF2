@@ -26,7 +26,6 @@ page 50048 "GL Posting WS"
                 {
                     ApplicationArea = All;
                 }
-
                 field("Posting Date"; Rec."Posting Date")
                 {
                     ApplicationArea = All;

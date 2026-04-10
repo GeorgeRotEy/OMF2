@@ -67,7 +67,7 @@ codeunit 50007 "EDUCAMOS Interface"
 
     procedure fRunInterface()
     var
-        cuJSONWebservicesManagement: Codeunit "JSON Webservices Management";
+        cuJSONWebservicesManagement: Codeunit "EDUCAMOS API Management";
         rlCompanyOFM: Record "Company OFM";
     begin
         //  -----------------------------------------------
@@ -137,8 +137,8 @@ codeunit 50007 "EDUCAMOS Interface"
 
     local procedure fProcessRecibosRemesa(pIDUniqueRemesa: Text)
     var
-        rlRecibosRemesa: Record "EDUCAMOS RecibosRemesa";
-        rlRecibosRemesaAux: Record "EDUCAMOS RecibosRemesa";
+        rlRecibosRemesa: Record "EDUCAMOS ReciboRemesa";
+        rlRecibosRemesaAux: Record "EDUCAMOS ReciboRemesa";
         clInvoiceNo: Code[20];
         i: Integer;
         bIsCrMemo: Boolean;
@@ -184,7 +184,7 @@ codeunit 50007 "EDUCAMOS Interface"
         //     fSetLog(2, STRSUBSTNO(Warning004, pIDUniqueRemesa), '', 1);
     end;
 
-    local procedure fCreateSalesHeader(pRecibosRemesa: Record "EDUCAMOS RecibosRemesa"; var pIsCrMemo: Boolean) InvNo: Code[20]
+    local procedure fCreateSalesHeader(pRecibosRemesa: Record "EDUCAMOS ReciboRemesa"; var pIsCrMemo: Boolean) InvNo: Code[20]
     var
         rlEDUCAMOSSetup: Record "EDUCAMOS Setup";
         rlSalesHeader: Record "Sales Header";
@@ -387,7 +387,7 @@ codeunit 50007 "EDUCAMOS Interface"
 
     local procedure fGetEtapaEducativa(pIDAlumno: Text; pIDColegio: Integer; var pEtapaEducativa: Code[20]): Boolean
     var
-        rlEtapaEducativa: Record "EDUCAMOS EtapaEducativa";
+        rlEtapaEducativa: Record "EDUCAMOS EtapaEducativa Old";
         rlDimValue: Record "Dimension Value";
         rlReciboAlumno: Record "EDUCAMOS ReciboAlumno";
     begin
@@ -422,7 +422,7 @@ codeunit 50007 "EDUCAMOS Interface"
             GLAccNo := rlMap."G/L Account No.";
     end;
 
-    local procedure fFindCustomer(rlRecibosRemesa: Record "EDUCAMOS RecibosRemesa") NAVCustomer: Code[20]
+    local procedure fFindCustomer(rlRecibosRemesa: Record "EDUCAMOS ReciboRemesa") NAVCustomer: Code[20]
     var
         rlCust: Record Customer;
         rlThirdParty: Record "Third Party";
@@ -462,7 +462,7 @@ codeunit 50007 "EDUCAMOS Interface"
         // END;
     end;
 
-    local procedure fCreateThirdParty(pRecibosRemesa: Record "EDUCAMOS RecibosRemesa"; var pThirdParty: Record "Third Party")
+    local procedure fCreateThirdParty(pRecibosRemesa: Record "EDUCAMOS ReciboRemesa"; var pThirdParty: Record "Third Party")
     var
         rlSetup: Record "EDUCAMOS Setup";
     begin
@@ -485,7 +485,7 @@ codeunit 50007 "EDUCAMOS Interface"
         //     fSetLog(1, STRSUBSTNO(Text001, pThirdParty."No.", pRecibosRemesa.id_unique_pagador), COMPANYNAME, 1);
     end;
 
-    local procedure fCreateCustomer(rlRecibosRemesa: Record "EDUCAMOS RecibosRemesa"; pThirdParty: Record "Third Party") NAVCustomer: Code[20]
+    local procedure fCreateCustomer(rlRecibosRemesa: Record "EDUCAMOS ReciboRemesa"; pThirdParty: Record "Third Party") NAVCustomer: Code[20]
     var
         cuFunctionsS2G: Codeunit "Functions S2G";
         rlCust: Record Customer;

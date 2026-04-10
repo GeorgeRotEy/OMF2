@@ -429,15 +429,12 @@ page 50006 "Easy Register"
         }
         area(factboxes)
         {
-
-
             part(Picture; Picture)
             {
                 ApplicationArea = Basic, Suite;
                 Editable = false;
                 ShowFilter = false;
             }
-
         }
     }
 
