@@ -721,9 +721,76 @@ codeunit 50015 "EY Functions"
         Vendor.MarkedOnly := true;
     end;
 
+    [TryFunction]
+    procedure lfTryRevertirMovimientoContable(pGlEntryNo: Integer; var pVendorEntryFound: Boolean; var pVendorUnapplied: Boolean)
+    var
+        rlGlEntry: Record "G/L Entry";
+    begin
+        rlGlEntry.Get(pGlEntryNo);
+        rlGlEntry.TestField("Transaction No.");
+
+        lfDesliquidarProveedor(rlGlEntry."Transaction No.", pVendorEntryFound, pVendorUnapplied);
+        lfRevertirTransaccion(rlGlEntry."Transaction No.");
+    end;
+
+    procedure lfDesliquidarProveedor(pTransactionNo: Integer; var PvendorEntryFound: Boolean; var pVendorUnapplied: Boolean)
+    var
+        rlVendLedgEntry: Record "Vendor Ledger Entry";
+        rlDtldVendLedgEntry: Record "Detailed Vendor Ledg. Entry";
+        rlApplyUnapplyParameters: Record "Apply Unapply Parameters";
+        clVendEntryApplyPostedEntries: Codeunit "VendEntry-Apply Posted Entries";
+        vlApplicationEntryNo: Integer;
+        vbRetry: Boolean;
+    begin
+        REPEAT
+            vbRetry := FALSE;
+            vlApplicationEntryNo := 0;
+
+            rlVendLedgEntry.RESET();
+            rlVendLedgEntry.SETRANGE("Transaction No.", pTransactionNo);
+            IF rlVendLedgEntry.FINDSET() THEN
+                REPEAT
+                    pVendorEntryFound := TRUE;
+                    vlApplicationEntryNo := clVendEntryApplyPostedEntries.FindLastApplEntry(rlVendLedgEntry."Entry No.");
+                    IF vlApplicationEntryNo <> 0 THEN BEGIN
+                        rlDtldVendLedgEntry.GET(vlApplicationEntryNo);
+                        CLEAR(rlApplyUnapplyParameters);
+                        rlApplyUnapplyParameters."Document No." := rlDtldVendLedgEntry."Document No.";
+                        rlApplyUnapplyParameters."Posting Date" := rlDtldVendLedgEntry."Posting Date";
+                        clVendEntryApplyPostedEntries.PostUnApplyVendor(rlDtldVendLedgEntry, rlApplyUnapplyParameters);
+                        pVendorUnapplied := TRUE;
+                        vbRetry := TRUE;
+                    END;
+                UNTIL (rlVendLedgEntry.NEXT() = 0) OR vbRetry;
+        UNTIL NOT vbRetry;
+    end;
+
+    procedure lfRevertirTransaccion(pTransactionNo: Integer)
+    var
+        rlReversalEntry: Record "Reversal Entry";
+    begin
+        CLEAR(rlReversalEntry);
+        rlReversalEntry.SetHideWarningDialogs();
+        rlReversalEntry.ReverseTransaction(pTransactionNo);
+    end;
+
+    internal procedure lfGetReversionMessage(pVendorEntryFound: Boolean; pVendorUnapplied: Boolean): Text
+    begin
+        IF pVendorUnapplied THEN
+            EXIT(TextWSReversionWithVendorUnapplyLbl);
+
+        IF pVendorEntryFound THEN
+            EXIT(TextWSReversionWithVendorLbl);
+
+        EXIT(TextWSReversionLbl);
+    end;
+
     var
         AccSchedName: Record "Acc. Schedule Name";
         cSelectionFilterManagement: Codeunit SelectionFilterManagement;
         cAccScheduleMgt: Codeunit AccSchedManagement;
         AccountingPeriodMgt: Codeunit "Accounting Period Mgt.";
+        TextWSReversionLbl: Label 'La transaccion se ha revertido correctamente.';
+        TextWSReversionWithVendorLbl: Label 'La transaccion se ha revertido correctamente. Se han detectado movimientos de proveedor sin necesidad de desaplicacion.';
+        TextWSReversionWithVendorUnapplyLbl: Label 'Se ha desaplicado el movimiento de proveedor y se ha revertido la transaccion correctamente.';
 }

@@ -17,7 +17,7 @@ report 50002 "Delete Analitic G/L Allocation"
 
             trigger OnAfterGetRecord()
             var
-    Text_Deleted: Label 'Entry deleted', Comment = 'ESP="Movimiento eliminado"';
+                Text_Deleted: Label 'Entry deleted', Comment = 'ESP="Movimiento eliminado"';
             begin
                 NumMovReparto += 1;
                 Window.UPDATE(1, NumMovReparto);
@@ -100,13 +100,13 @@ report 50002 "Delete Analitic G/L Allocation"
     var
         SourceCodeSetup: Record "Source Code Setup";
         NumMovReparto: Integer;
-    Text022: Label 'Posting Cost Entries @1@@@@@@@@@@\', Comment = 'ESP="Registrando movimientos de costes @1@@@@@@@@@@\\"';
+        Text022: Label 'Posting Cost Entries @1@@@@@@@@@@\', Comment = 'ESP="Registrando movimientos de costes @1@@@@@@@@@@\\"';
         Window: Dialog;
-    Text023: Label 'Process finished', Comment = 'ESP="Proceso finalizado"';
+        Text023: Label 'Process finished', Comment = 'ESP="Proceso finalizado"';
         _TransactionNo: Integer;
-    Text024: Label 'Proceso cancelado a petición del usuario', Comment = 'ESP="Proceso cancelado a petición del usuario"';
-    Text_Confirm: Label 'Éste proceso modifica el importe de los movimientos de reparto analítico para anular los asientos. Desea continuar?', Comment = 'ESP="Éste proceso modifica el importe de los movimientos de reparto analítico para anular los asientos. Desea continuar?"';
-    Texto025: Label 'No hay nada que eliminar', Comment = 'ESP="No hay nada que eliminar"';
+        Text024: Label 'Proceso cancelado a petición del usuario', Comment = 'ESP="Proceso cancelado a petición del usuario"';
+        Text_Confirm: Label 'Éste proceso modifica el importe de los movimientos de reparto analítico para anular los asientos. Desea continuar?', Comment = 'ESP="Éste proceso modifica el importe de los movimientos de reparto analítico para anular los asientos. Desea continuar?"';
+        Texto025: Label 'No hay nada que eliminar', Comment = 'ESP="No hay nada que eliminar"';
 
     procedure setTransactionNo(TransactionNo: Integer)
     begin

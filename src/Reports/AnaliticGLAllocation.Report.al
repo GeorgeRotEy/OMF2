@@ -299,10 +299,10 @@ report 50005 "Analitic G/L Allocation"
         AssignedAmount: Decimal;
         BalAccDescription: Text[250];
         AllocDate: Date;
-    AssignationDescription: Label 'Source Assignation = %1 (%2)', Comment = 'ESP="Asignación origen = %1 (%2)"';
+        AssignationDescription: Label 'Source Assignation = %1 (%2)', Comment = 'ESP="Asignación origen = %1 (%2)"';
         FromLevel: Integer;
         ToLevel: Integer;
-    BalAccAssignationDescription: Label 'Source Assignation = %1 (%2)', Comment = 'ESP="Asignación origen = %1 (%2)"';
+        BalAccAssignationDescription: Label 'Source Assignation = %1 (%2)', Comment = 'ESP="Asignación origen = %1 (%2)"';
         IdDistribucion: Code[20];
         PrimerNumMovReparto: Integer;
         UltimoNumMovReparto: Integer;
@@ -310,10 +310,10 @@ report 50005 "Analitic G/L Allocation"
         TransactionNo: Integer;
         NumMovRepartoOrigen: Integer;
         ImporteMovOrigen: Decimal;
-    Text_Progreso: Label 'Cost allocation\Level                      #1####### \Source ID                  #2####### \Sum source entries         #3####### \Write allocation entries   #4####### ', Comment = 'ESP="Reparto de costes\Nivel                      #1####### \ID origen                  #2####### \Suma movs. origen         #3####### \Escribir movs. reparto   #4####### "';
+        Text_Progreso: Label 'Cost allocation\Level                      #1####### \Source ID                  #2####### \Sum source entries         #3####### \Write allocation entries   #4####### ', Comment = 'ESP="Reparto de costes\Nivel                      #1####### \ID origen                  #2####### \Suma movs. origen         #3####### \Escribir movs. reparto   #4####### "';
         Window: Dialog;
         cuentaMovimientos: Integer;
-    Text_Fin: Label 'Proceso finalizado', Comment = 'ESP="Proceso finalizado"';
+        Text_Fin: Label 'Proceso finalizado', Comment = 'ESP="Proceso finalizado"';
         NumEtapa: Integer;
         TotalEtapas: Integer;
 

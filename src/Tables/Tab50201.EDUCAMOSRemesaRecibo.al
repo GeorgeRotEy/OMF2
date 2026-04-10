@@ -1,150 +1,94 @@
-table 50201 "EDUCAMOS RecibosRemesa"
+table 50201 "EDUCAMOS RemesaRecibo" //EDUCAMOS
 {
-    Caption = 'EDUCAMOS RecibosRemesa';
+    // Mod. S2G (RBM-R) IN-001: Interfaz Educamos
 
     fields
     {
-        field(1; remesaid; Text[50])
+        field(1; id_remesa; Text[30])
         {
-            Caption = 'remesaid';
+            Caption = 'Batch ID', Comment = 'ESP="Id remesa"';
         }
-        field(2; reciboId; Guid)
+        field(2; id_unique_remesa; Text[50])
         {
-            Caption = 'reciboId';
+            Caption = 'Unique Batch ID', Comment = 'ESP="Id único remesa"';
         }
-        field(3; "ID Remesa BC"; Text[30])
+        field(3; id_recibo; Text[30])
         {
-            Caption = 'ID Remesa BC';
+            Caption = 'Receipt ID', Comment = 'ESP="Id recibo"';
         }
-        field(4; "ID Recibo BC"; Blob)
+        field(4; id_unique_recibo; Text[50])
         {
-            Caption = 'ID Recibo BC';
+            Caption = 'Unique Receipt ID', Comment = 'ESP="Id único recibo"';
         }
-        field(5; medioPago; Text[100])
+        field(5; numero_recibo; Text[50])
         {
-            Caption = 'medioPago';
+            Caption = 'Receipt No.', Comment = 'ESP="Número recibo"';
         }
-        field(6; pagadorMedioPagoId; Guid)
+        field(6; estado_recibo; Integer)
         {
-            Caption = 'pagadorMedioPagoId';
+            Caption = 'Receipt Status', Comment = 'ESP="Estado recibo"';
         }
-        field(7; prefijo; Text[50])
+        field(7; tipo_recibo; Integer)
         {
-            Caption = 'prefijo';
+            Caption = 'Receipt Type', Comment = 'ESP="Tipo recibo"';
         }
-        field(8; numero; Integer)
+        field(8; id_pagador; Text[30])
         {
-            Caption = 'numero';
+            Caption = 'Payer ID', Comment = 'ESP="Id pagador"';
         }
-        field(9; sufijoAnulacion; Text[50])
+        field(9; id_unique_pagador; Text[50])
         {
-            Caption = 'sufijoAnulacion';
+            Caption = 'Unique Payer ID', Comment = 'ESP="Id único pagador"';
         }
-        // Grupo conceptos
-        field(20; reciboConceptoId; Guid)
+        field(10; nombre_pagador; Text[250])
         {
-            Caption = 'reciboConceptoId';
+            Caption = 'Payer Name', Comment = 'ESP="Nombre pagador"';
         }
-        field(21; importeConcepto; Decimal)
+        field(11; apellidos_pagador; Text[250])
         {
-            Caption = 'importeConcepto';
+            Caption = 'Payer Surnames', Comment = 'ESP="Apellidos pagador"';
         }
-        field(22; importePagado; Decimal)
+        field(12; nif_pagador; Text[50])
         {
-            Caption = 'importePagado';
+            Caption = 'Payer Tax ID', Comment = 'ESP="NIF pagador"';
         }
-        field(23; fechaPago; Date)
+        field(13; direccion_pagador; Text[250])
         {
-            Caption = 'fechaPago';
+            Caption = 'Payer Address', Comment = 'ESP="Dirección pagador"';
         }
-        field(24; conceptoId; Guid)
+        field(14; localidad_pagador; Text[250])
         {
-            Caption = 'conceptoId';
+            Caption = 'Payer City', Comment = 'ESP="Localidad pagador"';
         }
-        field(25; texto; Text[250])
+        field(15; cp_pagador; Text[100])
         {
-            Caption = 'texto';
+            Caption = 'Payer Post Code', Comment = 'ESP="Código postal pagador"';
         }
-        field(26; personaId; Guid)
+        field(16; provincia_pagador; Text[100])
         {
-            Caption = 'personaId';
+            Caption = 'Payer Province', Comment = 'ESP="Provincia pagador"';
         }
-        field(27; estado; Text[50])
+        field(17; cuenta_pagador; Text[50])
         {
-            Caption = 'estado';
+            Caption = 'Payer Account No.', Comment = 'ESP="Cuenta pagador"';
         }
-        // Grupo descuentos
-        field(40; descuentoId; Guid)
+        field(18; cuenta_pagador_IBAN; Text[50])
         {
-            Caption = 'descuentoId';
+            Caption = 'Payer IBAN', Comment = 'ESP="IBAN pagador"';
         }
-        field(41; nombreDescuento; Text[150])
+        field(19; fecha_cambio_estado; Text[30])
         {
-            Caption = 'nombreDescuento';
+            Caption = 'Status Change Date', Comment = 'ESP="Fecha cambio estado"';
         }
-        field(42; importe; Decimal)
+        field(20; estado_actual; Integer)
         {
-            Caption = 'importe';
+            Caption = 'Current Status', Comment = 'ESP="Estado actual"';
         }
-        field(43; porcentaje; Decimal)
-        {
-            Caption = 'porcentaje';
-        }
-        // Grupo movimientos
-        field(50; nombreResponsable; Text[100])
-        {
-            Caption = 'nombreResponsable';
-        }
-        field(51; apellido1Responsable; Text[100])
-        {
-            Caption = 'apellido1Responsable';
-        }
-        field(52; apellido2Responsable; Text[100])
-        {
-            Caption = 'apellido2Responsable';
-        }
-        field(53; fechaMovimiento; DateTime)
-        {
-            Caption = 'fechaMovimiento';
-        }
-        field(54; fechaValor; DateTime)
-        {
-            Caption = 'fechaValor';
-        }
-        field(55; estadoRecibo; Text[50])
-        {
-            Caption = 'estadoRecibo';
-        }
-        field(56; motivoDevolucion; Text[250])
-        {
-            Caption = 'motivoDevolucion';
-        }
-        field(57; comentario; Text[250])
-        {
-            Caption = 'comentario';
-        }
-        field(58; domiciliado; Boolean)
-        {
-            Caption = 'domiciliado';
-        }
-        // Grupo pagos dentro de movimientos
-        field(70; pago_importePago; Decimal)
-        {
-            Caption = 'pago_importePago';
-        }
-        field(71; pago_reciboConceptoId; Guid)
-        {
-            Caption = 'pago_reciboConceptoId';
-        }
-        field(72; pago_importePagado; Decimal)
-        {
-            Caption = 'pago_importePagado';
-        }
-        field(80; "Importation DateTime"; DateTime)
+        field(30; "Importation DateTime"; DateTime)
         {
             Caption = 'Import Date/Time', Comment = 'ESP="Fecha y hora de importación"';
         }
-        field(81; Processed; Boolean)
+        field(31; Processed; Boolean)
         {
             Caption = 'Processed', Comment = 'ESP="Procesado"';
         }
@@ -152,9 +96,12 @@ table 50201 "EDUCAMOS RecibosRemesa"
 
     keys
     {
-        key(Key1; remesaid, reciboId)
+        key(Key1; id_unique_remesa, id_unique_recibo)
         {
             Clustered = true;
+        }
+        key(Key2; Processed, id_unique_remesa)
+        {
         }
     }
 

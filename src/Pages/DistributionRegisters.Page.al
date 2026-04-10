@@ -108,7 +108,6 @@ page 50028 "Distribution Registers"
                 actionref(DistributionEntries_Promoted; "&Distribution Entries")
                 {
                 }
-
                 actionref(DeleteDistributionEntries_Promoted; "&Delete Distribution Entries")
                 {
                 }

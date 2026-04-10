@@ -247,11 +247,11 @@ report 50088 "Liquidación IRPF_2"
         vFechaRegistro: Date;
         vImporteTotal: Decimal;
         vNumDoc: Code[20];
-    MandatoryFieldsText: Label '(*) Mandatory Data', Comment = 'ESP="(*) Datos obligatorios"';
-    Text50000: Label 'Debe rellenar todos los campos obligatorios.', Comment = 'ESP="Debe rellenar todos los campos obligatorios."';
-    Text50001: Label 'Ya existen líneas en el diario seleccionado.', Comment = 'ESP="Ya existen líneas en el diario seleccionado."';
-    Text50002: Label 'Se han liquidado correctamente las retenciones de IRPF con número de documento %1.', Comment = 'ESP="Se han liquidado correctamente las retenciones de IRPF con número de documento %1."';
-    Text50003: Label 'No es necesario realizar ninguna liquidación.', Comment = 'ESP="No es necesario realizar ninguna liquidación."';
+        MandatoryFieldsText: Label '(*) Mandatory Data', Comment = 'ESP="(*) Datos obligatorios"';
+        Text50000: Label 'Debe rellenar todos los campos obligatorios.', Comment = 'ESP="Debe rellenar todos los campos obligatorios."';
+        Text50001: Label 'Ya existen líneas en el diario seleccionado.', Comment = 'ESP="Ya existen líneas en el diario seleccionado."';
+        Text50002: Label 'Se han liquidado correctamente las retenciones de IRPF con número de documento %1.', Comment = 'ESP="Se han liquidado correctamente las retenciones de IRPF con número de documento %1."';
+        Text50003: Label 'No es necesario realizar ninguna liquidación.', Comment = 'ESP="No es necesario realizar ninguna liquidación."';
         rSourceCodeSetup: Record "Source Code Setup";
         rTempMovRet: Record "Movs. retenciones" temporary;
         vline: Integer;

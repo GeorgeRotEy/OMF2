@@ -84,7 +84,6 @@ page 50055 "EDUCAMOS Interfaz Setup"
                         ApplicationArea = All;
                     }
                 }
-
             }
         }
     }
@@ -97,15 +96,20 @@ page 50055 "EDUCAMOS Interfaz Setup"
             {
                 trigger OnAction()
                 var
-                    clAPIConection: Codeunit "JSON Webservices Management";
+                    clAPIConection: Codeunit "EDUCAMOS API Management";
                 begin
                     clAPIConection.Run();
                 end;
+            }
+            action(Log)
+            {
+                RunObject = page "EDUCAMOS Integration Log";
             }
         }
         area(Promoted)
         {
             actionref(Test_Promoted; Test) { }
+            actionref(Log_Promoted; Log) { }
         }
     }
 

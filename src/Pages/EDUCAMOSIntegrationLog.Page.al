@@ -77,16 +77,7 @@ page 50054 "EDUCAMOS Integration Log"
 
                 trigger OnAction()
                 var
-                    NameValueBuffer: Record "Name/Value Buffer";
-                    TempNameValueBuffer: Record "Name/Value Buffer" temporary;
-                    FileManagement: Codeunit "File Management";
-                    ToFile: Text;
-                    ExportPath: Text;
-                    timeLocal: Time;
-                    MyFile: File;
-                    outstream: OutStream;
                     InStr: InStream;
-                    XMLText: Text;
                 begin
                     Rec.CALCFIELDS("Errores Doc");
                     IF Rec."Errores Doc".HASVALUE THEN BEGIN
@@ -131,7 +122,7 @@ page 50054 "EDUCAMOS Integration Log"
 
                 trigger OnAction()
                 var
-                    cuJSON: Codeunit "JSON Webservices Management";
+                    cuJSON: Codeunit "EDUCAMOS API Management";
                     EDUInterface: Codeunit "EDUCAMOS Interface";
                     TempBlob: Codeunit "Temp Blob";
                     OutS: OutStream;
@@ -165,7 +156,7 @@ page 50054 "EDUCAMOS Integration Log"
 
             //     trigger OnAction()
             //     var
-            //         cuJSON: Codeunit "JSON Webservices Management";
+            //         cuJSON: Codeunit "EDUCAMOS API Management";
             //         Ok: Boolean;
             //     begin
             //         Clear(cuJSON);
@@ -183,7 +174,7 @@ page 50054 "EDUCAMOS Integration Log"
     }
 
     [TryFunction]
-    local procedure TryRunImport(var cuJSON: Codeunit "JSON Webservices Management"; var Ok: Boolean)
+    local procedure TryRunImport(var cuJSON: Codeunit "EDUCAMOS API Management"; var Ok: Boolean)
     begin
         Ok := cuJSON.Code();
     end;

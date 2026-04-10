@@ -1,4 +1,3 @@
-
 page 50050 "EDUCAMOS Remesa"
 {
     Editable = false;

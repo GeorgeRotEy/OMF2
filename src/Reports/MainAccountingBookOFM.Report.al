@@ -331,7 +331,7 @@ report 50009 "Main Accounting Book OFM"
         i: Integer;
         vSaldoaFechaSinCodOrigen: Decimal;
         vSaldoaFecha: Decimal;
-    Text001Lbl: Label 'No se ha podido generar el informe, pongese en contacto con el administrador.', Comment = 'ESP="No se ha podido generar el informe, pongese en contacto con el administrador."';
+        Text001Lbl: Label 'No se ha podido generar el informe, pongese en contacto con el administrador.', Comment = 'ESP="No se ha podido generar el informe, pongese en contacto con el administrador."';
         vFiltroSourceCode: Code[20];
         vVisibility: Integer;
         vSaldoAnteriorLayout: Decimal;

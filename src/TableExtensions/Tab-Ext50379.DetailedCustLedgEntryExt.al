@@ -6,7 +6,6 @@ tableextension 50379 "Detailed Cust. Ledg. Entry Ext" extends "Detailed Cust. Le
         {
             Caption = 'Third Party No.', Comment = 'ESP="Nº tercero"';
             TableRelation = "Third Party";
-            DataClassification = CustomerContent;
         }
     }
 }

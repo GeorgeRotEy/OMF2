@@ -119,10 +119,10 @@ report 50086 "Datos Modelo 110/111"
         ImportePercepcion: Decimal;
         ImporteRetencion: Decimal;
         ImporteTotalRetencion: Decimal;
-    CurrReport_PAGENOCaptionLbl: Label 'Página', Comment = 'ESP="Página"';
-    LISTADO_DE_RETENCIONES_POR_PROVEEDORCaptionLbl: Label 'LISTADO DE RETENCIONES POR PROVEEDOR', Comment = 'ESP="LISTADO DE RETENCIONES POR PROVEEDOR"';
-    Periodo_CaptionLbl: Label 'Periodo:', Comment = 'ESP="Periodo:"';
-    ImportePercepcionCaptionLbl: Label 'Importe de las percepciones', Comment = 'ESP="Importe de las percepciones"';
-    Importe_de_las_recepcionesCaptionLbl: Label 'Importe de las recepciones', Comment = 'ESP="Importe de las recepciones"';
-    N__de_perceptoresCaptionLbl: Label 'Nº de perceptores', Comment = 'ESP="Nº de perceptores"';
+        CurrReport_PAGENOCaptionLbl: Label 'Página', Comment = 'ESP="Página"';
+        LISTADO_DE_RETENCIONES_POR_PROVEEDORCaptionLbl: Label 'LISTADO DE RETENCIONES POR PROVEEDOR', Comment = 'ESP="LISTADO DE RETENCIONES POR PROVEEDOR"';
+        Periodo_CaptionLbl: Label 'Periodo:', Comment = 'ESP="Periodo:"';
+        ImportePercepcionCaptionLbl: Label 'Importe de las percepciones', Comment = 'ESP="Importe de las percepciones"';
+        Importe_de_las_recepcionesCaptionLbl: Label 'Importe de las recepciones', Comment = 'ESP="Importe de las recepciones"';
+        N__de_perceptoresCaptionLbl: Label 'Nº de perceptores', Comment = 'ESP="Nº de perceptores"';
 }

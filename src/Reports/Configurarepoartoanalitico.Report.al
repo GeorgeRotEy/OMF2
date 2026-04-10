@@ -182,7 +182,7 @@ report 50100 "Configura repoarto analitico"
     }
 
     var
-    ErrorCodOrigen: Label 'Ya existe el código de origen %1 en la empresa %2', Comment = 'ESP="Ya existe el código de origen %1 en la empresa %2"';
+        ErrorCodOrigen: Label 'Ya existe el código de origen %1 en la empresa %2', Comment = 'ESP="Ya existe el código de origen %1 en la empresa %2"';
         Window: Dialog;
         i: Integer;
 }
