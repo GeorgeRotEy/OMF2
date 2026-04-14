@@ -1,6 +1,7 @@
 table 50221 "EDUCAMOS EtapaEducativa"
 {
     Caption = 'Educational Stage', Comment = 'ESP="Etapa educativa"';
+    DataPerCompany = false;
 
     fields
     {

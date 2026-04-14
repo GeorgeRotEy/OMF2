@@ -1,5 +1,7 @@
 table 50219 "EDUCAMOS Remesa"
 {
+    DataPerCompany = false;
+
     fields
     {
         field(1; calendarioEscolarId; Text[50])

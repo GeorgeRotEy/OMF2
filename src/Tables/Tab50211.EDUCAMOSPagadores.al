@@ -1,5 +1,7 @@
 table 50211 "EDUCAMOS Pagador"
 {
+    DataPerCompany = false;
+
     fields
     {
         field(1; personaId; Text[50])

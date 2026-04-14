@@ -1,6 +1,7 @@
 table 50214 "EDUCAMOS ReciboRemesa"
 {
     Caption = 'EDUCAMOS ReciboRemesa';
+    DataPerCompany = false;
 
     fields
     {

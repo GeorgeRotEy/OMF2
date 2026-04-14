@@ -1,6 +1,7 @@
 table 50220 "EDUCAMOS Alumno"
 {
     Caption = 'Student', Comment = 'ESP="Alumno"';
+    DataPerCompany = false;
 
     fields
     {

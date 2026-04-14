@@ -1,5 +1,7 @@
 table 50217 "EDUCAMOS MovRecibo"
 {
+    DataPerCompany = false;
+
     fields
     {
         field(1; calendarioEscolarId; Text[50])
