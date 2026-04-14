@@ -1,7 +1,5 @@
 table 50212 "EDUCAMOS MedioPago"
 {
-    DataPerCompany = false;
-
     fields
     {
         field(1; personaId; Text[50])

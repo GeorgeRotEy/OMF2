@@ -1,6 +1,5 @@
 table 50217 "EDUCAMOS MovRecibo"
 {
-    DataPerCompany = false;
 
     fields
     {

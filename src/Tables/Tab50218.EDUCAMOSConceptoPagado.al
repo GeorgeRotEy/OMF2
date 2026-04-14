@@ -1,6 +1,5 @@
 table 50218 "EDUCAMOS ConceptoPagado"
 {
-    DataPerCompany = false;
 
     fields
     {

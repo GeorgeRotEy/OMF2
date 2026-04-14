@@ -1,7 +1,5 @@
 table 50213 "EDUCAMOS Dep. Economico"
 {
-    DataPerCompany = false;
-
     fields
     {
         field(1; personaId; Text[50])

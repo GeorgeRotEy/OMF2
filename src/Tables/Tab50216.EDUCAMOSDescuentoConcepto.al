@@ -1,6 +1,5 @@
 table 50216 "EDUCAMOS DescuentoConcepto"
 {
-    DataPerCompany = false;
 
     fields
     {

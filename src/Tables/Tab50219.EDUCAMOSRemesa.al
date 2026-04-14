@@ -1,6 +1,5 @@
 table 50219 "EDUCAMOS Remesa"
 {
-    DataPerCompany = false;
 
     fields
     {
