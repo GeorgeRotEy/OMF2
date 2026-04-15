@@ -146,6 +146,7 @@ permissionset 50000 DS
         table "Company OFM" = X,
         table "Aux plan corporativo" = X,
         table "EDUCAMOS Pagador" = X,
+        table "EDUCAMOS Alumno" = X,
         report "Copy GL Entry to Distribution" = X,
         report Regenera = X,
         codeunit "Distribution Mngt" = X,

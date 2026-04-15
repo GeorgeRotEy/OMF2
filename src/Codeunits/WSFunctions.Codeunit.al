@@ -43,7 +43,7 @@ codeunit 50002 "WS Functions"
         clCashRegMgt.fPostBankCashReceipt2;
         resp := Text000Lbl1;
     end;
-
+    // Utilizar este funcionamiento para el atachemente
     procedure fPostGastoConFactura(pBanco: Code[20]; pVendorNo: Code[20]; pConcepto: Code[10]; pPostingDate: Date; pTotalAmount: Decimal; pDocExt: Code[35]; pPostingConcept: Text) resp: Text
     var
         clCashRegMgt: Codeunit "Easy Register Management";
@@ -111,7 +111,7 @@ codeunit 50002 "WS Functions"
     end;
 
     procedure fPostPayroll(pPostingDate: Date; pCocinaComedor: Decimal; pVigilanciaRecepcion: Decimal; pLimpieza: Decimal; pBiblioteca: Decimal; pEnfermeria: Decimal; pOtros: Decimal;
-    pCompanySS: Decimal; pEmployeeSS: Decimal; pIRPF: Decimal; pNetAmount: Decimal; pPostingConcept: Text;
+    pCompanySS: Decimal; pEmployeeSS: Decimal; pIRPF: Decimal; pDtoSeguroMedico: Decimal; pNetAmount: Decimal; pPostingConcept: Text;
     pITCocinaComedor: Decimal; pITVigilanciaRecepcion: Decimal; pITLimpieza: Decimal; pITBiblioteca: Decimal; pITEnfermeria: Decimal; pITOtros: Decimal) resp: Text
     var
         clCashRegMgt: Codeunit "Easy Register Management";
@@ -124,7 +124,7 @@ codeunit 50002 "WS Functions"
         //ELSE
         clCashRegMgt.fSetGenJnlTemplate(rGenJnlTemplate.Name);
 
-        clCashRegMgt.fSetPayrollPostData(pPostingDate, pCocinaComedor, pVigilanciaRecepcion, pLimpieza, pBiblioteca, pEnfermeria, pOtros, pCompanySS, pEmployeeSS, pIRPF, pNetAmount,
+        clCashRegMgt.fSetPayrollPostData(pPostingDate, pCocinaComedor, pVigilanciaRecepcion, pLimpieza, pBiblioteca, pEnfermeria, pOtros, pCompanySS, pEmployeeSS, pIRPF, pDtoSeguroMedico, pNetAmount,
         pITCocinaComedor, pITVigilanciaRecepcion, pITLimpieza, pITBiblioteca, pITEnfermeria, pITOtros);
 
         //(CR003) S2G (RBM-R) 07-08-18: Modificaciones Registro simple. Inicio
@@ -425,10 +425,12 @@ codeunit 50002 "WS Functions"
         rlGLAccount: Record "G/L Account";
         rlGLEntry: Record "G/L Entry";
         vlBanksTrialBalance: Report "Trial Balance (Banks)";
+        clEYFuntions: Codeunit "EY Functions";
     begin
         vStartDate := DMY2DATE(1, pStartMonth, pYear);
         vEndDate := CALCDATE('<CM>', DMY2DATE(1, pEndMonth, pYear));
 
+        clEYFuntions.flSetTrialBalance15Filter(rlGLAccount);
         flSetDateFilter(vStartDate, vEndDate, rlGLAccount);
 
         cTempBlob.CreateOutStream(vOutStr);
@@ -446,10 +448,12 @@ codeunit 50002 "WS Functions"
     var
         rlGLAccount: Record "G/L Account";
         vlTrialBalance: Report "Trial Balance";
+        clEYFuntions: Codeunit "EY Functions";
     begin
         vStartDate := DMY2DATE(1, pStartMonth, pStartYear);
         vEndDate := CALCDATE('<CM>', DMY2DATE(1, pEndMonth, pEndYear));
 
+        clEYFuntions.flSetTrialBalance6OnwardFilter(rlGLAccount);
         flSetDateFilter(vStartDate, vEndDate, rlGLAccount);
 
         cTempBlob.CreateOutStream(vOutStr);
@@ -467,10 +471,12 @@ codeunit 50002 "WS Functions"
     var
         rlGLAccount: Record "G/L Account";
         vlTrialBalance2: Report "Trial Balance 2";
+        clEYFuntions: Codeunit "EY Functions";
     begin
         vStartDate := DMY2DATE(1, pStartMonth, pStartYear);
         vEndDate := CALCDATE('<CM>', DMY2DATE(1, pEndMonth, pEndYear));
 
+        clEYFuntions.flSetTrialBalance6OnwardFilter(rlGLAccount);
         flSetDateFilter(vStartDate, vEndDate, rlGLAccount);
 
         cTempBlob.CreateOutStream(vOutStr);
