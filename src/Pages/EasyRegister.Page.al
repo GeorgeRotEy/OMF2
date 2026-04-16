@@ -549,6 +549,7 @@ page 50006 "Easy Register"
         vSSCompany: Decimal;
         vSSEmployee: Decimal;
         vIRPF: Decimal;
+        vDtoSeguroMedico: Decimal;
         vImporteLiquido: Decimal;
 
     procedure fInitValues()
@@ -630,7 +631,7 @@ page 50006 "Easy Register"
             (vCashRegType = vCashRegType::Payroll):
                 BEGIN
                     clCashRegMgt.fSetPayrollPostData(vPostingDate, vTotalDevCocinaComedor, vTotalDevVigRecep, vTotalDevLimpieza, vTotalDevBiblioteca, vTotalDevEnfermeria, vTotalDevOtros,
-                    vSSCompany, vSSEmployee, vIRPF, vImporteLiquido,
+                    vSSCompany, vSSEmployee, vIRPF, vDtoSeguroMedico, vImporteLiquido,
                     vITTotalDevCocinaComedor, vITTotalDevVigRecep, vITTotalDevLimpieza, vITTotalDevBiblioteca, vITTotalDevEnfermeria, vITTotalDevOtros);
                     clCashRegMgt.fPostPayRoll;
                 END;

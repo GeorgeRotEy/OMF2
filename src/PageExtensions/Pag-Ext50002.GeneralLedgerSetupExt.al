@@ -90,6 +90,11 @@ pageextension 50002 "General Ledger Setup Ext" extends "General Ledger Setup"
                     {
                         ApplicationArea = All;
                     }
+                    field("Cta.Dto Seguro Medico"; Rec."Cta.Dto. Seguro Medico")
+                    {
+                        ApplicationArea = All;
+                    }
+
                 }
                 group(IT)
                 {
