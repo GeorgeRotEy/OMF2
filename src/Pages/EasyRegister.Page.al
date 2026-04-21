@@ -458,6 +458,17 @@ page 50006 "Easy Register"
                         fPostOperation;
                 end;
             }
+
+            action(PostPayrollPowerAppsSample)
+            {
+                Caption = 'Post Payroll Power Apps Sample', Comment = 'ESP="Registrar nómina ejemplo Power Apps"';
+                Image = PostDocument;
+
+                trigger OnAction()
+                begin
+                    fPostPayrollPowerAppsSample();
+                end;
+            }
         }
         area(Promoted)
         {
@@ -468,6 +479,10 @@ page 50006 "Easy Register"
                 actionref(Post_Promoted; "&Post")
                 {
                 }
+            }
+
+            actionref(PostPayrollPowerAppsSample_Promoted; PostPayrollPowerAppsSample)
+            {
             }
         }
     }
@@ -642,4 +657,36 @@ page 50006 "Easy Register"
         vPosted := TRUE;
         MESSAGE(ctProcessFinishedMsg);
     end;
+
+    local procedure fPostPayrollPowerAppsSample()
+    var
+        WSFunctions: Codeunit "WS Functions";
+        Response: Text;
+    begin
+        Response :=
+         WSFunctions.fPostPayroll(
+          WorkDate(),
+          290,
+          0,
+          0,
+          0,
+          0,
+          0,
+          50,
+          40,
+          20,
+          30,
+          200,
+          'Nomina prueba BC',
+          0,
+          0,
+          0,
+          0,
+          0,
+          0);
+
+        vPosted := TRUE;
+        MESSAGE(Response);
+    end;
+
 }
