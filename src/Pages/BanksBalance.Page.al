@@ -28,6 +28,10 @@ page 50047 "Banks Balance"
                 field("Date Filter"; Rec."Date Filter")
                 {
                 }
+                field(Blocked; Rec.Blocked)
+                {
+
+                }
             }
         }
     }
