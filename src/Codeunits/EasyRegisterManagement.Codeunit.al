@@ -51,6 +51,7 @@ codeunit 50000 "Easy Register Management"
         vIRPF: Decimal;
         vDtoSeguroMedico: Decimal;
         vImporteLiquido: Decimal;
+        vLastGLRegisterNo: Integer;
         ctBlankCustDataErrorLbl: Label 'Debe rellenar nº cliente', Comment = 'ESP="Debe rellenar nº cliente"';
         ctBlankPostingDateErrorLbl: Label 'You must fill in posting date', Comment = 'ESP="Debe rellenar la fecha de registro"';
         ctBlankBankAccErrorLbl: Label 'You must fill in destination bank account', Comment = 'ESP="Debe rellenar la cuenta bancaria de destino"';
@@ -125,6 +126,7 @@ codeunit 50000 "Easy Register Management"
     pCompanySS: Decimal; pEmployeeSS: Decimal; pIRPF: Decimal; pDtoSeguroMedico: Decimal; pNetAmount: Decimal;
     pITCocinaComedor: Decimal; pITVigilanciaRecepcion: Decimal; pITLimpieza: Decimal; pITBiblioteca: Decimal; pITEnfermeria: Decimal; pITOtros: Decimal)
     begin
+        Clear(vDocNo);
         vPostingDate := pPostingDate;
         vTotalCocinaComedor := pCocinaComedor;
         vTotalVigRecep := pVigilanciaRecepcion;
@@ -225,7 +227,8 @@ codeunit 50000 "Easy Register Management"
         rlGenJnlLine.VALIDATE("Posting Date", vPostingDate);
         rlGenJnlLine.VALIDATE("Document Type", rlGenJnlLine."Document Type"::Invoice);
 
-        vDocNo := FORMAT(DATE2DMY(vPostingDate, 3)) + FORMAT(DATE2DMY(vPostingDate, 2)) + FORMAT(DATE2DMY(vPostingDate, 1)) + STRSUBSTNO('%1', TIME);
+        if vDocNo = '' then
+            vDocNo := FORMAT(DATE2DMY(vPostingDate, 3)) + FORMAT(DATE2DMY(vPostingDate, 2)) + FORMAT(DATE2DMY(vPostingDate, 1)) + STRSUBSTNO('%1', TIME);
         rlGenJnlLine."Document No." := vDocNo;
 
         rlGenJnlLine.VALIDATE("Account Type", rlGenJnlLine."Account Type"::Customer);
@@ -1083,6 +1086,7 @@ codeunit 50000 "Easy Register Management"
             EXIT;
 
         vlDocNoText := '';
+        vLastGLRegisterNo := 0;
         /*
         IF vPostingDate = 0D THEN
           ERROR(ctBlankPostingDateErrorLbl);
@@ -1271,6 +1275,7 @@ codeunit 50000 "Easy Register Management"
                 clGenJnlPostLine.RUN(rlGenJnlLine2);
             UNTIL rlGenJnlLine.NEXT() = 0;
             clGenJnlPostLine.GetGLReg(rlGLReg);
+            vLastGLRegisterNo := rlGLReg."No.";
             rlGenJnlLine.DELETEALL();
         END;
 
@@ -1659,6 +1664,7 @@ codeunit 50000 "Easy Register Management"
         IF vDtoSeguroMedico <> 0 THEN
             flInitGenJournalLine(rlGLSetUp."Cta.Dto. Seguro Medico", vlAmountType::Credit, vDtoSeguroMedico);
 
+
         IF vImporteLiquido <> 0 THEN
             flInitGenJournalLine(rlGLSetUp."Cta. Importe Líquido", vlAmountType::Credit, vImporteLiquido);
 
@@ -1687,6 +1693,16 @@ codeunit 50000 "Easy Register Management"
         END;
 
         vWindow.CLOSE();
+    end;
+
+    procedure fGetLastDocumentNo(): Code[20]
+    begin
+        exit(vDocNo);
+    end;
+
+    procedure fGetLastGLRegisterNo(): Integer
+    begin
+        exit(vLastGLRegisterNo);
     end;
 
     procedure fPostCrMemCashPmnt()

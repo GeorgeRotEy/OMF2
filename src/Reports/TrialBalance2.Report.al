@@ -450,6 +450,7 @@ report 50106 "Trial Balance 2"
                         //++(INC) KPMG (DPM) 24/09/21
                     END;
 
+                SetDefaultAccountType();
                 FromFec := 0D;
                 IF GETFILTER("Date Filter") = '' THEN
                     ToFec := 99991231D
@@ -532,7 +533,8 @@ report 50106 "Trial Balance 2"
 
         trigger OnOpenPage()
         begin
-            PrintAllHavingBal := TRUE;
+            // PrintAllHavingBal := TRUE;
+            SetDefaultRequestOptions;
         end;
     }
 
@@ -543,7 +545,8 @@ report 50106 "Trial Balance 2"
     trigger OnInitReport()
     begin
         //xxx AcumBalance := TRUE;
-        PrintAllHavingBal := TRUE;
+        //PrintAllHavingBal := TRUE;
+        SetDefaultRequestOptions;
         PrintRegEntries := TRUE;
         //(CR003) S2G (RBM-R) 07-08-18: Modificaciones Registro simple. Fin
     end;
@@ -647,6 +650,20 @@ report 50106 "Trial Balance 2"
         Debit55050072: Decimal;
         NetChange55050072: Decimal;
         GLAccount: Record "G/L Account";
+
+    local procedure SetDefaultRequestOptions()
+    begin
+        PrintAllHavingBal := true;
+        AcumBalance := true;
+        if "G/L Account".GetFilter("Account Type") = '' then
+            "G/L Account".SetRange("Account Type", "G/L Account"."Account Type"::Posting);
+    end;
+
+    local procedure SetDefaultAccountType()
+    begin
+        if "G/L Account".GetFilter("Account Type") = '' then
+            "G/L Account".SetRange("Account Type", "G/L Account"."Account Type"::Posting);
+    end;
 
     procedure StartingPeriod(Date: Date): Date
     var

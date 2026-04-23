@@ -788,11 +788,14 @@ codeunit 50015 "EY Functions"
     procedure flSetTrialBalance15Filter(var pGLAccount: Record "G/L Account")
     begin
         pGLAccount.SetFilter("No.", '1*|2*|3*|4*|5*');
+        pGLAccount.SetRange("Account Type", pGLAccount."Account Type"::Posting);
+
     end;
 
     procedure flSetTrialBalance6OnwardFilter(var pGLAccount: Record "G/L Account")
     begin
         pGLAccount.SetFilter("No.", '6*|7*|8*|9*');
+        pGLAccount.SetRange("Account Type", pGLAccount."Account Type"::Posting);
     end;
 
     var

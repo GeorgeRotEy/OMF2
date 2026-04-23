@@ -99,6 +99,9 @@ report 50030 "Trial Balance (Banks)"
             column(DebitDifference; vDebitDifference)
             {
             }
+            column(BalanceatPeriodCaption; BalanceatPeriodCaptionLbl)
+            {
+            }
             column(CreditDifference; vCreditDifference)
             {
             }
@@ -425,6 +428,7 @@ report 50030 "Trial Balance (Banks)"
 
             trigger OnPreDataItem()
             begin
+                SetDefaultAccountType();
                 FromFec := 0D;
                 IF GETFILTER("Date Filter") = '' THEN
                     ToFec := 99991231D
@@ -501,7 +505,8 @@ report 50030 "Trial Balance (Banks)"
 
         trigger OnOpenPage()
         begin
-            PrintAllHavingBal := TRUE;
+            //PrintAllHavingBal := TRUE;
+            SetDefaultRequestOptions();
         end;
     }
 
@@ -512,8 +517,7 @@ report 50030 "Trial Balance (Banks)"
     trigger OnInitReport()
     begin
 
-        AcumBalance := TRUE;
-        PrintAllHavingBal := TRUE;
+        SetDefaultRequestOptions();
         //(CR003) S2G (RBM-R) 07-08-18: Modificaciones Registro simple. Fin
     end;
 
@@ -588,6 +592,7 @@ report 50030 "Trial Balance (Banks)"
         DebitCaptionLbl: Label 'Debit', Comment = 'ESP="Debe"';
         CreditCaptionLbl: Label 'Credit', Comment = 'ESP="Haber"';
         BalanceatDateCaptionLbl: Label 'Balance at Date', Comment = 'ESP="Saldo a fecha"';
+        BalanceatPeriodCaptionLbl: Label 'Balance at Period', Comment = 'ESP="Saldo en periodo"';
         AcumBalanceatDateCaptionLbl: Label 'Acum. Balance at Date', Comment = 'ESP="Saldo acum. a fecha"';
         TotalCaptionLbl: Label 'Total. . . . . . . . ', Comment = 'ESP="Total. . . . . . . . "';
         BlankLineNo: Integer;
@@ -608,6 +613,20 @@ report 50030 "Trial Balance (Banks)"
         FinalCreditApertura: Decimal;
         DebitApertura: Decimal;
         CreditApertura: Decimal;
+
+    local procedure SetDefaultRequestOptions()
+    begin
+        PrintAllHavingBal := true;
+        AcumBalance := true;
+        if "G/L Account".GetFilter("Account Type") = '' then
+            "G/L Account".SetRange("Account Type", "G/L Account"."Account Type"::Posting);
+    end;
+
+    local procedure SetDefaultAccountType()
+    begin
+        if "G/L Account".GetFilter("Account Type") = '' then
+            "G/L Account".SetRange("Account Type", "G/L Account"."Account Type"::Posting);
+    end;
 
     procedure StartingPeriod(Date: Date): Date
     var

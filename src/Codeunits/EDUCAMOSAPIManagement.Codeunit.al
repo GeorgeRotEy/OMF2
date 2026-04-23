@@ -125,6 +125,19 @@ codeunit 50006 "EDUCAMOS API Management"
             exit(false);
         end;
 
+        if not CallGETWithContinuationToken(BuildEtapasEducativasUrl()) then begin
+            cuInterface.fSetLogWithResponse(3, 'Error obteniendo etapas educativas: ' + vResult, CompanyName, 0, cTempBlob);
+            Commit();
+            exit(false);
+        end;
+
+        if not TryGetEtapasEducativas() then begin
+            cuInterface.fSetLogWithResponse(3, 'No se pudieron traer las etapas educativas: ' + vResult, CompanyName, 0, cTempBlob);
+            Commit();
+            exit(false);
+        end;
+
+
         cuInterface.fSetLogWithResponse(1, 'Alumnos obtenidos correctamente. Revisa "Open" en el LOG para ver la respuesta cruda.', CompanyName, 0, cTempBlob);
         Commit();
 
@@ -552,6 +565,14 @@ codeunit 50006 "EDUCAMOS API Management"
         exit(Url);
     end;
 
+    local procedure BuildEtapasEducativasUrl(): Text
+    var
+        Url: Text;
+    begin
+        Url := vBaseUrl + '/' + Format(vCalendarioId) + '/nivelesEducativos';
+        exit(Url);
+    end;
+
     local procedure TryGetAlumnos(): Boolean
     var
         Root: JsonObject;
@@ -650,185 +671,7 @@ codeunit 50006 "EDUCAMOS API Management"
         exit(true);
     end;
 
-    // local procedure fFillAlumnoData(AlumnoObj: JsonObject; var pAlumno: Record "EDUCAMOS Alumno")
-    // var
-    //     vlToken: JsonToken;
-    //     DatosPersonalesTok: JsonToken;
-    //     SourceObj: JsonObject;
-    // begin
-    //     SourceObj := AlumnoObj;
-    //     if AlumnoObj.Get('datosPersonales', DatosPersonalesTok) then
-    //         if DatosPersonalesTok.IsObject() then
-    //             SourceObj := DatosPersonalesTok.AsObject();
 
-    //     pAlumno.calendarioEscolarId := vCalendarioId;
-
-    //     if AlumnoObj.Get('calendarioEscolarId', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.calendarioEscolarId := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('fechaAlta', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             Evaluate(pAlumno.fechaAlta, vlToken.AsValue().AsText());
-
-    //     if SourceObj.Get('fechaBaja', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             Evaluate(pAlumno.fechaBaja, vlToken.AsValue().AsText());
-
-    //     if SourceObj.Get('nombre', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.nombre := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('apellido1', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.apellido1 := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('apellido2', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.apellido2 := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('sexo', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.sexo := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('fechaNacimiento', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             Evaluate(pAlumno.fechaNacimiento, vlToken.AsValue().AsText());
-
-    //     if SourceObj.Get('localidadNacimiento', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.localidadNacimiento := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('paisNacimiento', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.paisNacimiento := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('nacionalidad', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.nacionalidad := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('telefonoCasa', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.telefonoCasa := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('telefonoEmergencia', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.telefonoEmergencia := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('telefonoMovil1', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.telefonoMovil1 := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('telefonoMovil2', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.telefonoMovil2 := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('correoElectronico', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.correoElectronico := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('personaTutorPersonalId', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.personaTutorPersonalId := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('matricula', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.matricula := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('hijoEmpleado', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.hijoEmpleado := vlToken.AsValue().AsBoolean();
-
-    //     if SourceObj.Get('hijoAntiguoAlumno', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.hijoAntiguoAlumno := vlToken.AsValue().AsBoolean();
-
-    //     if SourceObj.Get('emancipado', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.emancipado := vlToken.AsValue().AsBoolean();
-
-    //     if SourceObj.Get('centroProcedencia', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.centroProcedencia := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('codigoMunicipioNacimiento', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.codigoMunicipioNacimiento := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('provinciaNacimiento', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.provinciaNacimiento := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('tipoDocumento', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.tipoDocumento := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('numeroDocumento', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.numeroDocumento := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('familiaId', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.familiaId := vlToken.AsValue().AsText();
-    //     if SourceObj.Get('FamiliaId', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.familiaId := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('tipoMatricula', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.tipoMatricula := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('matriculaCentroAdscrito', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.matriculaCentroAdscrito := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('nia', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.nia := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('nhaPrimaria', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.nhaPrimaria := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('nhaSecundaria', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.nhaSecundaria := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('nhaBachillerato', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.nhaBachillerato := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('numeroExpedienteCf', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.numeroExpedienteCf := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('numeroSeguridadSocial', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.numeroSeguridadSocial := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('numeroTarjetaSanitaria', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.numeroTarjetaSanitaria := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('numeroResidente', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.numeroResidente := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('adaptacionCurricular', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.adaptacionCurricular := vlToken.AsValue().AsText();
-
-    //     if SourceObj.Get('exentoSeguroEscolar', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             pAlumno.exentoSeguroEscolar := vlToken.AsValue().AsBoolean();
-
-    //     if SourceObj.Get('fechaIncorporacionCapv', vlToken) then
-    //         if not vlToken.AsValue().IsNull() then
-    //             Evaluate(pAlumno.fechaIncorporacionCapv, vlToken.AsValue().AsText());
-
-    //     pAlumno."Importation DateTime" := CurrentDateTime;
-    //     pAlumno.Processed := true;
-    // end;
     local procedure fFillAlumnoData(AlumnoObj: JsonObject; var pAlumno: Record "EDUCAMOS Alumno")
     var
         vlToken: JsonToken;
@@ -1015,6 +858,167 @@ codeunit 50006 "EDUCAMOS API Management"
     begin
         ValueTxt := DelChr(pToken.AsValue().AsText(), '<>', ' ');
         exit(CopyStr(ValueTxt, 1, pMaxLength));
+    end;
+
+
+    local procedure TryGetEtapasEducativas(): Boolean
+    var
+        Root: JsonObject;
+        EtapasTok: JsonToken;
+        EtapasArr: JsonArray;
+        EtapaTok: JsonToken;
+        EtapaObj: JsonObject;
+        i: Integer;
+        OpenPos: Integer;
+        ClosePos: Integer;
+        RemainingText: Text;
+        OneJsonText: Text;
+    begin
+        vResult := '';
+        RemainingText := vFullJsonBody;
+
+        while StrLen(RemainingText) > 0 do begin
+            OpenPos := StrPos(RemainingText, '{');
+            if OpenPos = 0 then
+                break;
+
+            ClosePos := fFindMatchingBrace(RemainingText, OpenPos);
+            if ClosePos = 0 then begin
+                vResult := 'JSON de etapas educativas incompleto.';
+                exit(false);
+            end;
+
+            OneJsonText := CopyStr(RemainingText, OpenPos, ClosePos - OpenPos + 1);
+            Clear(Root);
+
+            if not Root.ReadFrom(OneJsonText) then begin
+                vResult := NonJsonResponseErr;
+                exit(false);
+            end;
+
+            if not Root.Get('nivelesEducativos', EtapasTok) then begin
+                vResult := 'La respuesta no contiene el nodo "nivelesEducativos".';
+                exit(false);
+            end;
+
+            if EtapasTok.IsValue() then
+                if EtapasTok.AsValue().IsNull() then
+                    exit(true);
+
+            EtapasArr := EtapasTok.AsArray();
+
+            for i := 0 to EtapasArr.Count() - 1 do begin
+                EtapasArr.Get(i, EtapaTok);
+                EtapaObj := EtapaTok.AsObject();
+
+                if not fFillEtapasEducativas(EtapaObj) then begin
+                    vResult := 'No se han podido tratar las etapas educativas.';
+                    exit(false);
+                end;
+            end;
+
+            RemainingText := CopyStr(RemainingText, ClosePos + 1);
+        end;
+
+        vResult := 'Etapas educativas importadas correctamente.';
+        exit(true);
+    end;
+
+    local procedure fFillEtapasEducativas(EtapaObj: JsonObject): Boolean
+    var
+        rlEtapaEducativa: Record "EDUCAMOS EtapaEducativa";
+        vlToken: JsonToken;
+        vlCalendarioEscolarId: Guid;
+        vlNivelEducativoColegioId: Guid;
+    begin
+        if not Evaluate(vlCalendarioEscolarId, vCalendarioId) then begin
+            vResult := StrSubstNo('El calendario activo %1 no tiene un GUID válido.', vCalendarioId);
+            exit(false);
+        end;
+
+        if not EtapaObj.Get('nivelEducativoColegioId', vlToken) then begin
+            vResult := 'La etapa educativa no tiene nivelEducativoId.';
+            exit(false);
+        end;
+
+        if vlToken.AsValue().IsNull() then begin
+            vResult := 'La etapa educativa no tiene nivelEducativoId.';
+            exit(false);
+        end;
+
+        if not Evaluate(vlNivelEducativoColegioId, vlToken.AsValue().AsText()) then begin
+            vResult := 'La etapa educativa no tiene nivelEducativoId válido.';
+            exit(false);
+        end;
+
+        if not rlEtapaEducativa.Get(vlCalendarioEscolarId, vlNivelEducativoColegioId) then begin
+            rlEtapaEducativa.Init();
+            rlEtapaEducativa.calendarioEscolarId := vlCalendarioEscolarId;
+            rlEtapaEducativa.nivelEducativoColegioId := vlNivelEducativoColegioId;
+
+            if not fFillEtapaEducativaData(EtapaObj, rlEtapaEducativa) then
+                exit(false);
+
+            rlEtapaEducativa.Insert();
+        end else begin
+            if not fFillEtapaEducativaData(EtapaObj, rlEtapaEducativa) then
+                exit(false);
+
+            rlEtapaEducativa.Modify();
+        end;
+
+        exit(true);
+    end;
+
+    local procedure fFillEtapaEducativaData(EtapaObj: JsonObject; var pEtapaEducativa: Record "EDUCAMOS EtapaEducativa"): Boolean
+    var
+        vlToken: JsonToken;
+        vlCalendarioEscolarId: Guid;
+        vlGuid: Guid;
+    begin
+        if not Evaluate(vlCalendarioEscolarId, vCalendarioId) then begin
+            vResult := StrSubstNo('El calendario activo %1 no tiene un GUID válido.', vCalendarioId);
+            exit(false);
+        end;
+
+        pEtapaEducativa.calendarioEscolarId := vlCalendarioEscolarId;
+
+        if EtapaObj.Get('calendarioEscolarId', vlToken) then begin
+            if not vlToken.AsValue().IsNull() then
+                if Evaluate(vlGuid, vlToken.AsValue().AsText()) then
+                    pEtapaEducativa.calendarioEscolarId := vlGuid
+                else begin
+                    vResult := 'La etapa educativa contiene un calendarioEscolarId inválido.';
+                    exit(false);
+                end;
+        end;
+
+        if EtapaObj.Get('nivelEducativoColegioId', vlToken) then begin
+            if not vlToken.AsValue().IsNull() then
+                if Evaluate(vlGuid, vlToken.AsValue().AsText()) then
+                    pEtapaEducativa.nivelEducativoColegioId := vlGuid
+                else begin
+                    vResult := 'La etapa educativa contiene un nivelEducativoId inválido.';
+                    exit(false);
+                end;
+        end;
+
+        if EtapaObj.Get('nombre', vlToken) then
+            if not vlToken.AsValue().IsNull() then
+                pEtapaEducativa.nombre := GetNormalizedText(vlToken, MaxStrLen(pEtapaEducativa.nombre));
+
+        if EtapaObj.Get('reducido', vlToken) then
+            if not vlToken.AsValue().IsNull() then
+                pEtapaEducativa.reducido := GetNormalizedText(vlToken, MaxStrLen(pEtapaEducativa.reducido));
+
+        if EtapaObj.Get('nivelEducativoId', vlToken) then
+            if not vlToken.AsValue().IsNull() then
+                pEtapaEducativa.nivelEducativoId := vlToken.AsValue().AsInteger();
+
+        pEtapaEducativa."Importation DateTime" := CurrentDateTime;
+        pEtapaEducativa.Processed := true;
+
+        exit(true);
     end;
 
 

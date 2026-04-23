@@ -1,10 +1,19 @@
 namespace OFM;
 using Microsoft.Finance.GeneralLedger.Ledger;
+using Microsoft.Finance.GeneralLedger.Reports;
+using System.Environment.Configuration;
+using System.Reflection;
 
 permissionset 50001 OFM
 {
     Assignable = true;
     Permissions = tabledata "G/L Register" = RIMD,
+    tabledata "Reports Generation" = RIMD,
+    tabledata "Tenant Report Layout" = RIMD,
+    tabledata "Tenant Report Layout Selection" = RIMD,
+        table "Reports Generation" = X,
+        table "Tenant Report Layout" = X,
+        table "Tenant Report Layout Selection" = X,
         table "G/L Register" = X,
         report "Analitic G/L Allocation" = X,
         report "Budget Study" = X,
@@ -30,6 +39,8 @@ permissionset 50001 OFM
         report "Treasury Summary" = X,
         report "Trial Balance_CRONUS" = X,
         report "Unblock GLAccount" = X,
+        report "Trial Balance" = X,
+        report "Trial Balance (Banks)" = X,
         // codeunit "ANSI <-> ASCII converter" = X,
         // codeunit "Delete DataPerCompany" = X,
         // codeunit Dimensiones = X,
