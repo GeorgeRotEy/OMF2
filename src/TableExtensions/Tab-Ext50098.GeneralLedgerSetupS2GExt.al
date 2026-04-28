@@ -130,6 +130,11 @@ tableextension 50098 "General Ledger Setup S2G Ext" extends "General Ledger Setu
             Caption = 'IT Credit Account Other Collaborator', Comment = 'ESP="Cta. haber IT otro colaborador"';
             TableRelation = "G/L Account";
         }
+        field(51030; "Cta.Dto. Seguro Medico"; Code[20])
+        {
+            Caption = 'Discount on health insurance', Comment = 'ESP="Dto. Seguro Medico"';
+            TableRelation = "G/L Account";
+        }
     }
 
     var

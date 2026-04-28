@@ -146,6 +146,8 @@ permissionset 50000 DS
         table "Company OFM" = X,
         table "Aux plan corporativo" = X,
         table "EDUCAMOS Pagador" = X,
+        table "EDUCAMOS Alumno" = X,
+        table "EDUCAMOS EtapaEducativa" = X,
         report "Copy GL Entry to Distribution" = X,
         report Regenera = X,
         codeunit "Distribution Mngt" = X,
@@ -369,5 +371,15 @@ permissionset 50000 DS
         table "EDUCAMOS DescuentoConcepto" = X,
         table "EDUCAMOS MovRecibo" = X,
         tabledata "EDUCAMOS ConceptoPagado" = RIMD,
-        table "EDUCAMOS ConceptoPagado" = X;
+        table "EDUCAMOS ConceptoPagado" = X,
+        tabledata "EDUCAMOS Alumno" = RIMD,
+        tabledata "EDUCAMOS EtapaEducativa" = RIMD,
+        tabledata "EDUCAMOS Remesa Old" = RIMD,
+        tabledata "EDUCAMOS RemesaRecibo" = RIMD,
+        table "EDUCAMOS Remesa Old" = X,
+        table "EDUCAMOS RemesaRecibo" = X,
+        page "EDUCAMOS ConceptosPagados" = X,
+        page "EDUCAMOS ConceptosRecibo" = X,
+        page "EDUCAMOS DescuentosConcepto" = X,
+        page "EDUCAMOS MovsRecibo" = X;
 }

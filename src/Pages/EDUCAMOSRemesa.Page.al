@@ -13,6 +13,9 @@ page 50050 "EDUCAMOS Remesa"
         {
             repeater(Group)
             {
+                field(calendarioEscolarId; Rec.calendarioEscolarId)
+                {
+                }
                 field("ID Remesa BC"; Rec."ID Remesa BC")
                 {
                 }
