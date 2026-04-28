@@ -1,26 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
-  <rd:ReportUnitType>Cm</rd:ReportUnitType>
-  <rd:ReportID>97c2726a-a59d-4c8b-a9f6-9342c3a58452</rd:ReportID>
-  <am:AuthoringMetadata>
-    <am:CreatedBy>
-      <am:Name>MSRB</am:Name>
-      <am:Version>15.1.30001.02</am:Version>
-    </am:CreatedBy>
-    <am:UpdatedBy>
-      <am:Name>MSRB</am:Name>
-      <am:Version>15.1.30001.02</am:Version>
-    </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2026-04-22T08:17:54.3263378Z</am:LastModifiedTimestamp>
-  </am:AuthoringMetadata>
+<Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:cl="http://schemas.microsoft.com/sqlserver/reporting/2010/01/componentdefinition" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition">
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource">
-      <rd:SecurityType>None</rd:SecurityType>
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
         <ConnectString />
       </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
       <rd:DataSourceID>7cb87dba-96b7-47fc-b90f-2d9e1f8764ea</rd:DataSourceID>
     </DataSource>
   </DataSources>
@@ -34,7 +21,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=First(Fields!GLFilter_GLAccount.Value)</Value>
+                    <Value EvaluationMode="Auto">=First(Fields!GLFilter_GLAccount.Value)</Value>
                     <Style>
                       <FontFamily>Segoe UI</FontFamily>
                       <FontSize>8pt</FontSize>
@@ -106,13 +93,12 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="textbox211">
-                                            <rd:DefaultName>textbox21</rd:DefaultName>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -124,6 +110,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>textbox21</rd:DefaultName>
                                             <Style>
                                               <VerticalAlign>Bottom</VerticalAlign>
                                               <PaddingRight>5pt</PaddingRight>
@@ -141,7 +128,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=First(Fields!AccinPeriodCaption.Value)</Value>
+                                                    <Value EvaluationMode="Auto">=First(Fields!AccinPeriodCaption.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -168,14 +155,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox53">
-                                            <rd:DefaultName>Textbox53</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -188,6 +174,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox53</rd:DefaultName>
                                             <Style>
                                               <VerticalAlign>Bottom</VerticalAlign>
                                               <PaddingLeft>5pt</PaddingLeft>
@@ -204,7 +191,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=First(Fields!AccPeriodatDateCaption.Value)</Value>
+                                                    <Value EvaluationMode="Auto">=First(Fields!AccPeriodatDateCaption.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -231,13 +218,12 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="textbox7">
-                                            <rd:DefaultName>textbox7</rd:DefaultName>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -249,6 +235,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>textbox7</rd:DefaultName>
                                             <Style>
                                               <VerticalAlign>Bottom</VerticalAlign>
                                               <PaddingLeft>5pt</PaddingLeft>
@@ -264,13 +251,12 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="textbox1">
-                                            <rd:DefaultName>textbox1</rd:DefaultName>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -282,6 +268,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>textbox1</rd:DefaultName>
                                             <Style>
                                               <VerticalAlign>Top</VerticalAlign>
                                               <PaddingRight>5pt</PaddingRight>
@@ -310,7 +297,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=First(Fields!AccountCaption.Value)</Value>
+                                                    <Value EvaluationMode="Auto">=First(Fields!AccountCaption.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -339,7 +326,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=First(Fields!NameCaption.Value)</Value>
+                                                    <Value EvaluationMode="Auto">=First(Fields!NameCaption.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -369,7 +356,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=First(Fields!DebitCaption.Value)</Value>
+                                                    <Value EvaluationMode="Auto">=First(Fields!DebitCaption.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -405,7 +392,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=First(Fields!CreditCaption.Value)</Value>
+                                                    <Value EvaluationMode="Auto">=First(Fields!CreditCaption.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -436,14 +423,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox54">
-                                            <rd:DefaultName>Textbox54</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=First(Fields!BalanceatPeriodCaption.Value)</Value>
+                                                    <Value EvaluationMode="Auto">=First(Fields!BalanceatPeriodCaption.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -456,6 +442,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox54</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -478,7 +465,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=First(Fields!DebitCaption.Value)</Value>
+                                                    <Value EvaluationMode="Auto">=First(Fields!DebitCaption.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -514,7 +501,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=First(Fields!CreditCaption.Value)</Value>
+                                                    <Value EvaluationMode="Auto">=First(Fields!CreditCaption.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -545,13 +532,12 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="textbox10">
-                                            <rd:DefaultName>textbox10</rd:DefaultName>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=First(Fields!BalanceatDateCaption.Value)</Value>
+                                                    <Value EvaluationMode="Auto">=First(Fields!BalanceatDateCaption.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -564,6 +550,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>textbox10</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -585,14 +572,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox3">
-                                            <rd:DefaultName>Textbox3</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -605,6 +591,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox3</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -631,14 +618,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox13">
-                                            <rd:DefaultName>Textbox13</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -651,6 +637,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox13</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -685,7 +672,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -715,7 +702,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=First(Fields!AccinPeriodCaption.Value)</Value>
+                                                    <Value EvaluationMode="Auto">=First(Fields!AccinPeriodCaption.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -742,14 +729,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox55">
-                                            <rd:DefaultName>Textbox55</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -762,6 +748,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox55</rd:DefaultName>
                                             <Style>
                                               <VerticalAlign>Bottom</VerticalAlign>
                                               <PaddingLeft>5pt</PaddingLeft>
@@ -778,7 +765,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=First(Fields!AccPeriodatDateCaption.Value)</Value>
+                                                    <Value EvaluationMode="Auto">=First(Fields!AccPeriodatDateCaption.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -805,13 +792,12 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="textbox16">
-                                            <rd:DefaultName>textbox16</rd:DefaultName>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -823,6 +809,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>textbox16</rd:DefaultName>
                                             <Style>
                                               <VerticalAlign>Bottom</VerticalAlign>
                                               <PaddingLeft>5pt</PaddingLeft>
@@ -843,7 +830,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -884,7 +871,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=First(Fields!AccountCaption.Value)</Value>
+                                                    <Value EvaluationMode="Auto">=First(Fields!AccountCaption.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -913,7 +900,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=First(Fields!NameCaption.Value)</Value>
+                                                    <Value EvaluationMode="Auto">=First(Fields!NameCaption.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -943,7 +930,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=First(Fields!DebitCaption.Value)</Value>
+                                                    <Value EvaluationMode="Auto">=First(Fields!DebitCaption.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -979,7 +966,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=First(Fields!CreditCaption.Value)</Value>
+                                                    <Value EvaluationMode="Auto">=First(Fields!CreditCaption.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -1010,14 +997,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox56">
-                                            <rd:DefaultName>Textbox56</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=First(Fields!BalanceatPeriodCaption.Value)</Value>
+                                                    <Value EvaluationMode="Auto">=First(Fields!BalanceatPeriodCaption.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -1030,6 +1016,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox56</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -1052,7 +1039,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=First(Fields!DebitCaption.Value)</Value>
+                                                    <Value EvaluationMode="Auto">=First(Fields!DebitCaption.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -1088,7 +1075,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=First(Fields!CreditCaption.Value)</Value>
+                                                    <Value EvaluationMode="Auto">=First(Fields!CreditCaption.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -1119,13 +1106,12 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="textbox18">
-                                            <rd:DefaultName>textbox18</rd:DefaultName>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=First(Fields!AcumBalanceatDateCaption.Value)</Value>
+                                                    <Value EvaluationMode="Auto">=First(Fields!AcumBalanceatDateCaption.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -1138,6 +1124,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>textbox18</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -1159,14 +1146,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox28">
-                                            <rd:DefaultName>Textbox28</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -1179,6 +1165,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox28</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -1238,7 +1225,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -1280,7 +1267,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!No_GLAccount.Value</Value>
+                                                    <Value EvaluationMode="Auto">=Fields!No_GLAccount.Value</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Segoe UI</FontFamily>
@@ -1314,7 +1301,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!IndentName_GLAccount.Value</Value>
+                                                    <Value EvaluationMode="Auto">=Fields!IndentName_GLAccount.Value</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Segoe UI</FontFamily>
@@ -1349,7 +1336,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=iif(Fields!No_GLAccount.Value="7",Code.BlankZero(Fields!DebitAmount_GLAccount.Value+last(Fields!Debit5505007.Value)),IIF(Fields!No_GLAccount.Value="5",Code.BlankZero(Fields!DebitAmount_GLAccount.Value-Code.GetData(1,1)),Code.BlankZero(Fields!DebitAmount_GLAccount.Value)))</Value>
+                                                    <Value EvaluationMode="Auto">=iif(Fields!No_GLAccount.Value="7",Code.BlankZero(Fields!DebitAmount_GLAccount.Value+last(Fields!Debit5505007.Value)),IIF(Fields!No_GLAccount.Value="5",Code.BlankZero(Fields!DebitAmount_GLAccount.Value-Code.GetData(1,1)),Code.BlankZero(Fields!DebitAmount_GLAccount.Value)))</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Segoe UI</FontFamily>
@@ -1382,7 +1369,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=iif(Fields!No_GLAccount.Value="7",Code.BlankZero(Fields!CreditAmount2_GLAccount.Value+last(Fields!Credit55050072.Value)),
+                                                    <Value EvaluationMode="Auto">=iif(Fields!No_GLAccount.Value="7",Code.BlankZero(Fields!CreditAmount2_GLAccount.Value+last(Fields!Credit55050072.Value)),
             IIF(Fields!No_GLAccount.Value="5",
             Code.BlankZero(Fields!CreditAmount2_GLAccount.Value-Code.GetData(5,1)),Code.BlankZero(Fields!CreditAmount2_GLAccount.Value)))</Value>
                                                     <Style>
@@ -1412,14 +1399,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox57">
-                                            <rd:DefaultName>Textbox57</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=iif(Fields!No_GLAccount.Value="7",Code.BlankZero(Fields!NetChange.Value+Fields!NetChange5505007.Value),
+                                                    <Value EvaluationMode="Auto">=iif(Fields!No_GLAccount.Value="7",Code.BlankZero(Fields!NetChange.Value+Fields!NetChange5505007.Value),
             iif(Fields!No_GLAccount.Value="5",Code.BlankZero(Fields!NetChange.Value-Code.GetData(3,1)),Code.BlankZero(Fields!NetChange.Value)))</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
@@ -1435,6 +1421,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox57</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -1455,7 +1442,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=iif(Fields!No_GLAccount.Value="7",
+                                                    <Value EvaluationMode="Auto">=iif(Fields!No_GLAccount.Value="7",
             Code.BlankZero(Fields!DebitAmount2_GLAccount.Value+last(Fields!Debit55050072.Value)),IIF(Fields!No_GLAccount.Value="5",
             Code.BlankZero(Fields!DebitAmount2_GLAccount.Value-Code.GetData(4,1)),Code.BlankZero(Fields!DebitAmount2_GLAccount.Value)))</Value>
                                                     <Style>
@@ -1490,7 +1477,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=iif(Fields!No_GLAccount.Value="7",Code.BlankZero(Fields!CreditAmount2_GLAccount.Value+last(Fields!Credit55050072.Value)),
+                                                    <Value EvaluationMode="Auto">=iif(Fields!No_GLAccount.Value="7",Code.BlankZero(Fields!CreditAmount2_GLAccount.Value+last(Fields!Credit55050072.Value)),
             IIF(Fields!No_GLAccount.Value="5",
             Code.BlankZero(Fields!CreditAmount2_GLAccount.Value-Code.GetData(5,1)),Code.BlankZero(Fields!CreditAmount2_GLAccount.Value)))</Value>
                                                     <Style>
@@ -1525,7 +1512,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=iif(Fields!No_GLAccount.Value="7",Code.BlankZero(Fields!BalanceType.Value+Fields!NetChange55050072.Value),
+                                                    <Value EvaluationMode="Auto">=iif(Fields!No_GLAccount.Value="7",Code.BlankZero(Fields!BalanceType.Value+Fields!NetChange55050072.Value),
             iif(Fields!No_GLAccount.Value="5",Code.BlankZero(Fields!BalanceType.Value-Code.GetData(6,1)),Code.BlankZero(Fields!BalanceType.Value)))</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
@@ -1562,7 +1549,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!No_GLAccount.Value</Value>
+                                                    <Value EvaluationMode="Auto">=Fields!No_GLAccount.Value</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Segoe UI</FontFamily>
@@ -1596,7 +1583,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!IndentName_GLAccount.Value</Value>
+                                                    <Value EvaluationMode="Auto">=Fields!IndentName_GLAccount.Value</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Segoe UI</FontFamily>
@@ -1631,7 +1618,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Code.BlankZero(Fields!DebitAmount4_GLAccount.Value)</Value>
+                                                    <Value EvaluationMode="Auto">=Code.BlankZero(Fields!DebitAmount4_GLAccount.Value)</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Segoe UI</FontFamily>
@@ -1667,7 +1654,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Code.BlankZero(Fields!CreditAmount4_GLAccount.Value)</Value>
+                                                    <Value EvaluationMode="Auto">=Code.BlankZero(Fields!CreditAmount4_GLAccount.Value)</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Segoe UI</FontFamily>
@@ -1695,14 +1682,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox59">
-                                            <rd:DefaultName>Textbox59</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Code.BlankZero(Fields!NetChange.Value)</Value>
+                                                    <Value EvaluationMode="Auto">=Code.BlankZero(Fields!NetChange.Value)</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Segoe UI</FontFamily>
@@ -1717,6 +1703,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox59</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -1737,7 +1724,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Code.BlankZero(Fields!DebitAmount3_GLAccount.Value)</Value>
+                                                    <Value EvaluationMode="Auto">=Code.BlankZero(Fields!DebitAmount3_GLAccount.Value)</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Segoe UI</FontFamily>
@@ -1770,7 +1757,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Code.BlankZero(Fields!CreditAmount4_GLAccount.Value)</Value>
+                                                    <Value EvaluationMode="Auto">=Code.BlankZero(Fields!CreditAmount4_GLAccount.Value)</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Segoe UI</FontFamily>
@@ -1798,13 +1785,12 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="textbox20">
-                                            <rd:DefaultName>textbox20</rd:DefaultName>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Code.BlankZero(Fields!BalanceType.Value)</Value>
+                                                    <Value EvaluationMode="Auto">=Code.BlankZero(Fields!BalanceType.Value)</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Segoe UI</FontFamily>
@@ -1819,6 +1805,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>textbox20</rd:DefaultName>
                                             <Style>
                                               <BackgroundColor>=Iif(Fields!AccountType_GLAcc.Value = "Posting","#EFEFEF","Transparent")</BackgroundColor>
                                               <VerticalAlign>Top</VerticalAlign>
@@ -1835,14 +1822,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox31">
-                                            <rd:DefaultName>Textbox31</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=last(Fields!Account5505007.Value)</Value>
+                                                    <Value EvaluationMode="Auto">=last(Fields!Account5505007.Value)</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Segoe UI</FontFamily>
@@ -1856,6 +1842,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox31</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -1870,14 +1857,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox44">
-                                            <rd:DefaultName>Textbox44</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=last(Fields!Name5505007.Value)</Value>
+                                                    <Value EvaluationMode="Auto">=last(Fields!Name5505007.Value)</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Segoe UI</FontFamily>
@@ -1891,6 +1877,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox44</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -1901,19 +1888,19 @@
                                               <PaddingRight>5pt</PaddingRight>
                                             </Style>
                                           </Textbox>
+                                          <rd:Selected>true</rd:Selected>
                                         </CellContents>
                                       </TablixCell>
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox47">
-                                            <rd:DefaultName>Textbox47</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Code.BlankZero(Last(Fields!Debit5505007.Value))</Value>
+                                                    <Value EvaluationMode="Auto">=Code.BlankZero(Last(Fields!Debit5505007.Value))</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Segoe UI</FontFamily>
@@ -1927,6 +1914,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox47</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -1942,14 +1930,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox48">
-                                            <rd:DefaultName>Textbox48</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Code.BlankZero(Last(Fields!Credit5505007.Value))</Value>
+                                                    <Value EvaluationMode="Auto">=Code.BlankZero(Last(Fields!Credit5505007.Value))</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Segoe UI</FontFamily>
@@ -1964,6 +1951,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox48</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -1979,14 +1967,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox67">
-                                            <rd:DefaultName>Textbox67</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Code.BlankZero(Last(Fields!NetChange5505007.Value))</Value>
+                                                    <Value EvaluationMode="Auto">=Code.BlankZero(Last(Fields!NetChange5505007.Value))</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Segoe UI</FontFamily>
@@ -2001,6 +1988,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox67</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -2016,14 +2004,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox51">
-                                            <rd:DefaultName>Textbox51</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Code.BlankZero(Last(Fields!Debit55050072.Value))</Value>
+                                                    <Value EvaluationMode="Auto">=Code.BlankZero(Last(Fields!Debit55050072.Value))</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Segoe UI</FontFamily>
@@ -2038,6 +2025,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox51</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -2053,14 +2041,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox52">
-                                            <rd:DefaultName>Textbox52</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Code.BlankZero(Last(Fields!Credit55050072.Value))</Value>
+                                                    <Value EvaluationMode="Auto">=Code.BlankZero(Last(Fields!Credit55050072.Value))</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Segoe UI</FontFamily>
@@ -2075,6 +2062,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox52</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -2090,14 +2078,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox61">
-                                            <rd:DefaultName>Textbox61</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Code.BlankZero(Last(Fields!NetChange55050072.Value))</Value>
+                                                    <Value EvaluationMode="Auto">=Code.BlankZero(Last(Fields!NetChange55050072.Value))</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Segoe UI</FontFamily>
@@ -2112,6 +2099,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox61</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -2131,14 +2119,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox4">
-                                            <rd:DefaultName>Textbox4</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -2151,6 +2138,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox4</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -2164,14 +2152,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox5">
-                                            <rd:DefaultName>Textbox5</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -2183,6 +2170,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox5</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -2197,14 +2185,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox6">
-                                            <rd:DefaultName>Textbox6</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -2217,6 +2204,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox6</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -2234,14 +2222,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox9">
-                                            <rd:DefaultName>Textbox9</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -2254,6 +2241,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox9</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -2271,14 +2259,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox62">
-                                            <rd:DefaultName>Textbox62</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -2291,6 +2278,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox62</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -2308,14 +2296,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox11">
-                                            <rd:DefaultName>Textbox11</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -2328,6 +2315,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox11</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -2345,14 +2333,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox12">
-                                            <rd:DefaultName>Textbox12</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -2365,6 +2352,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox12</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -2382,14 +2370,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox14">
-                                            <rd:DefaultName>Textbox14</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -2402,6 +2389,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox14</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -2423,14 +2411,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox15">
-                                            <rd:DefaultName>Textbox15</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -2443,6 +2430,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox15</rd:DefaultName>
                                             <Style>
                                               <VerticalAlign>Top</VerticalAlign>
                                               <PaddingRight>5pt</PaddingRight>
@@ -2453,14 +2441,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox17">
-                                            <rd:DefaultName>Textbox17</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -2472,6 +2459,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox17</rd:DefaultName>
                                             <Style>
                                               <VerticalAlign>Top</VerticalAlign>
                                               <PaddingLeft>5pt</PaddingLeft>
@@ -2483,14 +2471,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox19">
-                                            <rd:DefaultName>Textbox19</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -2503,6 +2490,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox19</rd:DefaultName>
                                             <Style>
                                               <VerticalAlign>Top</VerticalAlign>
                                               <PaddingLeft>5pt</PaddingLeft>
@@ -2514,14 +2502,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox21">
-                                            <rd:DefaultName>Textbox21</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -2534,6 +2521,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox21</rd:DefaultName>
                                             <Style>
                                               <VerticalAlign>Top</VerticalAlign>
                                               <PaddingLeft>5pt</PaddingLeft>
@@ -2545,14 +2533,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox63">
-                                            <rd:DefaultName>Textbox63</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -2565,6 +2552,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox63</rd:DefaultName>
                                             <Style>
                                               <VerticalAlign>Top</VerticalAlign>
                                               <PaddingLeft>5pt</PaddingLeft>
@@ -2576,14 +2564,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox27">
-                                            <rd:DefaultName>Textbox27</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -2596,6 +2583,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox27</rd:DefaultName>
                                             <Style>
                                               <VerticalAlign>Top</VerticalAlign>
                                               <PaddingLeft>5pt</PaddingLeft>
@@ -2607,14 +2595,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox29">
-                                            <rd:DefaultName>Textbox29</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -2627,6 +2614,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox29</rd:DefaultName>
                                             <Style>
                                               <VerticalAlign>Top</VerticalAlign>
                                               <PaddingLeft>5pt</PaddingLeft>
@@ -2638,14 +2626,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox30">
-                                            <rd:DefaultName>Textbox30</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -2658,6 +2645,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox30</rd:DefaultName>
                                             <Style>
                                               <VerticalAlign>Top</VerticalAlign>
                                               <PaddingLeft>5pt</PaddingLeft>
@@ -2673,13 +2661,12 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="textbox2">
-                                            <rd:DefaultName>textbox2</rd:DefaultName>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -2692,6 +2679,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>textbox2</rd:DefaultName>
                                             <Style>
                                               <VerticalAlign>Top</VerticalAlign>
                                               <PaddingRight>5pt</PaddingRight>
@@ -2707,7 +2695,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!TotalCaption.Value</Value>
+                                                    <Value EvaluationMode="Auto">=Fields!TotalCaption.Value</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -2736,7 +2724,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Last(Fields!TotalPeriodDebitAmt.Value, "Table1_Group")</Value>
+                                                    <Value EvaluationMode="Auto">=Last(Fields!TotalPeriodDebitAmt.Value, "Table1_Group")</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -2766,7 +2754,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Last(Fields!TotalPeriodCreditAmt.Value, "Table1_Group")</Value>
+                                                    <Value EvaluationMode="Auto">=Last(Fields!TotalPeriodCreditAmt.Value, "Table1_Group")</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -2794,14 +2782,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox65">
-                                            <rd:DefaultName>Textbox65</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Last(Fields!TotalPeriodDebitAmt.Value, "Table1_Group")-Last(Fields!TotalPeriodCreditAmt.Value, "Table1_Group")</Value>
+                                                    <Value EvaluationMode="Auto">=Last(Fields!TotalPeriodDebitAmt.Value, "Table1_Group")-Last(Fields!TotalPeriodCreditAmt.Value, "Table1_Group")</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -2815,6 +2802,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox65</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -2834,7 +2822,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Last(Fields!TotalDebitAmtAtEnd.Value, "Table1_Group")</Value>
+                                                    <Value EvaluationMode="Auto">=Last(Fields!TotalDebitAmtAtEnd.Value, "Table1_Group")</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -2864,7 +2852,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Last(Fields!TotalCreditAmtAtEnd.Value, "Table1_Group")</Value>
+                                                    <Value EvaluationMode="Auto">=Last(Fields!TotalCreditAmtAtEnd.Value, "Table1_Group")</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -2894,7 +2882,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Last(Fields!TotalBalanceAtEnd.Value, "Table1_Group")</Value>
+                                                    <Value EvaluationMode="Auto">=Last(Fields!TotalBalanceAtEnd.Value, "Table1_Group")</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -2923,14 +2911,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox8">
-                                            <rd:DefaultName>Textbox8</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -2943,6 +2930,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox8</rd:DefaultName>
                                             <Style>
                                               <VerticalAlign>Bottom</VerticalAlign>
                                               <PaddingRight>5pt</PaddingRight>
@@ -2953,14 +2941,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="DifferenceCaption">
-                                            <rd:DefaultName>DifferenceCaption</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!DifferenceCaption.Value</Value>
+                                                    <Value EvaluationMode="Auto">=Fields!DifferenceCaption.Value</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -2973,6 +2960,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>DifferenceCaption</rd:DefaultName>
                                             <Style>
                                               <VerticalAlign>Bottom</VerticalAlign>
                                               <PaddingLeft>5pt</PaddingLeft>
@@ -2984,14 +2972,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox32">
-                                            <rd:DefaultName>Textbox32</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=abs(Last(Fields!TotalPeriodDebitAmt.Value, "Table1_Group")-Last(Fields!TotalPeriodCreditAmt.Value, "Table1_Group"))</Value>
+                                                    <Value EvaluationMode="Auto">=abs(Last(Fields!TotalPeriodDebitAmt.Value, "Table1_Group")-Last(Fields!TotalPeriodCreditAmt.Value, "Table1_Group"))</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -3005,6 +2992,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox32</rd:DefaultName>
                                             <Visibility>
                                               <Hidden>=iif(Last(Fields!TotalPeriodDebitAmt.Value, "Table1_Group")-Last(Fields!TotalPeriodCreditAmt.Value, "Table1_Group")&lt;=0,true,false)</Hidden>
                                             </Visibility>
@@ -3022,14 +3010,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox35">
-                                            <rd:DefaultName>Textbox35</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=abs(Last(Fields!TotalPeriodDebitAmt.Value, "Table1_Group")-Last(Fields!TotalPeriodCreditAmt.Value, "Table1_Group"))</Value>
+                                                    <Value EvaluationMode="Auto">=abs(Last(Fields!TotalPeriodDebitAmt.Value, "Table1_Group")-Last(Fields!TotalPeriodCreditAmt.Value, "Table1_Group"))</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -3043,6 +3030,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox35</rd:DefaultName>
                                             <Visibility>
                                               <Hidden>=iif(Last(Fields!TotalPeriodDebitAmt.Value, "Table1_Group")-Last(Fields!TotalPeriodCreditAmt.Value, "Table1_Group")&gt;0,true,false)</Hidden>
                                             </Visibility>
@@ -3060,14 +3048,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox66">
-                                            <rd:DefaultName>Textbox66</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -3080,6 +3067,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox66</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -3094,14 +3082,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox36">
-                                            <rd:DefaultName>Textbox36</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=abs(Last(Fields!TotalDebitAmtAtEnd.Value, "Table1_Group")-Last(Fields!TotalCreditAmtAtEnd.Value, "Table1_Group"))</Value>
+                                                    <Value EvaluationMode="Auto">=abs(Last(Fields!TotalDebitAmtAtEnd.Value, "Table1_Group")-Last(Fields!TotalCreditAmtAtEnd.Value, "Table1_Group"))</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -3115,6 +3102,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox36</rd:DefaultName>
                                             <Visibility>
                                               <Hidden>=iif(Last(Fields!TotalDebitAmtAtEnd.Value, "Table1_Group")-Last(Fields!TotalCreditAmtAtEnd.Value, "Table1_Group")&lt;=0,true,false)</Hidden>
                                             </Visibility>
@@ -3132,14 +3120,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox37">
-                                            <rd:DefaultName>Textbox37</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=abs(Last(Fields!TotalDebitAmtAtEnd.Value, "Table1_Group")-Last(Fields!TotalCreditAmtAtEnd.Value, "Table1_Group"))</Value>
+                                                    <Value EvaluationMode="Auto">=abs(Last(Fields!TotalDebitAmtAtEnd.Value, "Table1_Group")-Last(Fields!TotalCreditAmtAtEnd.Value, "Table1_Group"))</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -3153,6 +3140,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox37</rd:DefaultName>
                                             <Visibility>
                                               <Hidden>=iif(Last(Fields!TotalDebitAmtAtEnd.Value, "Table1_Group")-Last(Fields!TotalCreditAmtAtEnd.Value, "Table1_Group")&gt;0,true,false)</Hidden>
                                             </Visibility>
@@ -3170,14 +3158,13 @@
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox38">
-                                            <rd:DefaultName>Textbox38</rd:DefaultName>
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value EvaluationMode="Auto" />
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -3190,6 +3177,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
+                                            <rd:DefaultName>Textbox38</rd:DefaultName>
                                             <Style>
                                               <VerticalAlign>Bottom</VerticalAlign>
                                               <PaddingLeft>5pt</PaddingLeft>
@@ -3392,14 +3380,13 @@
                               <Style />
                             </Tablix>
                             <Textbox Name="Textbox50">
-                              <rd:DefaultName>Textbox50</rd:DefaultName>
                               <CanGrow>true</CanGrow>
                               <KeepTogether>true</KeepTogether>
                               <Paragraphs>
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value />
+                                      <Value EvaluationMode="Auto" />
                                       <Style>
                                         <Color>Red</Color>
                                       </Style>
@@ -3408,6 +3395,7 @@
                                   <Style />
                                 </Paragraph>
                               </Paragraphs>
+                              <rd:DefaultName>Textbox50</rd:DefaultName>
                               <Top>0.21232cm</Top>
                               <Height>0.33542cm</Height>
                               <Width>0.33042cm</Width>
@@ -3489,7 +3477,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!PageCaption.Value,"DataSet_Result") &amp; " " &amp; Globals!PageNumber</Value>
+                      <Value EvaluationMode="Auto">=First(Fields!PageCaption.Value,"DataSet_Result") &amp; " " &amp; Globals!PageNumber</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -3515,7 +3503,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!TrialBalanceCaption.Value,"DataSet_Result")</Value>
+                      <Value EvaluationMode="Auto">=First(Fields!TrialBalanceCaption.Value,"DataSet_Result")</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>14pt</FontSize>
@@ -3542,7 +3530,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!CompanyName.Value,"DataSet_Result")</Value>
+                      <Value EvaluationMode="Auto">=First(Fields!CompanyName.Value,"DataSet_Result")</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -3568,7 +3556,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!WorkDateFormatted.Value,"DataSet_Result")</Value>
+                      <Value EvaluationMode="Auto">=First(Fields!WorkDateFormatted.Value,"DataSet_Result")</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -3597,7 +3585,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=User!UserID</Value>
+                      <Value EvaluationMode="Auto">=User!UserID</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -3624,7 +3612,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!IncludeEntries.Value,"DataSet_Result")</Value>
+                      <Value EvaluationMode="Auto">=First(Fields!IncludeEntries.Value,"DataSet_Result")</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -3655,7 +3643,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!HeaderText.Value,"DataSet_Result")</Value>
+                      <Value EvaluationMode="Auto">=First(Fields!HeaderText.Value,"DataSet_Result")</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -3686,7 +3674,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!PeriodText1.Value,"DataSet_Result")</Value>
+                      <Value EvaluationMode="Auto">=First(Fields!PeriodText1.Value,"DataSet_Result")</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -3712,7 +3700,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!G_L_Account_Source_Code_Filter.Value</Value>
+                      <Value EvaluationMode="Auto">=Fields!G_L_Account_Source_Code_Filter.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -3740,14 +3728,13 @@
               </Style>
             </Textbox>
             <Textbox Name="Textbox7">
-              <rd:DefaultName>Textbox6</rd:DefaultName>
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>Balance de Sumas y Saldos OFM</Value>
+                      <Value EvaluationMode="Auto">Balance de Sumas y Saldos OFM</Value>
                       <Style>
                         <FontSize>22pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -3757,6 +3744,7 @@
                   <Style />
                 </Paragraph>
               </Paragraphs>
+              <rd:DefaultName>Textbox6</rd:DefaultName>
               <Top>0.24175in</Top>
               <Left>1.64054in</Left>
               <Height>0.40833in</Height>
@@ -3796,9 +3784,10 @@
         <PageWidth>29.7cm</PageWidth>
         <InteractiveHeight>11in</InteractiveHeight>
         <InteractiveWidth>8.5in</InteractiveWidth>
-        <LeftMargin>1.76388cm</LeftMargin>
-        <RightMargin>0.40583cm</RightMargin>
-        <BottomMargin>1.48166cm</BottomMargin>
+        <LeftMargin>1.48166cm</LeftMargin>
+        <RightMargin>1.05834cm</RightMargin>
+        <TopMargin>1.76388cm</TopMargin>
+        <BottomMargin>0.40583cm</BottomMargin>
         <ColumnSpacing>1.27cm</ColumnSpacing>
         <Style />
       </Page>
@@ -3914,6 +3903,8 @@ PBDujFMfKqvLD/BzDvIA9RYNDEa18FMm3r2sGqHOT+MBq5FV4to03DILeWCp43tfxcUazD3Un6WjgxJn
   </EmbeddedImages>
   <Language>=User!Language</Language>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Cm</rd:ReportUnitType>
+  <rd:ReportID>97c2726a-a59d-4c8b-a9f6-9342c3a58452</rd:ReportID>
   <DataSets>
     <DataSet Name="DataSet_Result">
       <Fields>

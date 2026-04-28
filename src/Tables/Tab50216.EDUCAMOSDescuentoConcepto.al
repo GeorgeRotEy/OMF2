@@ -1,5 +1,6 @@
 table 50216 "EDUCAMOS DescuentoConcepto"
 {
+
     fields
     {
         field(1; calendarioEscolarId; Text[50])

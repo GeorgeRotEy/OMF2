@@ -1,7 +1,6 @@
 table 50214 "EDUCAMOS ReciboRemesa"
 {
     Caption = 'EDUCAMOS ReciboRemesa';
-
     fields
     {
         field(1; calendarioEscolarId; Text[50])

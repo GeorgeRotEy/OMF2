@@ -332,6 +332,7 @@ report 50013 "Trial Balance_CRONUS"
 
             trigger OnPreDataItem()
             begin
+                SetDefaultAccountType();
                 FromFec := 0D;
                 IF GETFILTER("Date Filter") = '' THEN
                     ToFec := 99991231D
@@ -408,13 +409,18 @@ report 50013 "Trial Balance_CRONUS"
 
         trigger OnOpenPage()
         begin
-            PrintAllHavingBal := TRUE;
+            SetDefaultRequestOptions();
         end;
     }
 
     labels
     {
     }
+
+    trigger OnInitReport()
+    begin
+        SetDefaultRequestOptions();
+    end;
 
     trigger OnPreReport()
     begin
@@ -490,6 +496,20 @@ report 50013 "Trial Balance_CRONUS"
         AcumBalanceatDateCaptionLbl: Label 'Acum. Balance at Date', Comment = 'ESP="Saldo acum. a fecha"';
         TotalCaptionLbl: Label 'Total. . . . . . . . ', Comment = 'ESP="Total. . . . . . . . "';
         BlankLineNo: Integer;
+
+    local procedure SetDefaultRequestOptions()
+    begin
+        PrintAllHavingBal := true;
+        AcumBalance := true;
+        if "G/L Account".GetFilter("Account Type") = '' then
+            "G/L Account".SetRange("Account Type", "G/L Account"."Account Type"::Posting);
+    end;
+
+    local procedure SetDefaultAccountType()
+    begin
+        if "G/L Account".GetFilter("Account Type") = '' then
+            "G/L Account".SetRange("Account Type", "G/L Account"."Account Type"::Posting);
+    end;
 
     procedure StartingPeriod(Date: Date): Date
     var
