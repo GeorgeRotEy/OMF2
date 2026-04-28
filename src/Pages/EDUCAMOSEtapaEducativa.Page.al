@@ -6,6 +6,7 @@ page 50057 "EDUCAMOS EtapaEducativa Old"
     PageType = List;
     SourceTable = "EDUCAMOS EtapaEducativa Old";
     ApplicationArea = All;
+    UsageCategory = Lists;
 
     layout
     {

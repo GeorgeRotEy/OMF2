@@ -1511,6 +1511,7 @@ codeunit 50006 "EDUCAMOS API Management"
                 vRemesaId := vlToken.AsValue().AsText();
 
                 rlRemesa.Init();
+                rlRemesa.calendarioEscolarId := vCalendarioId;
                 rlRemesaAux.Reset();
                 if rlRemesaAux.FindLast() then
                     rlRemesa."ID Remesa BC" := rlRemesaAux."ID Remesa BC" + 1
