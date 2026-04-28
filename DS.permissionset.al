@@ -371,5 +371,15 @@ permissionset 50000 DS
         table "EDUCAMOS DescuentoConcepto" = X,
         table "EDUCAMOS MovRecibo" = X,
         tabledata "EDUCAMOS ConceptoPagado" = RIMD,
-        table "EDUCAMOS ConceptoPagado" = X;
+        table "EDUCAMOS ConceptoPagado" = X,
+        tabledata "EDUCAMOS Alumno" = RIMD,
+        tabledata "EDUCAMOS EtapaEducativa" = RIMD,
+        tabledata "EDUCAMOS Remesa Old" = RIMD,
+        tabledata "EDUCAMOS RemesaRecibo" = RIMD,
+        table "EDUCAMOS Remesa Old" = X,
+        table "EDUCAMOS RemesaRecibo" = X,
+        page "EDUCAMOS ConceptosPagados" = X,
+        page "EDUCAMOS ConceptosRecibo" = X,
+        page "EDUCAMOS DescuentosConcepto" = X,
+        page "EDUCAMOS MovsRecibo" = X;
 }
