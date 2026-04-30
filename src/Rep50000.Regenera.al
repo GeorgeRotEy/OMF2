@@ -159,5 +159,5 @@ report 50015 "Regenera"
 
     var
         vWindow: Dialog;
-        tText000Lbl: Label 'Empresa: #1###############\Tabla: @2@@@@@@@@@@@@@@@@';
+        tText000Lbl: Label 'Empresa: #1\Tabla: #2';
 }
