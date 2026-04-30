@@ -4,11 +4,11 @@ table 50221 "EDUCAMOS EtapaEducativa"
 
     fields
     {
-        field(1; calendarioEscolarId; Guid)
+        field(1; calendarioEscolarId; Text[50])
         {
             Caption = 'School Calendar Id', Comment = 'ESP="Identificador calendario escolar"';
         }
-        field(2; nivelEducativoColegioId; Guid)
+        field(2; nivelEducativoColegioId; Text[50])
         {
             Caption = 'School Educational Level Id', Comment = 'ESP="Identificador nivel educativo del colegio"';
         }

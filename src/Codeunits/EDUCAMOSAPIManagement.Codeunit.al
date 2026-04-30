@@ -928,8 +928,8 @@ codeunit 50006 "EDUCAMOS API Management"
     var
         rlEtapaEducativa: Record "EDUCAMOS EtapaEducativa";
         vlToken: JsonToken;
-        vlCalendarioEscolarId: Guid;
-        vlNivelEducativoColegioId: Guid;
+        vlCalendarioEscolarId: Text[50];
+        vlNivelEducativoColegioId: Text[50];
     begin
         if not Evaluate(vlCalendarioEscolarId, vCalendarioId) then begin
             vResult := StrSubstNo('El calendario activo %1 no tiene un GUID válido.', vCalendarioId);
@@ -973,8 +973,8 @@ codeunit 50006 "EDUCAMOS API Management"
     local procedure fFillEtapaEducativaData(EtapaObj: JsonObject; var pEtapaEducativa: Record "EDUCAMOS EtapaEducativa"): Boolean
     var
         vlToken: JsonToken;
-        vlCalendarioEscolarId: Guid;
-        vlGuid: Guid;
+        vlCalendarioEscolarId: Text[50];
+        vlGuid: Text[50];
     begin
         if not Evaluate(vlCalendarioEscolarId, vCalendarioId) then begin
             vResult := StrSubstNo('El calendario activo %1 no tiene un GUID válido.', vCalendarioId);
