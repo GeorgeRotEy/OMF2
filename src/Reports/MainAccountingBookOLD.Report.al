@@ -771,6 +771,7 @@ report 50019 "Main Accounting Book_OLD"
 
             trigger OnPreDataItem()
             begin
+                SetDefaultAccountFilter();
                 GLFilterDim1 := GETFILTER("Global Dimension 1 Filter");
                 GLFilterDim2 := GETFILTER("Global Dimension 2 Filter");
                 GLFilter := GETFILTER("Date Filter");
@@ -935,5 +936,14 @@ report 50019 "Main Accounting Book_OLD"
             EXIT(AccPeriod."Starting Date");
 
         ERROR(Text1100005);
+    end;
+
+    local procedure SetDefaultAccountFilter()
+    begin
+        "G/L Account".FilterGroup(2);
+        "G/L Account".SetRange("Account Type", "G/L Account"."Account Type"::Posting);
+        "G/L Account".SetFilter("No.", '1*|2*|3*|4*|5*');
+        "G/L Account".FilterGroup(2);
+
     end;
 }
