@@ -7,6 +7,15 @@ reportextension 50000 "Trial Balance Defaults Ext" extends "Trial Balance"
             column(BalanceatPeriodCaption; BalanceatPeriodCaptionLbl)
             {
             }
+            column(AccinPeriodCaptionModf; AccinPeriodCaptionModfLbl)
+            {
+            }
+            column(AccPeriodatDateCaptionModf; AccPeriodatDateCaptionModfLbl)
+            {
+            }
+            column(BalanceatDateCaptionModf; BalanceatDateCaptionModf)
+            {
+            }
 
         }
     }
@@ -34,4 +43,7 @@ reportextension 50000 "Trial Balance Defaults Ext" extends "Trial Balance"
 
     var
         BalanceatPeriodCaptionLbl: Label 'Balance at Period', Comment = 'ESP="Saldo en periodo"';
+        AccinPeriodCaptionModfLbl: Label 'Movs. en periodo';
+        AccPeriodatDateCaptionModfLbl: Label 'Movs. acumulado a fecha';
+        BalanceatDateCaptionModf: Label 'Saldo acum. a fecha';
 }
