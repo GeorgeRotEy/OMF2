@@ -586,12 +586,12 @@ report 50030 "Trial Balance (Banks)"
         TrialBalanceCaptionLbl: Label 'Trial Balance', Comment = 'ESP="Balance de sumas y saldos"';
         PageCaptionLbl: Label 'Page', Comment = 'ESP="Página"';
         AccinPeriodCaptionLbl: Label 'Acc. in Period', Comment = 'ESP="Movs. en periodo"';
-        AccPeriodatDateCaptionLbl: Label 'Acc. Period at Date', Comment = 'ESP="Movs. periodo a fecha"';
+        AccPeriodatDateCaptionLbl: Label 'Acc. Period at Date', Comment = 'ESP="Movs. acumulado a fecha"';
         AccountCaptionLbl: Label 'Account', Comment = 'ESP="Cuenta"';
         NameCaptionLbl: Label 'Name', Comment = 'ESP="Nombre"';
         DebitCaptionLbl: Label 'Debit', Comment = 'ESP="Debe"';
         CreditCaptionLbl: Label 'Credit', Comment = 'ESP="Haber"';
-        BalanceatDateCaptionLbl: Label 'Balance at Date', Comment = 'ESP="Saldo a fecha"';
+        BalanceatDateCaptionLbl: Label 'Balance at Date', Comment = 'ESP="Saldo en periodo"';
         BalanceatPeriodCaptionLbl: Label 'Balance at Period', Comment = 'ESP="Saldo en periodo"';
         AcumBalanceatDateCaptionLbl: Label 'Acum. Balance at Date', Comment = 'ESP="Saldo acum. a fecha"';
         TotalCaptionLbl: Label 'Total. . . . . . . . ', Comment = 'ESP="Total. . . . . . . . "';
