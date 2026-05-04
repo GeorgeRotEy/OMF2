@@ -1047,7 +1047,11 @@ report 50020 "SalesInvoice OFM"
 
             trigger OnAfterGetRecord()
             begin
-                CurrReport.LANGUAGE := cLanguage.GetLanguageID("Language Code");
+                if "Sales Invoice Header"."Language Code" <> '' then
+                    CurrReport.LANGUAGE := cLanguage.GetLanguageID("Language Code")
+
+                else
+                    CurrReport.Language := 1034;
 
                 FormatAddressFields("Sales Invoice Header");
                 FormatDocumentFields("Sales Invoice Header");
