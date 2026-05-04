@@ -893,7 +893,11 @@ report 50021 "SalesCreditMemo OFM"
 
             trigger OnAfterGetRecord()
             begin
-                CurrReport.LANGUAGE := cLanguage.GetLanguageID("Language Code");
+                if "Sales Cr.Memo Header"."Language Code" <> '' then
+                    CurrReport.LANGUAGE := cLanguage.GetLanguageID("Language Code")
+
+                else
+                    CurrReport.Language := 1034;
 
                 FormatAddressFields("Sales Cr.Memo Header");
                 FormatDocumentFields("Sales Cr.Memo Header");
