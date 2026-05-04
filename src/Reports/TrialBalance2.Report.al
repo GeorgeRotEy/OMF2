@@ -449,7 +449,7 @@ report 50106 "Trial Balance 2"
                         GLAcc2.SETFILTER("Source Code Filter", '<>ASTOREGUL');
                         //++(INC) KPMG (DPM) 24/09/21
                     END;
-
+                SetDefaultAccountNoFilter();
                 SetDefaultAccountType();
                 FromFec := 0D;
                 IF GETFILTER("Date Filter") = '' THEN
@@ -851,5 +851,11 @@ report 50106 "Trial Balance 2"
             GLAcc2.SETRANGE("Date Filter", 0D, ToFec)
         ELSE
             GLAcc2.SETRANGE("Date Filter", StartingPeriod(FromFec), ToFec);
+    end;
+
+    local procedure SetDefaultAccountNoFilter()
+    begin
+        if "G/L Account".GetFilter("No.") = '' then
+            "G/L Account".SetFilter("No.", '6*|7*|8*|9*');
     end;
 }

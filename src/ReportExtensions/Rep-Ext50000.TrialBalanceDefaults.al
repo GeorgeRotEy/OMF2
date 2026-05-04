@@ -24,6 +24,7 @@ reportextension 50000 "Trial Balance Defaults Ext" extends "Trial Balance"
         trigger OnOpenPage()
         begin
             SetDefaultRequestOptions;
+            SetDefaultAccountFilters();
         end;
     }
 
@@ -39,6 +40,14 @@ reportextension 50000 "Trial Balance Defaults Ext" extends "Trial Balance"
         AcumBalance := true;
         if "G/L Account".GetFilter("Account Type") = '' then
             "G/L Account".SetRange("Account Type", "G/L Account"."Account Type"::Posting);
+    end;
+
+    local procedure SetDefaultAccountFilters()
+    begin
+        if "G/L Account".GetFilter("Account Type") = '' then
+            "G/L Account".SetRange("Account Type", "G/L Account"."Account Type"::Posting);
+        if "G/L Account".GetFilter("No.") = '' then
+            "G/L Account".SetFilter("No.", '6*|7*|8*|9*');
     end;
 
     var

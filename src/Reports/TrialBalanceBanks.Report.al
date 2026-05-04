@@ -429,6 +429,7 @@ report 50030 "Trial Balance (Banks)"
             trigger OnPreDataItem()
             begin
                 SetDefaultAccountType();
+                SetDefaultAccountNoFilter();
                 FromFec := 0D;
                 IF GETFILTER("Date Filter") = '' THEN
                     ToFec := 99991231D
@@ -837,5 +838,11 @@ report 50030 "Trial Balance (Banks)"
             END;
         END;
         //++IAP
+    end;
+
+    local procedure SetDefaultAccountNoFilter()
+    begin
+        if "G/L Account".GetFilter("No.") = '' then
+            "G/L Account".SetFilter("No.", '1*|2*|3*|4*|5*');
     end;
 }
