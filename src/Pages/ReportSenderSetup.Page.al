@@ -8,6 +8,7 @@ page 50004 "Report Sender Setup"
     PageType = List;
     SourceTable = "Reports Sender Setup";
     ApplicationArea = All;
+    UsageCategory = Lists;
 
     layout
     {
