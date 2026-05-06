@@ -5,7 +5,7 @@ using Microsoft.Finance.GeneralLedger.Ledger;
 using Microsoft.CashFlow.Forecast;
 using Microsoft.Purchases.History;
 
-codeunit 50004 "EY Single Instance c410"
+codeunit 50009 "EY Single Instance c410"
 {
     SingleInstance = true;
 
