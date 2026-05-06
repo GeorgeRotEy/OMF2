@@ -962,6 +962,82 @@ codeunit 50016 "EY Subscribers"
             rlCompanyOFM.Delete();
     end;
 
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::ReportManagement, 'OnGetFilename', '', false, false)]
+    local procedure ReportManagementOnGetFilename(ReportID: Integer; Caption: Text[250]; ObjectPayload: JsonObject; FileExtension: Text[30]; ReportRecordRef: RecordRef; var Filename: Text; var Success: Boolean)
+    var
+        SalesInvoiceHeader: Record "Sales Invoice Header";
+        InvoiceFileNameLbl: Label 'Factura venta %1', Comment = 'ESP="Factura venta %1"';
+    begin
+        if not IsSalesInvoiceReport(ReportID, Caption, ObjectPayload) then
+            exit;
+
+        if ReportRecordRef.Number = Database::"Sales Invoice Header" then begin
+            ReportRecordRef.SetTable(SalesInvoiceHeader);
+            if SalesInvoiceHeader.FindFirst() then
+                Filename := StrSubstNo(InvoiceFileNameLbl, SalesInvoiceHeader."No.");
+        end;
+
+        if Filename = '' then
+            if GetSalesInvoiceHeaderFromPayload(ObjectPayload, SalesInvoiceHeader) then
+                Filename := StrSubstNo(InvoiceFileNameLbl, SalesInvoiceHeader."No.");
+
+        if Filename = '' then
+            Filename := Caption;
+
+        Filename := ConvertStr(Filename, '\/:*?"<>|', '_________');
+        if (FileExtension <> '') and (not Filename.EndsWith(FileExtension)) then
+            Filename += FileExtension;
+
+        Success := true;
+    end;
+
+    local procedure IsSalesInvoiceReport(ReportID: Integer; Caption: Text[250]; ObjectPayload: JsonObject): Boolean
+    var
+        JsonToken: JsonToken;
+    begin
+        if ReportID in [Report::"SalesInvoice OFM", Report::"Standard Sales - Invoice"] then
+            exit(true);
+
+        if ObjectPayload.Get('objectid', JsonToken) then
+            if JsonToken.AsValue().AsInteger() in [Report::"SalesInvoice OFM", Report::"Standard Sales - Invoice"] then
+                exit(true);
+
+        exit(Caption in ['Sales - Invoice', 'Ventas - Factura']);
+    end;
+
+    local procedure GetSalesInvoiceHeaderFromPayload(ObjectPayload: JsonObject; var SalesInvoiceHeader: Record "Sales Invoice Header"): Boolean
+    var
+        SalesInvoiceHeaderRef: RecordRef;
+        FilterViewObject: JsonObject;
+        FilterViews: JsonArray;
+        FilterViewToken: JsonToken;
+        JsonToken: JsonToken;
+        ViewText: Text;
+    begin
+        if not ObjectPayload.Get('filterviews', JsonToken) then
+            exit(false);
+
+        FilterViews := JsonToken.AsArray();
+        foreach FilterViewToken in FilterViews do begin
+            FilterViewObject := FilterViewToken.AsObject();
+
+            if FilterViewObject.Get('tableid', JsonToken) then
+                if JsonToken.AsValue().AsInteger() = Database::"Sales Invoice Header" then
+                    if FilterViewObject.Get('view', JsonToken) then begin
+                        ViewText := JsonToken.AsValue().AsText();
+                        SalesInvoiceHeaderRef.Open(Database::"Sales Invoice Header");
+                        SalesInvoiceHeaderRef.SetView(ViewText);
+                        if SalesInvoiceHeaderRef.FindFirst() then begin
+                            SalesInvoiceHeaderRef.SetTable(SalesInvoiceHeader);
+                            exit(true);
+                        end;
+                    end;
+        end;
+    end;
+
+
+
     var
         cuGestionIRPF: Codeunit "Gestión IRPF";
         // rICTransactionLine: Record "Intercompany Transaction Line";

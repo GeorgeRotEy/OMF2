@@ -16,7 +16,7 @@ report 50020 "SalesInvoice OFM"
     //          Nuevo código con función para rellenar lineas en blanco
     DefaultLayout = RDLC;
     RDLCLayout = './src/Reports/SalesInvoiceOFM.rdlc';
-    Caption = 'Sales - Invoice', Comment = 'ESP="Ventas - Factura"';
+    Caption = 'Sales - Invoice', Comment = 'ESP="Factura Ventas"';
     EnableHyperlinks = true;
     Permissions = TableData "Sales Shipment Buffer" = rimd;
     PreviewMode = PrintLayout;
