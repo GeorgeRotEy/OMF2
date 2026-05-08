@@ -11,7 +11,7 @@
       <am:Name>MSRB</am:Name>
       <am:Version>15.1.30001.02</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2026-05-05T15:48:18.4841360Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2026-05-08T06:31:02.9934106Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -32,7 +32,7 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>17.24959cm</Width>
+                  <Width>18.83628cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -317,7 +317,6 @@
                                       </TablixCell>
                                       <TablixCell>
                                         <CellContents>
-                                          <rd:Selected>true</rd:Selected>
                                           <Textbox Name="VATAmountLineVATAmountControl109Caption">
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
@@ -928,8 +927,8 @@
                                   </FilterValues>
                                 </Filter>
                               </Filters>
-                              <Top>3.96699cm</Top>
-                              <Left>8.79892cm</Left>
+                              <Top>3.91407cm</Top>
+                              <Left>10.4269cm</Left>
                               <Height>2.51772cm</Height>
                               <Width>8.40164cm</Width>
                               <Visibility>
@@ -944,16 +943,16 @@
                               <TablixBody>
                                 <TablixColumns>
                                   <TablixColumn>
-                                    <Width>12.16824cm</Width>
+                                    <Width>12.57717cm</Width>
                                   </TablixColumn>
                                   <TablixColumn>
-                                    <Width>1.03117cm</Width>
+                                    <Width>1.4401cm</Width>
                                   </TablixColumn>
                                   <TablixColumn>
-                                    <Width>2.00926cm</Width>
+                                    <Width>2.41819cm</Width>
                                   </TablixColumn>
                                   <TablixColumn>
-                                    <Width>1.97786cm</Width>
+                                    <Width>2.38679cm</Width>
                                   </TablixColumn>
                                 </TablixColumns>
                                 <TablixRows>
@@ -2241,7 +2240,7 @@
                               <Top>0.56472cm</Top>
                               <Left>0.01403cm</Left>
                               <Height>1.75282cm</Height>
-                              <Width>17.18653cm</Width>
+                              <Width>18.82225cm</Width>
                               <ZIndex>1</ZIndex>
                               <Style />
                             </Tablix>
@@ -2387,16 +2386,16 @@ CStr(Fields!Bankofcollection_SalesInvoiceHeader.Value)
                               <TablixBody>
                                 <TablixColumns>
                                   <TablixColumn>
-                                    <Width>12.17082cm</Width>
+                                    <Width>12.57975cm</Width>
                                   </TablixColumn>
                                   <TablixColumn>
-                                    <Width>1.02601cm</Width>
+                                    <Width>1.43494cm</Width>
                                   </TablixColumn>
                                   <TablixColumn>
-                                    <Width>2.01184cm</Width>
+                                    <Width>2.42077cm</Width>
                                   </TablixColumn>
                                   <TablixColumn>
-                                    <Width>1.9727cm</Width>
+                                    <Width>2.38163cm</Width>
                                   </TablixColumn>
                                 </TablixColumns>
                                 <TablixRows>
@@ -2743,7 +2742,7 @@ CStr(Fields!Bankofcollection_SalesInvoiceHeader.Value)
                               <Top>2.31754cm</Top>
                               <Left>0.01145cm</Left>
                               <Height>0.15876cm</Height>
-                              <Width>17.18137cm</Width>
+                              <Width>18.81709cm</Width>
                               <ZIndex>3</ZIndex>
                               <Style>
                                 <Border>
@@ -2755,8 +2754,8 @@ CStr(Fields!Bankofcollection_SalesInvoiceHeader.Value)
                               <Source>Embedded</Source>
                               <Value>SELLOPROVINCIA002</Value>
                               <Sizing>Fit</Sizing>
-                              <Top>3.30496cm</Top>
-                              <Left>1.92385cm</Left>
+                              <Top>3.0051cm</Top>
+                              <Left>2.45302cm</Left>
                               <Height>4.14535cm</Height>
                               <Width>4.22576cm</Width>
                               <ZIndex>4</ZIndex>
@@ -2810,7 +2809,7 @@ CStr(Fields!Bankofcollection_SalesInvoiceHeader.Value)
             <DataSetName>DataSet_Result</DataSetName>
             <Left>0.07056cm</Left>
             <Height>7.50322cm</Height>
-            <Width>17.24959cm</Width>
+            <Width>18.83628cm</Width>
             <Style>
               <FontSize>9pt</FontSize>
             </Style>
@@ -2819,7 +2818,7 @@ CStr(Fields!Bankofcollection_SalesInvoiceHeader.Value)
         <Height>7.55614cm</Height>
         <Style />
       </Body>
-      <Width>17.52051cm</Width>
+      <Width>19.30204cm</Width>
       <Page>
         <PageHeader>
           <Height>7.77213cm</Height>
@@ -2848,7 +2847,7 @@ CStr(Fields!Bankofcollection_SalesInvoiceHeader.Value)
                 </Paragraph>
               </Paragraphs>
               <Top>3.75583cm</Top>
-              <Left>8.86948cm</Left>
+              <Left>10.51036cm</Left>
               <Height>0.48528cm</Height>
               <Width>8.45067cm</Width>
               <Style>
@@ -3190,7 +3189,7 @@ CStr(Fields!Bankofcollection_SalesInvoiceHeader.Value)
               </ReportItems>
               <KeepTogether>true</KeepTogether>
               <Top>4.24111cm</Top>
-              <Left>8.86948cm</Left>
+              <Left>10.51036cm</Left>
               <Height>2.94111cm</Height>
               <Width>8.45067cm</Width>
               <ZIndex>1</ZIndex>
@@ -3239,7 +3238,7 @@ CStr(Fields!Bankofcollection_SalesInvoiceHeader.Value)
                 </Paragraph>
               </Paragraphs>
               <Top>0.87944cm</Top>
-              <Left>4.508cm</Left>
+              <Left>6.18369cm</Left>
               <Height>0.55278cm</Height>
               <Width>12.77734cm</Width>
               <ZIndex>3</ZIndex>
@@ -3272,7 +3271,7 @@ CStr(Fields!Bankofcollection_SalesInvoiceHeader.Value)
                 </Paragraph>
               </Paragraphs>
               <Top>1.89111cm</Top>
-              <Left>4.508cm</Left>
+              <Left>6.18369cm</Left>
               <Height>0.44417cm</Height>
               <Width>12.77734cm</Width>
               <ZIndex>4</ZIndex>
@@ -3306,7 +3305,7 @@ CStr(Fields!Bankofcollection_SalesInvoiceHeader.Value)
                 </Paragraph>
               </Paragraphs>
               <Top>2.33528cm</Top>
-              <Left>4.508cm</Left>
+              <Left>6.18369cm</Left>
               <Height>0.47944cm</Height>
               <Width>12.77734cm</Width>
               <ZIndex>5</ZIndex>
@@ -3340,7 +3339,7 @@ CStr(Fields!Bankofcollection_SalesInvoiceHeader.Value)
                 </Paragraph>
               </Paragraphs>
               <Top>2.81472cm</Top>
-              <Left>4.508cm</Left>
+              <Left>6.18369cm</Left>
               <Height>0.44722cm</Height>
               <Width>12.77734cm</Width>
               <ZIndex>6</ZIndex>
@@ -3375,7 +3374,7 @@ CStr(Fields!Bankofcollection_SalesInvoiceHeader.Value)
                 </Paragraph>
               </Paragraphs>
               <Top>1.43222cm</Top>
-              <Left>4.508cm</Left>
+              <Left>6.18369cm</Left>
               <Height>0.45889cm</Height>
               <Width>12.77734cm</Width>
               <ZIndex>7</ZIndex>
@@ -3419,7 +3418,7 @@ CStr(Fields!Bankofcollection_SalesInvoiceHeader.Value)
               </Paragraphs>
               <Top>0.17639cm</Top>
               <Left>0.60164cm</Left>
-              <Height>0.28465cm</Height>
+              <Height>0.42487cm</Height>
               <Width>7.98924cm</Width>
               <Style>
                 <Border>
@@ -3468,7 +3467,7 @@ CStr(Fields!Bankofcollection_SalesInvoiceHeader.Value)
                 </Paragraph>
               </Paragraphs>
               <Top>0.17639cm</Top>
-              <Left>9.27493cm</Left>
+              <Left>10.88869cm</Left>
               <Height>0.42576cm</Height>
               <Width>8.01041cm</Width>
               <ZIndex>1</ZIndex>
@@ -3519,7 +3518,7 @@ CStr(Fields!Bankofcollection_SalesInvoiceHeader.Value)
               </Paragraphs>
               <Top>0.46104cm</Top>
               <Left>0.60164cm</Left>
-              <Height>0.34352cm</Height>
+              <Height>0.48374cm</Height>
               <Width>7.98924cm</Width>
               <ZIndex>2</ZIndex>
               <Style>
@@ -3560,7 +3559,7 @@ CStr(Fields!Bankofcollection_SalesInvoiceHeader.Value)
                 </Paragraph>
               </Paragraphs>
               <Top>0.60215cm</Top>
-              <Left>9.27493cm</Left>
+              <Left>10.88869cm</Left>
               <Height>0.99263cm</Height>
               <Width>8.01041cm</Width>
               <ZIndex>3</ZIndex>
@@ -3610,7 +3609,7 @@ CStr(Fields!Bankofcollection_SalesInvoiceHeader.Value)
               </Paragraphs>
               <Top>0.80456cm</Top>
               <Left>0.60164cm</Left>
-              <Height>0.65cm</Height>
+              <Height>0.79022cm</Height>
               <Width>7.98924cm</Width>
               <ZIndex>4</ZIndex>
               <Style>
@@ -3644,7 +3643,7 @@ CStr(Fields!Bankofcollection_SalesInvoiceHeader.Value)
           </Style>
         </PageFooter>
         <PageHeight>29.7cm</PageHeight>
-        <PageWidth>18cm</PageWidth>
+        <PageWidth>21cm</PageWidth>
         <InteractiveHeight>11in</InteractiveHeight>
         <InteractiveWidth>8.5in</InteractiveWidth>
         <LeftMargin>0.4cm</LeftMargin>

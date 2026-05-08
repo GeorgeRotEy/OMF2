@@ -363,7 +363,7 @@ report 50035 "Budget Study2"
         EVALUATE(Ano, pAno);
         EVALUATE(MesIni, pMesIni);
         EVALUATE(MesFin, pMesFin);
-        MesIni := MesIni - 1;
-        MesFin := MesFin - 1;
+        //MesIni := MesIni - 1;
+        //MesFin := MesFin - 1;
     end;
 }
