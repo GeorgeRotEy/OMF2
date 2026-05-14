@@ -25,6 +25,11 @@ table 55000 "Company OFM"
         {
             Caption = 'Evaluation Company', Comment = 'ESP="Empresa de evaluación"';
         }
+        field(6; "Company ID"; Guid)
+        {
+            Caption = 'Company ID', Comment = 'ESP="Empresa ID"';
+        }
+
     }
     keys
     {

@@ -3039,7 +3039,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Code.BlankZero(Last(Fields!TotalPeriodDebitAmt.Value) - Last(Fields!TotalPeriodCreditAmt.Value))</Value>
+                                  <Value>=Sum(Fields!Debe_GLEntry.Value) - Sum(Fields!Haber_GLEntry.Value)</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Segoe UI</FontFamily>

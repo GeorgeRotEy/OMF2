@@ -54,4 +54,5 @@ xmlport 50001 Companies
         SubStr1: Text;
         SubStr2: Text;
         URL: Text;
+        CompanyOFM: Record "Company OFM";
 }

@@ -9,6 +9,7 @@ report 50030 "Trial Balance (Banks)"
     Caption = 'Trial Balance (Banks)', Comment = 'ESP="Balance de sumas y saldos (Bancos)"';
     ApplicationArea = All;
 
+
     dataset
     {
         dataitem("G/L Account"; "G/L Account")
@@ -108,7 +109,7 @@ report 50030 "Trial Balance (Banks)"
             dataitem(Integer; Integer)
             {
                 DataItemTableView = SORTING(Number)
-                                    WHERE(Number = CONST(1));
+                  WHERE(Number = CONST(1));
                 column(No_GLAccount; "G/L Account"."No.")
                 {
                 }
@@ -169,7 +170,7 @@ report 50030 "Trial Balance (Banks)"
                 dataitem("G/L Entry"; "G/L Entry")
                 {
                     DataItemTableView = SORTING("G/L Account No.", "Posting Date")
-                                        WHERE("G/L Account No." = FILTER('57*'));
+                    WHERE("G/L Account No." = FILTER('57*'));
                     column(GLAccount_GLEntry; "G/L Entry"."G/L Account No.")
                     {
                     }
@@ -203,30 +204,35 @@ report 50030 "Trial Balance (Banks)"
 
                     trigger OnAfterGetRecord()
                     begin
-                        //(INC) S2G (JDT) 13-03-20: Modificaciónes: Desgolse de bancos por cuenta auxiliar.
-                        //BlankLineNo := "G/L Account"."No. of Blank Lines" + 1;
+                        //(INC) S2G (JDT) 13-03-20: Modificaciónes: Desgolse de bancos por cuenta auxiliar.
+                        //BlankLineNo := "G/L Account"."No. of Blank Lines" + 1;
 
-                        CLEAR(vAcumuladoPeriodo);
+                        CLEAR(vAcumuladoPeriodo);
+                        Clear(vAcumuladoDebe);
+                        Clear(vAcumuladoHaber);
+
+                        rGLAccount.Reset();
+                        rGLAccount.CopyFilters("G/L Account");
                         rGLAccount.SETRANGE(rGLAccount."No.", "G/L Entry"."G/L Account No.");
-                        rGLAccount.SETFILTER(rGLAccount."Date Filter", '..%1', "G/L Entry".GETRANGEMAX("Posting Date"));
+                        rGLAccount.SETFILTER(rGLAccount."Date Filter", '..%1', ToFec);
                         rGLAccount.SETFILTER(rGLAccount."Source Filter", "G/L Entry"."Source No.");
-                        IF rGLAccount.FINDSET() THEN BEGIN
-                            rGLAccount.CALCFIELDS(rGLAccount."Balance at Date", rGLAccount."Debit Amount", rGLAccount."Credit Amount");
-                            vAcumuladoPeriodo := rGLAccount."Balance at Date";
-                            vAcumuladoDebe := rGLAccount."Debit Amount";
-                            vAcumuladoHaber := rGLAccount."Credit Amount";
+                        IF rGLAccount.FindFirst() THEN BEGIN
+                            rGLAccount.CALCFIELDS(rGLAccount."Balance at Date OFM", rGLAccount."Debit Amount OFM", rGLAccount."Credit Amount OFM");
+                            vAcumuladoPeriodo := rGLAccount."Balance at Date OFM";
+                            vAcumuladoDebe := rGLAccount."Debit Amount OFM";
+                            vAcumuladoHaber := rGLAccount."Credit Amount OFM";
                         END;
-                        //(INC) S2G (JDT) 13-03-20: Modificaciónes: Desgolse de bancos por cuenta auxiliar.
-                    end;
+                        //(INC) S2G (JDT) 13-03-20: Modificaciónes: Desgolse de bancos por cuenta auxiliar.
+                    end;
 
                     trigger OnPreDataItem()
                     begin
-                        //(INC) S2G (JDT) 05-03-20: Modificaciónes: Desgolse de bancos por cuenta auxiliar.
-                        "G/L Entry".SETRANGE("G/L Entry"."G/L Account No.", "G/L Account"."No.");
+                        //(INC) S2G (JDT) 05-03-20: Modificaciónes: Desgolse de bancos por cuenta auxiliar.
+                        "G/L Entry".SETRANGE("G/L Entry"."G/L Account No.", "G/L Account"."No.");
                         "G/L Entry".SETFILTER("G/L Entry"."Posting Date", '%1..%2', "G/L Account".GETRANGEMIN("Date Filter"), "G/L Account".GETRANGEMAX("Date Filter"));
                         "G/L Entry".SETRANGE("G/L Entry"."Source Type", "G/L Entry"."Source Type"::"Bank Account");
-                        //(INC) S2G (JDT) 05-03-20: Modificaciónes: Desgolse de bancos por cuenta auxiliar.
-                    end;
+                        //(INC) S2G (JDT) 05-03-20: Modificaciónes: Desgolse de bancos por cuenta auxiliar.
+                    end;
                 }
                 dataitem(BlankLineRepeater; Integer)
                 {
@@ -254,7 +260,7 @@ report 50030 "Trial Balance (Banks)"
             begin
                 Accumulate := FALSE;
                 CALCFIELDS("Debit Amount", "Credit Amount", "Balance at Date", "Add.-Currency Debit Amount",
-                           "Add.-Currency Credit Amount", "Add.-Currency Balance at Date", "Net Change", "Balance at Date");
+                     "Add.-Currency Credit Amount", "Add.-Currency Balance at Date", "Net Change", "Balance at Date");
                 GLAcc2 := "G/L Account";
                 SetGLAccDateFilter;
                 IF GlobalDim1 <> '' THEN
@@ -262,7 +268,7 @@ report 50030 "Trial Balance (Banks)"
                 IF GlobalDim2 <> '' THEN
                     "G/L Account".COPYFILTER("G/L Account"."Global Dimension 2 Filter", GLAcc2."Global Dimension 2 Filter");
                 GLAcc2.CALCFIELDS("Additional-Currency Net Change", "Net Change", "Debit Amount", "Credit Amount",
-                                  "Add.-Currency Debit Amount", "Add.-Currency Credit Amount", "Balance at Date");
+                         "Add.-Currency Debit Amount", "Add.-Currency Credit Amount", "Balance at Date");
                 IF PrintAmountsInAddCurrency THEN BEGIN
                     PreviousBalance := GLAcc2."Additional-Currency Net Change";
                     BalanceType := GLAcc2."Additional-Currency Net Change";
@@ -278,10 +284,10 @@ report 50030 "Trial Balance (Banks)"
                 OpenDebitAmt := 0;
                 OpenCreditAmtEnd := 0;
                 OpenDebitAmtEnd := 0;
-                //--IAP 16/06/21: Invocación de la nueva función que muestra los nuevo debe y haber acumulados del periodo solicitado
-                CalcSaldApertura;
-                //++IAP
-                IF OpenEntries THEN BEGIN
+                //--IAP 16/06/21: Invocación de la nueva función que muestra los nuevo debe y haber acumulados del periodo solicitado
+                CalcSaldApertura;
+                //++IAP
+                IF OpenEntries THEN BEGIN
                     IF "Account Type" = "Account Type"::Heading THEN
                         CalcOpenEntriesHeading
                     ELSE
@@ -317,7 +323,7 @@ report 50030 "Trial Balance (Banks)"
                 IF GlobalDim2 <> '' THEN
                     "G/L Account".COPYFILTER("G/L Account"."Global Dimension 2 Filter", GLAcc2."Global Dimension 2 Filter");
                 GLAcc.CALCFIELDS("Debit Amount", "Credit Amount", "Add.-Currency Debit Amount", "Add.-Currency Credit Amount",
-                  "Net Change", "Balance at Date");
+                 "Net Change", "Balance at Date");
                 IF NOT PrintAmountsInAddCurrency THEN BEGIN
                     PeriodDebitAmt := GLAcc."Debit Amount";
                     PeriodCreditAmt := GLAcc."Credit Amount";
@@ -408,23 +414,23 @@ report 50030 "Trial Balance (Banks)"
                 IF "New Page" THEN
                     NextPageGroupNo := PageGroupNo + 1;
 
-                //(CR003) S2G (RBM-R) 07-08-18: Modificaciones Registro simple. Inicio
-                vDebitDifference := 0.1;
+                //(CR003) S2G (RBM-R) 07-08-18: Modificaciones Registro simple. Inicio
+                vDebitDifference := 0.1;
                 vCreditDifference := 0.2;
                 IF TotalPeriodDebitAmt - TotalPeriodCreditAmt >= 0 THEN
                     vDebitDifference := ABS(TotalPeriodDebitAmt - TotalPeriodCreditAmt)
                 ELSE
                     vCreditDifference := ABS(TotalPeriodDebitAmt - TotalPeriodCreditAmt);
-                //(CR003) S2G (RBM-R) 07-08-18: Modificaciones Registro simple. Fin
-            end;
+                //(CR003) S2G (RBM-R) 07-08-18: Modificaciones Registro simple. Fin
+            end;
 
             trigger OnPostDataItem()
             begin
                 "G/L Account".SETRANGE("Date Filter");
                 "G/L Account".SETRANGE("Global Dimension 1 Filter");
                 "G/L Account".SETRANGE("Global Dimension 2 Filter");
-                /*CurrReport.SHOWOUTPUT(Cuenta.GETFILTERS = '');*/
-            end;
+                /*CurrReport.SHOWOUTPUT(Cuenta.GETFILTERS = '');*/
+            end;
 
             trigger OnPreDataItem()
             begin
@@ -440,8 +446,8 @@ report 50030 "Trial Balance (Banks)"
                 CurrReport.CREATETOTALS(PeriodDebitAmt, PeriodCreditAmt, DebitAmtAtEnd, CreditAmtAtEnd, BalanceAtEnd);
                 GLFilter := "G/L Account".GETFILTER("G/L Account"."Account Type");
                 IF GLFilter <> '' THEN BEGIN
-                    // Only accept single account type filter, to display both 2 types user should leave this filter blank.
-                    GLFilterOption := GETRANGEMIN("Account Type");
+                    // Only accept single account type filter, to display both 2 types user should leave this filter blank.
+                    GLFilterOption := GETRANGEMIN("Account Type");
                     SETRANGE("Account Type", GLFilterOption);
                 END ELSE
                     GLFilterOption := -1;
@@ -506,8 +512,8 @@ report 50030 "Trial Balance (Banks)"
 
         trigger OnOpenPage()
         begin
-            //PrintAllHavingBal := TRUE;
-            SetDefaultRequestOptions();
+            //PrintAllHavingBal := TRUE;
+            SetDefaultRequestOptions();
         end;
     }
 
@@ -519,8 +525,8 @@ report 50030 "Trial Balance (Banks)"
     begin
 
         SetDefaultRequestOptions();
-        //(CR003) S2G (RBM-R) 07-08-18: Modificaciones Registro simple. Fin
-    end;
+        //(CR003) S2G (RBM-R) 07-08-18: Modificaciones Registro simple. Fin
+    end;
 
     trigger OnPreReport()
     begin
@@ -801,9 +807,9 @@ report 50030 "Trial Balance (Banks)"
         ELSE
             GLAcc2.SETRANGE("Date Filter", StartingPeriod(FromFec), ToFec);
 
-        //--IAP 16/06/21: Nueva función CalcSaldApertura para que se incluya en el debe y haber acumulado del periodo solicitado, el
-        //saldo acumulado de apertura del día anterior a este periodo
-    end;
+        //--IAP 16/06/21: Nueva función CalcSaldApertura para que se incluya en el debe y haber acumulado del periodo solicitado, el
+        //saldo acumulado de apertura del día anterior a este periodo
+    end;
 
     procedure CalcSaldApertura()
     var
@@ -837,8 +843,8 @@ report 50030 "Trial Balance (Banks)"
                 CreditApertura := FinalCreditApertura;
             END;
         END;
-        //++IAP
-    end;
+        //++IAP
+    end;
 
     local procedure SetDefaultAccountNoFilter()
     begin
