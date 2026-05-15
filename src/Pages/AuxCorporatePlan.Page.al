@@ -130,4 +130,9 @@ page 50043 "Aux. Corporate Plan"
             UNTIL Rec.NEXT() = 0;
         Rec.RESET();
     end;
+
+    procedure SetTempRecords(var TempAuxPlanCorporativo: Record "Aux plan corporativo" temporary)
+    begin
+        Rec.Copy(TempAuxPlanCorporativo, true);
+    end;
 }

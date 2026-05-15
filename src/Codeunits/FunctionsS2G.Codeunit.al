@@ -209,19 +209,14 @@ codeunit 50001 "Functions S2G"
                 TemprltAuxPlanCorporativo.Insert();
             until rlPlanCorporativo.Next() = 0;
 
-        // DEBUG: confirmar si realmente has cargado registros
-        Message(
-            'Plan Corporativo (SQL): %1\Aux temporal (50006): %2',
-            rlPlanCorporativo.Count(),
-            TemprltAuxPlanCorporativo.Count());
 
         vlContadorTraidas := 0;
         vlContadorSeleccionadas := 0;
 
-        PlAuxPlanCorporativo.SetTableView(TemprltAuxPlanCorporativo);
+        PlAuxPlanCorporativo.SetTempRecords(TemprltAuxPlanCorporativo);
         PlAuxPlanCorporativo.LookupMode(true);
 
-        if Page.RunModal(Page::"Aux. Corporate Plan") = Action::LookupOK then begin
+        if PlAuxPlanCorporativo.RunModal() = Action::LookupOK then begin
             TemprltAuxPlanCorporativo.Reset();
             TemprltAuxPlanCorporativo.SetRange(Acción, TemprltAuxPlanCorporativo.Acción::Traer);
 
