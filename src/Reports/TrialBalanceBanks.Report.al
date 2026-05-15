@@ -208,19 +208,19 @@ report 50030 "Trial Balance (Banks)"
                         //BlankLineNo := "G/L Account"."No. of Blank Lines" + 1;
 
                         CLEAR(vAcumuladoPeriodo);
-                        Clear(vAcumuladoDebe);
-                        Clear(vAcumuladoHaber);
+                        CLEAR(vAcumuladoDebe);
+                        CLEAR(vAcumuladoHaber);
 
-                        rGLAccount.Reset();
-                        rGLAccount.CopyFilters("G/L Account");
+                        rGLAccount.RESET();
+                        rGLAccount.COPYFILTERS("G/L Account");
                         rGLAccount.SETRANGE(rGLAccount."No.", "G/L Entry"."G/L Account No.");
                         rGLAccount.SETFILTER(rGLAccount."Date Filter", '..%1', ToFec);
                         rGLAccount.SETFILTER(rGLAccount."Source Filter", "G/L Entry"."Source No.");
-                        IF rGLAccount.FindFirst() THEN BEGIN
-                            rGLAccount.CALCFIELDS(rGLAccount."Balance at Date OFM", rGLAccount."Debit Amount OFM", rGLAccount."Credit Amount OFM");
-                            vAcumuladoPeriodo := rGLAccount."Balance at Date OFM";
+                        IF rGLAccount.FINDFIRST() THEN BEGIN
+                            rGLAccount.CALCFIELDS(rGLAccount."Debit Amount OFM", rGLAccount."Credit Amount OFM");
                             vAcumuladoDebe := rGLAccount."Debit Amount OFM";
                             vAcumuladoHaber := rGLAccount."Credit Amount OFM";
+                            vAcumuladoPeriodo := vAcumuladoDebe - vAcumuladoHaber;
                         END;
                         //(INC) S2G (JDT) 13-03-20: Modificaciónes: Desgolse de bancos por cuenta auxiliar.
                     end;
@@ -852,3 +852,17 @@ report 50030 "Trial Balance (Banks)"
             "G/L Account".SetFilter("No.", '1*|2*|3*|4*|5*');
     end;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

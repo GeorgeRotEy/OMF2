@@ -267,8 +267,10 @@ report 50035 "Budget Study2"
                 END;
                 //(1.5) S2G (RBM-R) 09-03-20: Modificaciones presupuestos. Fin
 
-                EVALUATE(vStartDate, '01/' + FORMAT(MesIni + 1) + '/' + FORMAT(Ano + 2018));
-                EVALUATE(vEndDate, '01/' + FORMAT(MesFin + 1) + '/' + FORMAT(Ano + 2018));
+                //EVALUATE(vStartDate, '01/' + FORMAT(MesIni + 1) + '/' + FORMAT(Ano + 2018));
+                //EVALUATE(vEndDate, '01/' + FORMAT(MesFin + 1) + '/' + FORMAT(Ano + 2018));
+                vStartDate := DMY2Date(1, MesIni.AsInteger(), Ano + 2018);
+                vEndDate := DMY2Date(1, MesFin.AsInteger(), Ano + 2018);
                 vEndDate := CALCDATE('+1M-1D', vEndDate);
 
                 SETFILTER("Date Filter", '%1..%2', vStartDate, vEndDate);

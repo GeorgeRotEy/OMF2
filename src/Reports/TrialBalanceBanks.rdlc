@@ -3076,7 +3076,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Code.BlankZero(Sum(Fields!Debe_GLEntry.Value))</Value>
+                                  <Value>=Code.BlankZero(First(Fields!vAcumuladoDebe.Value))</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Segoe UI</FontFamily>
@@ -3113,7 +3113,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Code.BlankZero(Sum(Fields!Haber_GLEntry.Value))</Value>
+                                  <Value>=Code.BlankZero(First(Fields!vAcumuladoHaber.Value))</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Segoe UI</FontFamily>
@@ -3150,7 +3150,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Code.BlankZero(Fields!vAcumuladoPeriodo.Value)</Value>
+                                  <Value>=Code.BlankZero(First(Fields!vAcumuladoDebe.Value) - First(Fields!vAcumuladoHaber.Value))</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Segoe UI</FontFamily>
