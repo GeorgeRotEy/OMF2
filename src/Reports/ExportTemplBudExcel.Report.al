@@ -646,9 +646,9 @@ report 50006 "Export Templ Bud Excel"
     // var
     //     exBuf: Record "Excel Buffer";
     // begin
+    //     exBuf.DeleteAll();
 
-
-
+    //     asd(exBuf, 1,1,'test', 'FF0070C0', 'FFFFFFFF',true);
     // end;
 
     // local procedure asd(var excelbuffer: Record "Excel Buffer" temporary; Rowno: Integer; Colno: Integer; Cellvalue: Text; background: Integer; FontColor: Integer; IsBold: Boolean)
