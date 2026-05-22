@@ -49,7 +49,7 @@ table 50115 TablaMovContabilidad4
         {
             Caption = 'Service Code', Comment = 'ESP="Servicio Código"';
         }
-        field(11; Descripcion; Text[50])
+        field(11; Descripcion; Text[100])
         {
             Caption = 'Description', Comment = 'ESP="Descripción"';
         }

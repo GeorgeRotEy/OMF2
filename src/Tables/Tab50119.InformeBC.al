@@ -11,7 +11,7 @@ table 50119 InformeBC
         {
             Caption = 'Company', Comment = 'ESP="Empresa"';
         }
-        field(3; "Nombre Cuenta"; Text[50])
+        field(3; "Nombre Cuenta"; Text[100])
         {
             Caption = 'Account Name', Comment = 'ESP="Nombre cuenta"';
         }
@@ -45,7 +45,7 @@ table 50119 InformeBC
             ELSE IF ("Source Type" = CONST("Bank Account")) "Bank Account"
             ELSE IF ("Source Type" = CONST("Fixed Asset")) "Fixed Asset";
         }
-        field(10; "Source Description"; Text[101])
+        field(10; "Source Description"; Text[201])
         {
             Caption = 'Source Description', Comment = 'ESP="Descripción origen"';
             Description = 'JPB';

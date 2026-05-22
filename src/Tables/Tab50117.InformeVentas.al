@@ -11,7 +11,7 @@ table 50117 InformeVentas
         {
             Caption = 'Company', Comment = 'ESP="Empresa"';
         }
-        field(3; Descripcion; Text[50])
+        field(3; Descripcion; Text[100])
         {
             Caption = 'Description', Comment = 'ESP="Descripción"';
         }

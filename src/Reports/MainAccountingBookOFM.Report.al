@@ -151,7 +151,7 @@ report 50009 "Main Accounting Book OFM"
                                 if vAPI then
                                     vLastDayLastMDate := CALCDATE('<CM>', vLastMDate)
                                 else
-                                    vLastDayLastMDate := CALCDATE('<PM>', vLastMDate);
+                                    vLastDayLastMDate := CALCDATE('<CM>', vLastMDate);
 
                                 rBankAccount.SETFILTER("Date Filter", '%1..%2', 0D, vLastDayLastMDate);
                                 //KPMG ATS OMF030 08-03-2022. END
