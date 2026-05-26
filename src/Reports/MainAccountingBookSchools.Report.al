@@ -5,7 +5,7 @@ report 50033 "Main Accounting Book Schools"
     // (1.1) S2G (RBM-R) 03-03-20: Nuevo Libro Mayor Colegios
     // //(INC) S2G (JDT) 16-03-20: Nuevo filtro por el campo "Source Code Filter".
     DefaultLayout = RDLC;
-    RDLCLayout = './MainAccountingBookSchools.rdlc';
+    RDLCLayout = './src/Reports/MainAccountingBookSchools.rdlc';
     Caption = 'Libro mayor OFM Colegios';
     ApplicationArea = All;
 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:cl="http://schemas.microsoft.com/sqlserver/reporting/2010/01/componentdefinition" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition">
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -11,138 +11,6 @@
       <rd:DataSourceID>bf0eeda0-09a6-46a4-881f-0602f289c2a0</rd:DataSourceID>
     </DataSource>
   </DataSources>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-      <Fields>
-        <Field Name="Filtros">
-          <DataField>Filtros</DataField>
-        </Field>
-        <Field Name="COMPANYNAME">
-          <DataField>COMPANYNAME</DataField>
-        </Field>
-        <Field Name="USERID">
-          <DataField>USERID</DataField>
-        </Field>
-        <Field Name="Logo">
-          <DataField>Logo</DataField>
-        </Field>
-        <Field Name="No_GLAccount">
-          <DataField>No_GLAccount</DataField>
-        </Field>
-        <Field Name="Balance">
-          <DataField>Balance</DataField>
-        </Field>
-        <Field Name="BalanceFormat">
-          <DataField>BalanceFormat</DataField>
-        </Field>
-        <Field Name="SaldoPeriodo">
-          <DataField>SaldoPeriodo</DataField>
-        </Field>
-        <Field Name="SaldoPeriodoFormat">
-          <DataField>SaldoPeriodoFormat</DataField>
-        </Field>
-        <Field Name="Tercero">
-          <DataField>Tercero</DataField>
-        </Field>
-        <Field Name="GLAccountNo_GLEntry">
-          <DataField>GLAccountNo_GLEntry</DataField>
-        </Field>
-        <Field Name="SourceNo_GLEntry">
-          <DataField>SourceNo_GLEntry</DataField>
-        </Field>
-        <Field Name="Amount_GLEntry">
-          <DataField>Amount_GLEntry</DataField>
-        </Field>
-        <Field Name="Amount_GLEntryFormat">
-          <DataField>Amount_GLEntryFormat</DataField>
-        </Field>
-        <Field Name="Description_GLEntry">
-          <DataField>Description_GLEntry</DataField>
-        </Field>
-        <Field Name="DebitAmount_GLEntry">
-          <DataField>DebitAmount_GLEntry</DataField>
-        </Field>
-        <Field Name="DebitAmount_GLEntryFormat">
-          <DataField>DebitAmount_GLEntryFormat</DataField>
-        </Field>
-        <Field Name="CreditAmount_GLEntry">
-          <DataField>CreditAmount_GLEntry</DataField>
-        </Field>
-        <Field Name="CreditAmount_GLEntryFormat">
-          <DataField>CreditAmount_GLEntryFormat</DataField>
-        </Field>
-        <Field Name="BalAccountNo_GLEntry">
-          <DataField>BalAccountNo_GLEntry</DataField>
-        </Field>
-        <Field Name="PostingDate_GLEntry">
-          <DataField>PostingDate_GLEntry</DataField>
-        </Field>
-        <Field Name="Postingconcept_GLEntry">
-          <DataField>Postingconcept_GLEntry</DataField>
-        </Field>
-        <Field Name="DocumentNo_GLEntry">
-          <DataField>DocumentNo_GLEntry</DataField>
-        </Field>
-        <Field Name="Saldo">
-          <DataField>Saldo</DataField>
-        </Field>
-        <Field Name="SaldoFormat">
-          <DataField>SaldoFormat</DataField>
-        </Field>
-        <Field Name="SaldoaFechaCodigos">
-          <DataField>SaldoaFechaCodigos</DataField>
-        </Field>
-        <Field Name="SaldoaFechaCodigosFormat">
-          <DataField>SaldoaFechaCodigosFormat</DataField>
-        </Field>
-        <Field Name="SaldoaFecha">
-          <DataField>SaldoaFecha</DataField>
-        </Field>
-        <Field Name="SaldoaFechaFormat">
-          <DataField>SaldoaFechaFormat</DataField>
-        </Field>
-        <Field Name="SaldoAnterior">
-          <DataField>SaldoAnterior</DataField>
-        </Field>
-        <Field Name="SaldoAnteriorFormat">
-          <DataField>SaldoAnteriorFormat</DataField>
-        </Field>
-        <Field Name="vCodProcedencia">
-          <DataField>vCodProcedencia</DataField>
-        </Field>
-        <Field Name="vNombreProcedencia">
-          <DataField>vNombreProcedencia</DataField>
-        </Field>
-        <Field Name="DimensionActividad">
-          <DataField>DimensionActividad</DataField>
-        </Field>
-        <Field Name="DocExterno">
-          <DataField>DocExterno</DataField>
-        </Field>
-        <Field Name="DimensionEtapa">
-          <DataField>DimensionEtapa</DataField>
-        </Field>
-        <Field Name="vDescripcionLinea">
-          <DataField>vDescripcionLinea</DataField>
-        </Field>
-        <Field Name="NoTercero">
-          <DataField>NoTercero</DataField>
-        </Field>
-        <Field Name="NombreTercero">
-          <DataField>NombreTercero</DataField>
-        </Field>
-      </Fields>
-      <rd:DataSetInfo>
-        <rd:DataSetName>DataSet</rd:DataSetName>
-        <rd:SchemaPath>Report.xsd</rd:SchemaPath>
-        <rd:TableName>Result</rd:TableName>
-      </rd:DataSetInfo>
-    </DataSet>
-  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -4567,4 +4435,131 @@ End Function
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
   <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="Filtros">
+          <DataField>Filtros</DataField>
+        </Field>
+        <Field Name="COMPANYNAME">
+          <DataField>COMPANYNAME</DataField>
+        </Field>
+        <Field Name="USERID">
+          <DataField>USERID</DataField>
+        </Field>
+        <Field Name="Logo">
+          <DataField>Logo</DataField>
+        </Field>
+        <Field Name="No_GLAccount">
+          <DataField>No_GLAccount</DataField>
+        </Field>
+        <Field Name="Balance">
+          <DataField>Balance</DataField>
+        </Field>
+        <Field Name="BalanceFormat">
+          <DataField>BalanceFormat</DataField>
+        </Field>
+        <Field Name="SaldoPeriodo">
+          <DataField>SaldoPeriodo</DataField>
+        </Field>
+        <Field Name="SaldoPeriodoFormat">
+          <DataField>SaldoPeriodoFormat</DataField>
+        </Field>
+        <Field Name="Tercero">
+          <DataField>Tercero</DataField>
+        </Field>
+        <Field Name="GLAccountNo_GLEntry">
+          <DataField>GLAccountNo_GLEntry</DataField>
+        </Field>
+        <Field Name="SourceNo_GLEntry">
+          <DataField>SourceNo_GLEntry</DataField>
+        </Field>
+        <Field Name="Amount_GLEntry">
+          <DataField>Amount_GLEntry</DataField>
+        </Field>
+        <Field Name="Amount_GLEntryFormat">
+          <DataField>Amount_GLEntryFormat</DataField>
+        </Field>
+        <Field Name="Description_GLEntry">
+          <DataField>Description_GLEntry</DataField>
+        </Field>
+        <Field Name="DebitAmount_GLEntry">
+          <DataField>DebitAmount_GLEntry</DataField>
+        </Field>
+        <Field Name="DebitAmount_GLEntryFormat">
+          <DataField>DebitAmount_GLEntryFormat</DataField>
+        </Field>
+        <Field Name="CreditAmount_GLEntry">
+          <DataField>CreditAmount_GLEntry</DataField>
+        </Field>
+        <Field Name="CreditAmount_GLEntryFormat">
+          <DataField>CreditAmount_GLEntryFormat</DataField>
+        </Field>
+        <Field Name="BalAccountNo_GLEntry">
+          <DataField>BalAccountNo_GLEntry</DataField>
+        </Field>
+        <Field Name="PostingDate_GLEntry">
+          <DataField>PostingDate_GLEntry</DataField>
+        </Field>
+        <Field Name="Postingconcept_GLEntry">
+          <DataField>Postingconcept_GLEntry</DataField>
+        </Field>
+        <Field Name="DocumentNo_GLEntry">
+          <DataField>DocumentNo_GLEntry</DataField>
+        </Field>
+        <Field Name="Saldo">
+          <DataField>Saldo</DataField>
+        </Field>
+        <Field Name="SaldoFormat">
+          <DataField>SaldoFormat</DataField>
+        </Field>
+        <Field Name="SaldoaFechaCodigos">
+          <DataField>SaldoaFechaCodigos</DataField>
+        </Field>
+        <Field Name="SaldoaFechaCodigosFormat">
+          <DataField>SaldoaFechaCodigosFormat</DataField>
+        </Field>
+        <Field Name="SaldoaFecha">
+          <DataField>SaldoaFecha</DataField>
+        </Field>
+        <Field Name="SaldoaFechaFormat">
+          <DataField>SaldoaFechaFormat</DataField>
+        </Field>
+        <Field Name="SaldoAnterior">
+          <DataField>SaldoAnterior</DataField>
+        </Field>
+        <Field Name="SaldoAnteriorFormat">
+          <DataField>SaldoAnteriorFormat</DataField>
+        </Field>
+        <Field Name="vCodProcedencia">
+          <DataField>vCodProcedencia</DataField>
+        </Field>
+        <Field Name="vNombreProcedencia">
+          <DataField>vNombreProcedencia</DataField>
+        </Field>
+        <Field Name="DimensionActividad">
+          <DataField>DimensionActividad</DataField>
+        </Field>
+        <Field Name="DocExterno">
+          <DataField>DocExterno</DataField>
+        </Field>
+        <Field Name="DimensionEtapa">
+          <DataField>DimensionEtapa</DataField>
+        </Field>
+        <Field Name="vDescripcionLinea">
+          <DataField>vDescripcionLinea</DataField>
+        </Field>
+        <Field Name="NoTercero">
+          <DataField>NoTercero</DataField>
+        </Field>
+        <Field Name="NombreTercero">
+          <DataField>NombreTercero</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
 </Report>
