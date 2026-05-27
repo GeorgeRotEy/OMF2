@@ -5,8 +5,8 @@ report 50006 "Export Templ Bud Excel"
     // (OFM-2) (ATP/GRL)14-12-20: Modificaciones presupuesto (excluir cuentas amortizacion, filtros fecha por meses)
 
     Caption = 'Export Template Budget Excel', Comment = 'ESP="Exportar plantilla presupuesto Excel"';
-    ProcessingOnly = true;
     ApplicationArea = All;
+    DefaultRenderingLayout = BudgetTemplateExcel;
 
     dataset
     {
@@ -206,22 +206,21 @@ report 50006 "Export Templ Bud Excel"
                 EnterCell(RowNo, 6, '=IFERROR(G' + FORMAT(RowNo) + '/E' + FORMAT(RowNo) + '-1,IF(G' + FORMAT(RowNo) + '<>0,1,0))', '#,##0.00%', ExcelBuf."Cell Type"::Number, 8);
                 EnterCell(RowNo, 7, '=SUM(G' + FORMAT(RowTable) + ':G' + FORMAT(RowNo - 1) + ')', '#,##0.00', ExcelBuf."Cell Type"::Number, 8);
                 // (OFM-02) (ATD/GRL) Modificaciones informe. End
-                ExcelBuf.CreateNewBook(COPYSTR(COMPANYNAME, 1, 31));
+
+                IF NOT vPowerApps THEN
+                    EXIT;
+
+                ExcelBuf.CreateNewBook(COPYSTR(COMPANYNAME, 1, 31));
                 ExcelBuf.WriteSheet(PADSTR(STRSUBSTNO('%1', BudgetName), 30), COMPANYNAME, USERID);
                 SetTemplateColumnWidths();
                 ExcelBuf.CloseBook;
-                IF NOT TestMode THEN BEGIN
-                    ExcelBuf.SetFriendlyFilename(STRSUBSTNO('%1-%2', BudgetName, Budget + FORMAT(RefYear)));
-                    ExcelBuf.OpenExcel;
-                END;
 
-                //IGG - Necesario para pasar valor por Base64 para PowerApps
-                if vPowerApps then begin
-                    cTempBlob.CreateOutStream(vOutStr);
-                    ExcelBuf.SaveToStream(vOutStr, false);
-                    cTempBlob.CreateInStream(vInStr);
-                    OnAfterRunReport(vInStr, STRSUBSTNO('%1-%2', BudgetName, Budget + FORMAT(RefYear)));
-                end;
+                cTempBlob.CreateOutStream(vOutStr);
+                ExcelBuf.SaveToStream(vOutStr, false);
+                cTempBlob.CreateInStream(vInStr);
+
+                //IGG - Necesario para pasar valor por Base64 para PowerApps
+                OnAfterRunReport(vInStr, STRSUBSTNO('%1-%2', BudgetName, Budget + FORMAT(RefYear)));
             end;
 
             trigger OnPreDataItem()
@@ -340,6 +339,45 @@ report 50006 "Export Templ Bud Excel"
                 i := 1;
             end;
         }
+
+        dataitem(OutputRow; Integer)
+        {
+            DataItemTableView = SORTING(Number);
+
+            column(NoCuenta; GetOutputCellValue(Number, 1))
+            {
+            }
+            column(Nombre; GetOutputCellValue(Number, 2))
+            {
+            }
+            column(PptoAnoAnterior; GetOutputCellValue(Number, 3))
+            {
+            }
+            column(CumplPct; GetOutputCellValue(Number, 4))
+            {
+            }
+            column(RealUlt12Meses; GetOutputCellValue(Number, 5))
+            {
+            }
+            column(DesvPct; GetOutputCellValue(Number, 6))
+            {
+            }
+            column(FechaPresupuesto; GetOutputCellValue(Number, 7))
+            {
+            }
+            column(Observaciones; GetOutputCellValue(Number, 8))
+            {
+            }
+            column(RowStyle; GetOutputRowStyle(Number))
+            {
+            }
+
+            trigger OnPreDataItem()
+            begin
+                SetRange(Number, 1, GetLastOutputRowNo());
+            end;
+
+        }
     }
 
     requestpage
@@ -391,6 +429,15 @@ report 50006 "Export Templ Bud Excel"
         }
     }
 
+    rendering
+    {
+        layout(BudgetTemplateExcel)
+        {
+            Type = Excel;
+            LayoutFile = 'src/Reports/ExportTemplBudExcel.xlsx';
+        }
+    }
+
     labels
     {
     }
@@ -412,8 +459,8 @@ report 50006 "Export Templ Bud Excel"
 
     var
         rDimCodeBuffer: Record "Dimension Code Buffer";
-        ExcelBuf: Record "Excel Buffer";
-        ExcelBuf2: Record "Excel Buffer";
+        ExcelBuf: Record "Excel Buffer" temporary;
+        ExcelBuf2: Record "Excel Buffer" temporary;
         RefDate: Date;
         vFormatType: Option Normal,Group,Title,Underline,"Table",Definition,PostingGL,PostingName,Total;
         BudgetName: Code[10];
@@ -542,6 +589,151 @@ report 50006 "Export Templ Bud Excel"
         ExcelBuf.SetColumnWidth('F', 11);
         ExcelBuf.SetColumnWidth('G', 13);
         ExcelBuf.SetColumnWidth('H', 17);
+    end;
+
+    local procedure GetLastOutputRowNo(): Integer
+    begin
+        ExcelBuf.RESET();
+        IF ExcelBuf.FINDLAST() THEN
+            EXIT(ExcelBuf."Row No.");
+    end;
+
+    local procedure GetOutputCellValue(OutputRowNo: Integer; OutputColumnNo: Integer): Text
+    begin
+        IF NOT ExcelBuf.GET(OutputRowNo, OutputColumnNo) THEN
+            EXIT('');
+
+        IF ExcelBuf.Formula <> '' THEN
+            EXIT(GetOutputFormulaValue(OutputRowNo, OutputColumnNo, ExcelBuf.Formula));
+
+        EXIT(ExcelBuf."Cell Value as Text");
+    end;
+
+    local procedure GetOutputFormulaValue(OutputRowNo: Integer; OutputColumnNo: Integer; OutputFormula: Text): Text
+    var
+        FormulaRowNo: Integer;
+        FormulaColumnNo: Integer;
+    begin
+        IF OutputColumnNo = 4 THEN
+            EXIT(GetOutputPercentageValue(GetOutputRatio(OutputRowNo, 5, 3)));
+
+        IF OutputColumnNo = 6 THEN
+            EXIT(GetOutputPercentageValue(GetOutputDeviation(OutputRowNo)));
+
+        IF TryGetOutputCellReference(OutputFormula, FormulaRowNo, FormulaColumnNo) THEN
+            EXIT(GetOutputCellValue(FormulaRowNo, FormulaColumnNo));
+
+        IF COPYSTR(OutputFormula, 1, 5) = '=SUM(' THEN
+            EXIT(FORMAT(GetOutputFormulaSum(OutputFormula, OutputColumnNo)));
+
+        EXIT(OutputFormula);
+    end;
+
+    local procedure GetOutputPercentageValue(PercentageValue: Decimal): Text
+    begin
+        EXIT(FORMAT(ROUND(PercentageValue * 100, 0.01)) + '%');
+    end;
+
+    local procedure GetOutputRatio(OutputRowNo: Integer; NumeratorColumnNo: Integer; DenominatorColumnNo: Integer): Decimal
+    var
+        DenominatorValue: Decimal;
+    begin
+        DenominatorValue := GetOutputCellDecimal(OutputRowNo, DenominatorColumnNo);
+        IF DenominatorValue = 0 THEN
+            EXIT(0);
+
+        EXIT(GetOutputCellDecimal(OutputRowNo, NumeratorColumnNo) / DenominatorValue);
+    end;
+
+    local procedure GetOutputDeviation(OutputRowNo: Integer): Decimal
+    var
+        BudgetValue: Decimal;
+        RealValue: Decimal;
+    begin
+        BudgetValue := GetOutputCellDecimal(OutputRowNo, 7);
+        RealValue := GetOutputCellDecimal(OutputRowNo, 5);
+
+        IF RealValue <> 0 THEN
+            EXIT((BudgetValue / RealValue) - 1);
+
+        IF BudgetValue <> 0 THEN
+            EXIT(1);
+
+        EXIT(0);
+    end;
+
+    local procedure GetOutputCellDecimal(OutputRowNo: Integer; OutputColumnNo: Integer): Decimal
+    var
+        OutputDecimal: Decimal;
+    begin
+        IF EVALUATE(OutputDecimal, GetOutputCellValue(OutputRowNo, OutputColumnNo)) THEN
+            EXIT(OutputDecimal);
+    end;
+
+    local procedure GetOutputFormulaSum(OutputFormula: Text; OutputColumnNo: Integer): Decimal
+    var
+        FormulaSeparatorPos: Integer;
+        FormulaEndPos: Integer;
+        FormulaRowNo: Integer;
+        FormulaStartRowNo: Integer;
+        FormulaEndRowNo: Integer;
+        OutputSum: Decimal;
+    begin
+        FormulaSeparatorPos := STRPOS(OutputFormula, ':');
+        FormulaEndPos := STRPOS(OutputFormula, ')');
+        IF (FormulaSeparatorPos = 0) OR (FormulaEndPos = 0) THEN
+            EXIT(0);
+
+        IF NOT EVALUATE(FormulaStartRowNo, COPYSTR(OutputFormula, 7, FormulaSeparatorPos - 7)) THEN
+            EXIT(0);
+
+        IF NOT EVALUATE(FormulaEndRowNo, COPYSTR(OutputFormula, FormulaSeparatorPos + 2, FormulaEndPos - FormulaSeparatorPos - 2)) THEN
+            EXIT(0);
+
+        FOR FormulaRowNo := FormulaStartRowNo TO FormulaEndRowNo DO
+            OutputSum += GetOutputCellDecimal(FormulaRowNo, OutputColumnNo);
+
+        EXIT(OutputSum);
+    end;
+
+    local procedure TryGetOutputCellReference(OutputFormula: Text; var FormulaRowNo: Integer; var FormulaColumnNo: Integer): Boolean
+    var
+        FormulaColumn: Char;
+    begin
+        IF (COPYSTR(OutputFormula, 1, 1) <> '=') OR (STRPOS(OutputFormula, ':') <> 0) OR (STRPOS(OutputFormula, '(') <> 0) THEN
+            EXIT(FALSE);
+
+        FormulaColumn := OutputFormula[2];
+        FormulaColumnNo := FormulaColumn - 64;
+        IF (FormulaColumnNo < 1) OR (FormulaColumnNo > 8) THEN
+            EXIT(FALSE);
+
+        EXIT(EVALUATE(FormulaRowNo, COPYSTR(OutputFormula, 3)));
+    end;
+
+    local procedure GetOutputRowStyle(OutputRowNo: Integer): Text
+    begin
+        IF OutputRowNo IN [1, 2, 3] THEN
+            EXIT('HeaderInfo');
+
+        IF OutputRowNo = 5 THEN
+            EXIT('TableHeader');
+
+        IF NOT ExcelBuf.GET(OutputRowNo, 1) THEN
+            EXIT('Blank');
+
+        CASE ExcelBuf."BackGround Color" OF
+            4:
+                EXIT('Definition');
+            5:
+                EXIT('Group');
+            6:
+                EXIT('Posting');
+            8:
+                EXIT('Total');
+        END;
+
+        EXIT('Normal');
     end;
 
     local procedure GetBudgetAmount(pGLAcc: Code[20]): Text

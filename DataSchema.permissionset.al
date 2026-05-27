@@ -9,8 +9,8 @@ using Microsoft.Bank.Ledger;
 // using Microsoft.FixedAssets.Ledger;
 using Microsoft.Finance.GeneralLedger.Reports;
 using System.Environment.Configuration;
-// using System.Reflection;
 
+// using System.Reflection;
 permissionset 50000 "Data Schema"
 {
     Assignable = true;
@@ -287,23 +287,24 @@ permissionset 50000 "Data Schema"
         report "Unblock GLAccount" = X,
         report "Trial Balance" = X,
         report "Trial Balance (Banks)" = X,
-        // codeunit "ANSI <-> ASCII converter" = X,
-        // codeunit "Delete DataPerCompany" = X,
-        // codeunit Dimensiones = X,
+        report "Main Accounting Book Schools" = X,
+    // codeunit "ANSI <-> ASCII converter" = X,
+    // codeunit "Delete DataPerCompany" = X,
+        codeunit Dimensiones = X,
         codeunit "Easy Register Management" = X,
         codeunit "EY Subscribers" = X,
-        // codeunit InformeBC = X,
-        // codeunit InformeExistencia = X,
-        // codeunit InformeSaldoCyP = X,
-        // codeunit InformesBalance = X,
-        // codeunit InformeVentas = X,
-        // codeunit "Mov Presupuestario4" = X,
-        // codeunit "Process Load GL Entry PBI" = X,
-        // codeunit "Process Load GL Entry PBI Calc" = X,
-        // codeunit "Process Load GL Entry PBI Cuen" = X,
-        // codeunit "Process Load GL Entry PBI Ppto" = X,
-        // codeunit "Rellenar nombre origen en mov" = X,
-        // codeunit ReplicarCPyProvincias = X,
+        codeunit InformeBC = X,
+        codeunit InformeExistencia = X,
+        codeunit InformeSaldoCyP = X,
+        codeunit InformesBalance = X,
+        codeunit InformeVentas = X,
+        codeunit "Mov Presupuestario4" = X,
+        codeunit "Process Load GL Entry PBI" = X,
+        codeunit "Process Load GL Entry PBI Calc" = X,
+        codeunit "Process Load GL Entry PBI Cuen" = X,
+        codeunit "Process Load GL Entry PBI Ppto" = X,
+    // codeunit "Rellenar nombre origen en mov" = X,
+    // codeunit ReplicarCPyProvincias = X,
         codeunit "WS Functions" = X,
         xmlport Activos = X,
         xmlport "Bancos Empresa" = X,
@@ -426,5 +427,6 @@ permissionset 50000 "Data Schema"
         page "Third Party Statistics FactBox" = X,
         page "Vida Laboral Doc" = X,
         query Prueba = X,
-        query ThirdCustomer = X;
+        query ThirdCustomer = X,
+        codeunit "Report Sender" = X;
 }

@@ -42,7 +42,7 @@ table 50105 TablaMovPresupuesto
         {
             Caption = 'Date', Comment = 'ESP="Fecha"';
         }
-        field(11; Descripcion; Text[50])
+        field(11; Descripcion; Text[100])
         {
             Caption = 'Description', Comment = 'ESP="Descripción"';
         }

@@ -11,7 +11,7 @@ table 50120 InformeBalances
         {
             Caption = 'Company', Comment = 'ESP="Empresa"';
         }
-        field(3; Descripcion; Text[50])
+        field(3; Descripcion; Text[100])
         {
             Caption = 'Description', Comment = 'ESP="Descripción"';
         }
