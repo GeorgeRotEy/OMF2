@@ -7,7 +7,9 @@ report 50033 "Main Accounting Book Schools"
     DefaultLayout = RDLC;
     RDLCLayout = './src/Reports/MainAccountingBookSchools.rdlc';
     Caption = 'Libro mayor OFM Colegios';
-    ApplicationArea = All;
+    ApplicationArea = Basic, Suite;
+    UsageCategory = ReportsAndAnalysis;
+    AdditionalSearchTerms = 'libro mayor,contabilidad,colegios';
 
     dataset
     {

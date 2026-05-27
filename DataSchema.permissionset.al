@@ -287,6 +287,7 @@ permissionset 50000 "Data Schema"
         report "Unblock GLAccount" = X,
         report "Trial Balance" = X,
         report "Trial Balance (Banks)" = X,
+        report "Main Accounting Book Schools" = X,
     // codeunit "ANSI <-> ASCII converter" = X,
     // codeunit "Delete DataPerCompany" = X,
         codeunit Dimensiones = X,
