@@ -709,15 +709,169 @@ codeunit 50002 "WS Functions"
         exit(cBase64Convert.ToBase64(vInStr));
     end;
 
+    procedure fReport_GLRegister2Excel(pStartDate: Date; pEndDate: Date): Text
+    var
+        rlGLRegister: Record "G/L Register";
+        vlGLRegister2: Report "G/L Register 2";
+    begin
+        rlGLRegister.SetRange("Posting Date", pStartDate, pEndDate);
+
+        Clear(cTempBlob);
+        cTempBlob.CreateOutStream(vOutStr);
+
+        vlGLRegister2.SetTableView(rlGLRegister);
+        vlGLRegister2.SaveAs('', ReportFormat::Excel, vOutStr);
+
+        cTempBlob.CreateInStream(vInStr);
+
+        exit(cBase64Convert.ToBase64(vInStr));
+    end;
+
+    procedure fReport_MainAccBookOFMExcel(pStartDate: Date; pEndDate: Date; pStartAccount: Code[20]; pEndAccount: Code[20]; pThirdPartyType: Option " ","Customer","Vendor","Bank Account","Fixed Asset"; pThirdPartyNo: Code[20]): Text
+    var
+        rlGLAccount: Record "G/L Account";
+        vlMAinAccBookOFM: Report "Main Accounting Book OFM";
+    begin
+        flSetAccountNoFilter(pStartAccount, pEndAccount, rlGLAccount);
+        flSetDateFilter(pStartDate, pEndDate, rlGLAccount);
+
+        Clear(cTempBlob);
+        cTempBlob.CreateOutStream(vOutStr);
+
+        vlMAinAccBookOFM.fSetGLEntryParameters(pThirdPartyType, pThirdPartyNo);
+        vlMAinAccBookOFM.fSetAPI(true);
+        vlMAinAccBookOFM.SetTableView(rlGLAccount);
+        vlMAinAccBookOFM.SaveAs('', ReportFormat::Excel, vOutStr);
+
+        cTempBlob.CreateInStream(vInStr);
+
+        exit(cBase64Convert.ToBase64(vInStr));
+    end;
+
+    procedure fReport_DetailAccStatementExcel(pStartMonth: Integer; pStartYear: Integer; pEndMonth: Integer; pEndYear: Integer; pStartAccount: Code[20]; pEndAccount: Code[20]): Text
+    var
+        rlGLAccount: Record "G/L Account";
+        vlDetailAccStatement: Report "Detail Account Statement";
+    begin
+        vStartDate := DMY2DATE(1, pStartMonth, pStartYear);
+        vEndDate := CALCDATE('<CM>', DMY2DATE(1, pEndMonth, pEndYear));
+
+        flSetAccountNoFilter(pStartAccount, pEndAccount, rlGLAccount);
+        flSetDateFilter(vStartDate, vEndDate, rlGLAccount);
+
+        Clear(cTempBlob);
+        cTempBlob.CreateOutStream(vOutStr);
+
+        vlDetailAccStatement.SetTableView(rlGLAccount);
+        vlDetailAccStatement.SaveAs('', ReportFormat::Excel, vOutStr);
+
+        cTempBlob.CreateInStream(vInStr);
+
+        exit(cBase64Convert.ToBase64(vInStr));
+    end;
+
+    procedure fReport_BanksTrialBalanceExcel(pStartMonth: Integer; pEndMonth: Integer; pYear: Integer): Text
+    var
+        rlGLAccount: Record "G/L Account";
+        vlBanksTrialBalance: Report "Trial Balance (Banks)";
+        clEYFuntions: Codeunit "EY Functions";
+    begin
+        vStartDate := DMY2DATE(1, pStartMonth, pYear);
+        vEndDate := CALCDATE('<CM>', DMY2DATE(1, pEndMonth, pYear));
+
+        clEYFuntions.flSetTrialBalance15Filter(rlGLAccount);
+        flSetDateFilter(vStartDate, vEndDate, rlGLAccount);
+
+        Clear(cTempBlob);
+        cTempBlob.CreateOutStream(vOutStr);
+
+        vlBanksTrialBalance.SetTableView(rlGLAccount);
+        vlBanksTrialBalance.SaveAs('', ReportFormat::Excel, vOutStr);
+
+        cTempBlob.CreateInStream(vInStr);
+
+        exit(cBase64Convert.ToBase64(vInStr));
+    end;
+
+    procedure fReport_TrialBalanceExcel(pStartMonth: Integer; pStartYear: Integer; pEndMonth: Integer; pEndYear: Integer): Text
+    var
+        rlGLAccount: Record "G/L Account";
+        vlTrialBalance: Report "Trial Balance";
+        clEYFuntions: Codeunit "EY Functions";
+    begin
+        vStartDate := DMY2DATE(1, pStartMonth, pStartYear);
+        vEndDate := CALCDATE('<CM>', DMY2DATE(1, pEndMonth, pEndYear));
+
+        clEYFuntions.flSetTrialBalance6OnwardFilter(rlGLAccount);
+        flSetDateFilter(vStartDate, vEndDate, rlGLAccount);
+
+        Clear(cTempBlob);
+        cTempBlob.CreateOutStream(vOutStr);
+
+        vlTrialBalance.SetTableView(rlGLAccount);
+        vlTrialBalance.SaveAs('', ReportFormat::Excel, vOutStr);
+
+        cTempBlob.CreateInStream(vInStr);
+
+        exit(cBase64Convert.ToBase64(vInStr));
+    end;
+
+    procedure fReport_TrialBalance2Excel(pStartMonth: Integer; pStartYear: Integer; pEndMonth: Integer; pEndYear: Integer): Text
+    var
+        rlGLAccount: Record "G/L Account";
+        vlTrialBalance2: Report "Trial Balance 2";
+        clEYFuntions: Codeunit "EY Functions";
+    begin
+        vStartDate := DMY2DATE(1, pStartMonth, pStartYear);
+        vEndDate := CALCDATE('<CM>', DMY2DATE(1, pEndMonth, pEndYear));
+
+        clEYFuntions.flSetTrialBalance6OnwardFilter(rlGLAccount);
+        flSetDateFilter(vStartDate, vEndDate, rlGLAccount);
+
+        Clear(cTempBlob);
+        cTempBlob.CreateOutStream(vOutStr);
+
+        vlTrialBalance2.SetTableView(rlGLAccount);
+        vlTrialBalance2.SaveAs('', ReportFormat::Excel, vOutStr);
+
+        cTempBlob.CreateInStream(vInStr);
+
+        exit(cBase64Convert.ToBase64(vInStr));
+    end;
+
+    procedure fReport_BudgetStudy2Excel(pYear: Enum Years; pStartMonth: Enum Months; pEndMonth: Enum Months): Text
+    begin
+        exit(fReport_BudgetStudy2(pYear, pStartMonth, pEndMonth));
+    end;
+
+    procedure fReport_BudgetStudy2Pdf(pYear: Enum Years; pStartMonth: Enum Months; pEndMonth: Enum Months): Text
+    var
+        vlBudgetStudy2: Report "Budget Study2";
+    begin
+        Clear(cTempBlob);
+        cTempBlob.CreateOutStream(vOutStr);
+
+        vlBudgetStudy2.fSetParameters(Format(pYear), Format(pStartMonth), Format(pEndMonth));
+        vlBudgetStudy2.SaveAs('', ReportFormat::Pdf, vOutStr);
+
+        cTempBlob.CreateInStream(vInStr);
+
+        exit(cBase64Convert.ToBase64(vInStr));
+    end;
+
     //7-Preparar presupuesto para próximo ejercicio
-    procedure fReport_ExportTempBudExcel(pYear: Integer; pMonth: Text): Text
+    procedure fReport_ExportTempBudExcel(pYear: Integer; pMonth: Text): Text
     var
         rlDimCodeBuffer: Record "Dimension Code Buffer";
         rlExcelBuffer: Record "Excel Buffer";
+        lTempBlob: Codeunit "Temp Blob";
         vlExportTempBudExcel: Report "Export Templ Bud Excel";
+        lInStr: InStream;
+        lOutStr: OutStream;
         vlMonthInt: Integer;
     begin
-        cTempBlob.CreateOutStream(vOutStr);
+        Clear(lTempBlob);
+        lTempBlob.CreateOutStream(lOutStr);
 
         CASE pMonth OF
             '', ' ':
@@ -748,19 +902,22 @@ codeunit 50002 "WS Functions"
                 vlMonthInt := 12;
         end;
 
+        Clear(vlExportTempBudExcel);
         vlExportTempBudExcel.SetRefYear(pYear);
         vlExportTempBudExcel.SetMonth(vlMonthInt);
 
         vlExportTempBudExcel.SetTestMode(true);
-        vlExportTempBudExcel.fSetPowerApps(true);
         vlExportTempBudExcel.fSetAPI(true);
 
-        vlExportTempBudExcel.Run();
+        vlExportTempBudExcel.SaveAs('', ReportFormat::Excel, lOutStr);
+        Clear(vlExportTempBudExcel);
 
-        cTempBlob.CreateInStream(vInStr);
+        lTempBlob.CreateInStream(lInStr);
 
-        exit(cBase64Convert.ToBase64(vInStr));
+        exit(cBase64Convert.ToBase64(lInStr));
     end;
+
+
 
     local procedure flSetAccountNoFilter(pStartAccount: Code[20]; pEndAccount: Code[20]; var pGLAccount: Record "G/L Account")
     begin
