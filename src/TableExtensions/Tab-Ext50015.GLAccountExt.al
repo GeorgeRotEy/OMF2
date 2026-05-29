@@ -343,6 +343,9 @@ tableextension 50015 "GL Account Ext" extends "G/L Account"
 
     trigger OnBeforeInsert()
     begin
+        IF NOT vDesdeCorporativo then
+            Error(Text002Lbl);
+
         cFuncionesPLC.fControlTipoGestionPlan(vDesdeCorporativo);
 
         DimMgt.UpdateDefaultDim(DATABASE::"G/L Account", "No.",
@@ -392,6 +395,7 @@ tableextension 50015 "GL Account Ext" extends "G/L Account"
         vDesdeCorporativo: Boolean;
         Text000Lbl: Label 'You cannot change %1 because there are one or more ledger entries associated with this account.', Comment = 'ESP="No puede cambiar %1 porque hay uno o más movimientos asociados a esta cuenta"';
         Text001Lbl: Label 'You cannot change %1 because this account is part of one or more budgets.', Comment = 'ESP="No puede cambiar %1 porque esta cuenta es parte de uno o más presupuestos"';
+        Text002Lbl: Label 'G/L accounts can only be created from the Corporate Chart of Accounts and brought into the company chart of accounts using the Bring Corporate Accounts function.', Comment = 'ESP="Las cuentas contables solo se pueden crear desde el Plan de Cuentas Corporativo y traer al plan de cuentas de la empresa con la funcion Traer cuentas corporativas."';
 
     procedure fCambiarCompañia(pEmpresa: Text[50])
     begin
